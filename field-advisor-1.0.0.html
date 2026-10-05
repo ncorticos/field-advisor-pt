@@ -142,6 +142,11 @@ footer{border-top:1px solid var(--line);margin-top:26px;background:var(--wash)}
 .foot-legal{margin-top:20px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);line-height:1.65}
 .install{border:1px dashed #c6cbc4;border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--ink2);background:#fff;margin-top:12px;line-height:1.6}
 video#camPrev{width:100%;border-radius:8px;background:#000;max-height:240px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{font:inherit;font-size:12.5px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink2);cursor:pointer;min-height:40px;line-height:1.3}
+.chip:hover{border-color:#c6cbc4;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip .hc{font-family:var(--mono);font-size:10px;opacity:.65;margin-right:6px}
 .rowbtns{display:flex;gap:8px;flex-wrap:wrap}
 .rowbtns .btn{flex:1 1 140px}
 </style>
@@ -209,7 +214,26 @@ video#camPrev{width:100%;border-radius:8px;background:#000;max-height:240px}
         <option value="encoberto">Encoberto / Overcast</option>
         <option value="noite">Noite / Night</option>
       </select></div>
-      <div class="fld"><label data-pt="Fontes dominantes" data-en="Dominant sources">Fontes dominantes</label><input type="text" id="f-sources" placeholder="Ex.: tráfego, AVAC, conversa, pássaros…"></div>
+      <div class="fld"><label data-pt="Fontes dominantes" data-en="Dominant sources">Fontes dominantes</label><input type="text" id="f-sources" placeholder="Ex.: tráfego, AVAC, conversa, pássaros…">
+      <div class="chips" id="chips-sources" role="group" aria-label="Fontes">
+        <button class="chip" data-k="trafego" aria-pressed="false" data-pt="Tráfego rodoviário" data-en="Road traffic">Tráfego rodoviário</button>
+        <button class="chip" data-k="aereo" aria-pressed="false" data-pt="Aviões" data-en="Aircraft">Aviões</button>
+        <button class="chip" data-k="vozes" aria-pressed="false" data-pt="Vozes / conversa" data-en="Voices / chatter">Vozes / conversa</button>
+        <button class="chip" data-k="avac" aria-pressed="false">AVAC</button>
+        <button class="chip" data-k="obra" aria-pressed="false" data-pt="Obra / equipamentos" data-en="Works / equipment">Obra / equipamentos</button>
+        <button class="chip" data-k="natureza" aria-pressed="false" data-pt="Pássaros / natureza" data-en="Birds / nature">Pássaros / natureza</button>
+        <button class="chip" data-k="vento" aria-pressed="false" data-pt="Vento / chuva" data-en="Wind / rain">Vento / chuva</button>
+        <button class="chip" data-k="silencio" aria-pressed="false" data-pt="Silêncio / fundo" data-en="Quiet / background">Silêncio / fundo</button>
+      </div><div class="sub" data-pt="Toque para juntar ao campo." data-en="Tap to add to the field.">Toque para juntar ao campo.</div></div>
+      <div class="fld full"><label data-pt="Hipóteses de trabalho — toque para selecionar" data-en="Working hypotheses — tap to select">Hipóteses de trabalho — toque para selecionar</label>
+      <div class="chips" id="chips-hyp" role="group" aria-label="Hipóteses">
+        <button class="chip" data-k="H1" aria-pressed="false"><span class="hc">H1</span><span data-pt="Exterior domina; interior cai ≥10 dB c/ janelas fechadas" data-en="Outdoors dominate; indoors drop ≥10 dB with windows closed">Exterior domina; interior cai ≥10 dB c/ janelas fechadas</span></button>
+        <button class="chip" data-k="H2" aria-pressed="false"><span class="hc">H2</span><span data-pt="Sala demasiado viva: RT60 > 0,8 s, palavra difícil" data-en="Room too live: RT60 > 0.8 s, speech difficult">Sala demasiado viva: RT60 > 0,8 s, palavra difícil</span></button>
+        <button class="chip" data-k="H3" aria-pressed="false"><span class="hc">H3</span><span data-pt="Fundo da sala escuro: <300 lx / DF <2% só c/ luz natural" data-en="Back of room dark: <300 lx / DF <2% in daylight only">Fundo da sala escuro: <300 lx / DF <2% só c/ luz natural</span></button>
+        <button class="chip" data-k="H4" aria-pressed="false"><span class="hc">H4</span><span data-pt="Artificial insuficiente: <300 lx à noite no plano" data-en="Electric light short: <300 lx at night on the plane">Artificial insuficiente: <300 lx à noite no plano</span></button>
+        <button class="chip" data-k="H5" aria-pressed="false"><span class="hc">H5</span><span data-pt="Contraste junto ao vão: ofuscamento / adaptação" data-en="Contrast near glazing: glare / adaptation">Contraste junto ao vão: ofuscamento / adaptação</span></button>
+        <button class="chip" data-k="H6" aria-pressed="false"><span class="hc">H6</span><span data-pt="Noite: cumpre dentro, rua domina fora" data-en="Night: passes indoors, street dominates outdoors">Noite: cumpre dentro, rua domina fora</span></button>
+      </div><div class="sub" data-pt="Ficam gravadas na ficha e em cada CSV/JSON." data-en="Stored on the record and in every CSV/JSON.">Ficam gravadas na ficha e em cada CSV/JSON.</div></div>
       <div class="fld full"><label data-pt="Notas" data-en="Notes">Notas</label><textarea id="f-notes" placeholder="Altura do microfone 1,2 m · luminância do plano de trabalho · hora · lâmpadas ligadas/desligadas…"></textarea></div>
     </div>
     <div class="rowbtns">
@@ -360,16 +384,20 @@ $('lang-pt').onclick=()=>setLang('pt');$('lang-en').onclick=()=>setLang('en');
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');document.querySelectorAll('section.page').forEach(p=>p.classList.toggle('on',p.id===b.dataset.page));window.scrollTo({top:0});});
 function segWire(id,cb){const s=$(id);s.querySelectorAll('button').forEach(b=>b.onclick=()=>{s.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');cb&&cb(b.dataset.v);});}
 function segGet(id){const b=document.querySelector('#'+id+' button[aria-pressed="true"]');return b?b.dataset.v:'';}
-const site={place:'',spacetype:'sala-aula',inout:'interior',lat:'',lon:'',windows:'fechadas',occup:'vazio',sky:'limpo',sources:'',notes:'',stamp:''};
-function readSite(){site.place=$('f-place').value.trim();site.spacetype=$('f-spacetype').value;site.inout=segGet('seg-inout');site.lat=$('f-lat').value;site.lon=$('f-lon').value;site.windows=$('f-windows').value;site.occup=$('f-occup').value;site.sky=$('f-sky').value;site.sources=$('f-sources').value.trim();site.notes=$('f-notes').value.trim();try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}}
-function loadSite(){try{const s=JSON.parse(localStorage.getItem('fa-site')||'null');if(!s)return;Object.assign(site,s);$('f-place').value=site.place||'';$('f-spacetype').value=site.spacetype||'sala-aula';segSet('seg-inout',site.inout||'interior');$('f-lat').value=site.lat||'';$('f-lon').value=site.lon||'';$('f-windows').value=site.windows||'fechadas';$('f-occup').value=site.occup||'vazio';$('f-sky').value=site.sky||'limpo';$('f-sources').value=site.sources||'';$('f-notes').value=site.notes||'';}catch(e){}}
+const site={place:'',spacetype:'sala-aula',inout:'interior',lat:'',lon:'',windows:'fechadas',occup:'vazio',sky:'limpo',sources:'',hyp:[],notes:'',stamp:''};
+const SRC_LBL={trafego:'Tráfego rodoviário',aereo:'Aviões',vozes:'Vozes / conversa',avac:'AVAC',obra:'Obra / equipamentos',natureza:'Pássaros / natureza',vento:'Vento / chuva',silencio:'Silêncio / fundo'};
+function readSite(){site.place=$('f-place').value.trim();site.spacetype=$('f-spacetype').value;site.inout=segGet('seg-inout');site.lat=$('f-lat').value;site.lon=$('f-lon').value;site.windows=$('f-windows').value;site.occup=$('f-occup').value;site.sky=$('f-sky').value;site.sources=$('f-sources').value.trim();site.notes=$('f-notes').value.trim();if(!Array.isArray(site.hyp))site.hyp=[];try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}}
+function loadSite(){try{const s=JSON.parse(localStorage.getItem('fa-site')||'null');if(!s)return;Object.assign(site,s);if(!Array.isArray(site.hyp))site.hyp=[];$('f-place').value=site.place||'';$('f-spacetype').value=site.spacetype||'sala-aula';segSet('seg-inout',site.inout||'interior');$('f-lat').value=site.lat||'';$('f-lon').value=site.lon||'';$('f-windows').value=site.windows||'fechadas';$('f-occup').value=site.occup||'vazio';$('f-sky').value=site.sky||'limpo';$('f-sources').value=site.sources||'';$('f-notes').value=site.notes||'';syncChips();}catch(e){}}
+function syncChips(){const cur=(site.sources||'').split(',').map(s=>s.trim()).filter(Boolean);document.querySelectorAll('#chips-sources .chip').forEach(b=>b.setAttribute('aria-pressed',cur.includes(SRC_LBL[b.dataset.k]||b.dataset.k)?'true':'false'));document.querySelectorAll('#chips-hyp .chip').forEach(b=>b.setAttribute('aria-pressed',(site.hyp||[]).includes(b.dataset.k)?'true':'false'));}
+function wireChips(){document.querySelectorAll('#chips-sources .chip').forEach(b=>b.onclick=()=>{const lbl=SRC_LBL[b.dataset.k]||b.textContent.trim();let cur=$('f-sources').value.split(',').map(s=>s.trim()).filter(Boolean);if(cur.includes(lbl))cur=cur.filter(s=>s!==lbl);else cur.push(lbl);$('f-sources').value=cur.join(', ');b.setAttribute('aria-pressed',cur.includes(lbl)?'true':'false');readSite();updateChip();});
+document.querySelectorAll('#chips-hyp .chip').forEach(b=>b.onclick=()=>{if(!Array.isArray(site.hyp))site.hyp=[];const k=b.dataset.k;site.hyp=site.hyp.includes(k)?site.hyp.filter(x=>x!==k):[...site.hyp,k];b.setAttribute('aria-pressed',site.hyp.includes(k)?'true':'false');try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}updateChip();renderExport();});}
 function segSet(id,v){document.querySelectorAll('#'+id+' button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===v?'true':'false'));}
 segWire('seg-inout',v=>{site.inout=v;readSite();updateChip();});
 segWire('seg-ltype',()=>{});segWire('seg-lwhere',()=>{});
 $('btn-site-save').onclick=()=>{readSite();site.stamp=site.stamp||new Date().toISOString();try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}updateChip();$('site-saved-hint').textContent=(LANG==='pt'?'Ficha guardada · ':'Record saved · ')+site.stamp;toast(LANG==='pt'?'Ficha guardada':'Record saved');renderExport();};
 $('btn-site-stamp').onclick=()=>{site.stamp=new Date().toISOString();readSite();site.stamp=new Date().toISOString();try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}$('site-saved-hint').textContent=site.stamp;toast(site.stamp);updateChip();};
 $('btn-gps').onclick=()=>{if(!navigator.geolocation){$('gps-status').textContent='GPS indisponível';return;}$('gps-status').textContent='…';navigator.geolocation.getCurrentPosition(p=>{$('f-lat').value=p.coords.latitude.toFixed(5);$('f-lon').value=p.coords.longitude.toFixed(5);$('gps-status').textContent='±'+Math.round(p.coords.accuracy)+' m · '+new Date().toLocaleTimeString();readSite();updateChip();},e=>{$('gps-status').textContent='GPS: '+e.message;},{enableHighAccuracy:true,timeout:15000});};
-['f-place','f-spacetype','f-lat','f-lon','f-windows','f-occup','f-sky','f-sources','f-notes'].forEach(id=>{$(id).addEventListener('input',()=>{readSite();updateChip();});$(id).addEventListener('change',()=>{readSite();updateChip();});});
+['f-place','f-spacetype','f-lat','f-lon','f-windows','f-occup','f-sky','f-sources','f-notes'].forEach(id=>{$(id).addEventListener('input',()=>{readSite();if(id==='f-sources')syncChips();updateChip();});$(id).addEventListener('change',()=>{readSite();if(id==='f-sources')syncChips();updateChip();});});
 function updateChip(){readSiteSil();const c=$('filechip');if(site.place||site.lat){c.classList.add('on');$('chip-loc').textContent=site.place||'—';$('chip-meta').textContent=[site.inout,(site.lat&&site.lon)?(+site.lat).toFixed(3)+', '+(+site.lon).toFixed(3):'',site.stamp?site.stamp.slice(0,16).replace('T',' '):''].filter(Boolean).join(' · ');}else c.classList.remove('on');}
 function readSiteSil(){try{site.place=$('f-place').value.trim();site.inout=segGet('seg-inout');site.lat=$('f-lat').value;site.lon=$('f-lon').value;}catch(e){}}
 /* ================= storage ================= */
@@ -425,7 +453,7 @@ function drawNoise(){const c=$('canvas-noise');const{x,W,H}=fitCanvas(c);x.clear
 function renderNoise(){const tb=$('tbl-noise').querySelector('tbody');$('noise-count').textContent=noiseSessions.length;
   tb.innerHTML=noiseSessions.length?noiseSessions.slice().reverse().map(s=>'<tr><td>'+s.t.slice(11,19)+'</td><td>'+s.dur+'</td><td>'+s.leq+'</td><td>'+s.lmax+'</td><td>'+s.lmin+'</td><td>'+s.l10+'</td><td>'+s.l90+'</td><td style="font-family:var(--sans)">'+escapeHtml(s.tag)+'</td><td>'+s.cal+'</td></tr>').join(''):'<tr><td colspan="9" style="text-align:center;color:var(--faint)">—</td></tr>';drawNoise();}
 function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-$('btn-noise-csv').onclick=()=>{if(!noiseSessions.length){toast('empty');return;}download('field-noise.csv',csvBlob(['start_iso','dur_s','LAeq_dB','Lmax','Lmin','L10','L90','tag','cal_offset','place','lat','lon','windows','occupancy','sky'],noiseSessions.map(s=>[s.t,s.dur,s.leq,s.lmax,s.lmin,s.l10,s.l90,s.tag,s.cal,site.place,site.lat,site.lon,site.windows,site.occup,site.sky]),'approx A-weighted via phone mic + cal offset'));;};
+$('btn-noise-csv').onclick=()=>{if(!noiseSessions.length){toast('empty');return;}download('field-noise.csv',csvBlob(['start_iso','dur_s','LAeq_dB','Lmax','Lmin','L10','L90','tag','cal_offset','place','lat','lon','windows','occupancy','sky'],noiseSessions.map(s=>[s.t,s.dur,s.leq,s.lmax,s.lmin,s.l10,s.l90,s.tag,s.cal,site.place,site.lat,site.lon,site.windows,site.occup,site.sky]),'hipoteses: '+((site.hyp||[]).join(' ')||'—')+'; approx A-weighted via phone mic + cal offset'));;};
 $('btn-noise-png').onclick=()=>stampPNG($('canvas-noise'),'field-noise.png','Noise');
 /* ================= RT60 ================= */
 let lastDecay=null;
@@ -479,7 +507,7 @@ function drawRT(){const c=$('canvas-rt');const{x,W,H}=fitCanvas(c);x.clearRect(0
   line(lastDecay.f30&&lastDecay.f30.slope?lastDecay.f30:lastDecay.f20);}
 function renderRT(){$('rt-count').textContent=rtMeas.length;const tb=$('tbl-rt').querySelector('tbody');
   tb.innerHTML=rtMeas.length?rtMeas.slice().reverse().map(m=>'<tr><td>'+m.t.slice(11,19)+'</td><td>'+m.rt60+'</td><td>'+(m.rt20||'—')+'</td><td>'+(m.rt30||'—')+'</td><td>'+m.range+'</td><td style="font-family:var(--sans)">'+m.ff+'</td><td style="font-family:var(--sans)">'+escapeHtml(m.tag)+'</td></tr>').join(''):'<tr><td colspan="7" style="text-align:center;color:var(--faint)">—</td></tr>';drawRT();}
-$('btn-rt-csv').onclick=()=>{if(!rtMeas.length){toast('empty');return;}download('field-rt.csv',csvBlob(['time_iso','RT60_s','RT20x3','RT30x2','decay_range_dB','filter_source','tag','place','lat','lon'],rtMeas.map(m=>[m.t,m.rt60,m.rt20,m.rt30,m.range,m.ff,m.tag,site.place,site.lat,site.lon]),'Schroeder impulse, ISO 3382-2 didactic'));};
+$('btn-rt-csv').onclick=()=>{if(!rtMeas.length){toast('empty');return;}download('field-rt.csv',csvBlob(['time_iso','RT60_s','RT20x3','RT30x2','decay_range_dB','filter_source','tag','place','lat','lon'],rtMeas.map(m=>[m.t,m.rt60,m.rt20,m.rt30,m.range,m.ff,m.tag,site.place,site.lat,site.lon]),'hipoteses: '+((site.hyp||[]).join(' ')||'—')+'; Schroeder impulse, ISO 3382-2 didactic'));};
 $('btn-rt-png').onclick=()=>stampPNG($('canvas-rt'),'field-rt.png','RT60');
 /* ================= LIGHT ================= */
 let lightLive=null,lightSrc='manual',camStream=null;
@@ -524,7 +552,7 @@ function drawLight(){const c=$('canvas-light');const{x,W,H}=fitCanvas(c);x.clear
   const col=t=>t==='natural'?'#D97706':t==='artificial'?'#7C3AED':'#0891B2';
   lightReads.forEach((r,i)=>{const px=44+(i/Math.max(1,lightReads.length-1))*(W-56);const py=yOf(r.lux);x.fillStyle=col(r.type);x.beginPath();x.arc(px,py,r.where==='exterior'?4:6,0,7);x.strokeStyle='#fff';x.lineWidth=2;if(r.where==='exterior'){x.stroke();}else{x.fill();}});
   }
-$('btn-light-csv').onclick=()=>{if(!lightReads.length){toast('empty');return;}download('field-light.csv',csvBlob(['time_iso','lux','type','indoor_outdoor','plane','source','sky','place','lat','lon'],lightReads.map(r=>[r.t,r.lux,r.type,r.where,r.plane,r.src,r.sky,site.place,site.lat,site.lon]),'illuminance; sensor/camera/manual'));};
+$('btn-light-csv').onclick=()=>{if(!lightReads.length){toast('empty');return;}download('field-light.csv',csvBlob(['time_iso','lux','type','indoor_outdoor','plane','source','sky','place','lat','lon'],lightReads.map(r=>[r.t,r.lux,r.type,r.where,r.plane,r.src,r.sky,site.place,site.lat,site.lon]),'hipoteses: '+((site.hyp||[]).join(' ')||'—')+'; illuminance; sensor/camera/manual'));};
 $('btn-light-png').onclick=()=>stampPNG($('canvas-light'),'field-light.png','Light');
 /* ================= EXPORT ================= */
 function renderExport(){$('exp-n-noise').textContent=noiseSessions.length;$('exp-n-rt').textContent=rtMeas.length;$('exp-n-light').textContent=lightReads.length;
@@ -532,7 +560,7 @@ function renderExport(){$('exp-n-noise').textContent=noiseSessions.length;$('exp
   ['RT60',rtMeas.length?rtMeas.length+'':'—',rtMeas.length?'ok':'empty',rtMeas.length?rtMeas[rtMeas.length-1].rt60+' s':'sem dados / no data'],
   ['Luz / Light',lightReads.length?lightReads.length+'':'—',lightReads.length?'ok':'empty',lightReads.length?lightReads[lightReads.length-1].lux+' lx':'sem dados / no data']];
   $('tbl-inv').querySelector('tbody').innerHTML=inv.map(r=>'<tr><td>'+r[0]+'</td><td><span class="pill '+r[2]+'">'+r[1]+'</span></td><td style="font-family:var(--sans)">'+escapeHtml(r[3])+'</td></tr>').join('');
-  $('export-summary').textContent=(site.place||'—')+' · '+site.inout+' · '+noiseSessions.length+'×ruído '+rtMeas.length+'×RT '+lightReads.length+'×luz · '+new Date().toLocaleString();}
+  $('export-summary').textContent=(site.place||'—')+' · '+site.inout+' · '+noiseSessions.length+'×ruído '+rtMeas.length+'×RT '+lightReads.length+'×luz · hip: '+((site.hyp||[]).join(' ')||'—')+' · '+new Date().toLocaleString();}
 $('btn-csv-noise2').onclick=()=>$('btn-noise-csv').click();$('btn-csv-rt2').onclick=()=>$('btn-rt-csv').click();$('btn-csv-light2').onclick=()=>$('btn-light-csv').click();
 $('btn-json').onclick=()=>{readSite();download('field-all.json',new Blob([JSON.stringify({app:'Field Advisor v1.0.0',site,noiseSessions,rtMeas,lightReads},null,2)],{type:'application/json'}));};
 $('btn-copy-sum').onclick=async()=>{readSite();const s='Field Advisor · '+(site.place||'—')+' '+site.inout+' · '+site.lat+','+site.lon+' · ruído '+noiseSessions.length+' (LAeq '+(noiseSessions.length?noiseSessions[noiseSessions.length-1].leq:'—')+' dB) · RT '+(rtMeas.length?rtMeas[rtMeas.length-1].rt60+' s':'—')+' · luz '+(lightReads.length?lightReads[lightReads.length-1].lux+' lx':'—');try{await navigator.clipboard.writeText(s);toast('copied');}catch(e){toast(s);}};
@@ -541,7 +569,7 @@ function renderAll(){renderNoise();renderRT();renderLight();renderExport();updat
 /* ================= PWA manifest (blob) ================= */
 (function(){try{const man={name:'Field Advisor — Conforto Ambiental',short_name:'Field Advisor',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',start_url:'.'};const b=new Blob([JSON.stringify(man)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
 window.addEventListener('resize',()=>{drawNoise();drawRT();drawLight();});
-loadSite();updateChip();renderAll();setLang('pt');
+wireChips();loadSite();updateChip();renderAll();setLang('pt');
 </script>
 </body>
 </html>
