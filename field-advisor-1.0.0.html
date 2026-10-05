@@ -169,6 +169,25 @@ video#camPrev{width:100%;border-radius:8px;background:#000;max-height:240px}
 .rep-charts figure{margin:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
 .rep-charts img{display:block;width:100%}
 .rep-charts figcaption{font-size:11px;color:var(--muted);padding:6px 10px;border-top:1px solid var(--line2)}
+/* ---------- Mobile-first (phones) ---------- */
+@media(max-width:640px){
+  .hbar{padding:8px 12px;gap:8px}
+  .brand b{font-size:14px}
+  .brand span{display:none}
+  .langsel button{padding:10px 13px;min-height:44px;font-size:12.5px}
+  nav.tabs{position:static}
+  .tabs-inner{padding:0 8px}
+  .tab{padding:12px 12px;font-size:13px}
+  main{padding:0 12px 40px}
+  section.page{padding-top:16px}
+  .pagehead h2{font-size:18px}
+  .controls{padding:10px 12px;gap:8px 10px}
+  select,input[type=number],input[type=text],textarea{font-size:16px;padding:11px 10px}
+  .seg button{padding:11px 12px;min-height:44px}
+  .icobtn{padding:8px 10px;min-height:40px}
+  .stat .v{font-size:22px}
+  .filechip .meta{display:none}
+}
 @media print{
   header,nav.tabs,footer,#toast,#tip,.panel-tools,.no-print{display:none!important}
   section.page{display:none!important}
