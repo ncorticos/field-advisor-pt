@@ -150,6 +150,34 @@ video#camPrev{width:100%;border-radius:8px;background:#000;max-height:240px}
 .chip .hc{font-family:var(--mono);font-size:10px;opacity:.65;margin-right:6px}
 .rowbtns{display:flex;gap:8px;flex-wrap:wrap}
 .rowbtns .btn{flex:1 1 140px}
+/* ---------- Presentation report ---------- */
+.rep-title{border:1px solid var(--ink);border-radius:12px;padding:18px 20px;background:#fff;margin-bottom:14px}
+.rep-title h2{font-size:24px;letter-spacing:-0.02em}
+.rep-title .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:6px}
+.rep-slide{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;margin-bottom:14px;page-break-inside:avoid}
+.rep-slide-head{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line2);background:var(--wash)}
+.rep-slide-head b{font-size:16px;font-family:var(--mono);letter-spacing:-0.02em}
+.rep-slide-head span{font-size:12px;color:var(--muted)}
+.rep-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:14px 16px}
+@media(max-width:700px){.rep-grid{grid-template-columns:1fr}}
+.rep-bar{height:10px;border-radius:5px;background:var(--line2);box-shadow:0 0 0 1px rgba(0,0,0,.08) inset;overflow:hidden;margin-top:8px}
+.rep-bar>i{display:block;height:100%;background:var(--ink)}
+.rep-bar.lux>i{background:#D97706}
+.rep-bar.rt>i{background:#0D9488}
+.rep-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}
+@media(max-width:700px){.rep-charts{grid-template-columns:1fr}}
+.rep-charts figure{margin:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+.rep-charts img{display:block;width:100%}
+.rep-charts figcaption{font-size:11px;color:var(--muted);padding:6px 10px;border-top:1px solid var(--line2)}
+@media print{
+  header,nav.tabs,footer,#toast,#tip,.panel-tools,.no-print{display:none!important}
+  section.page{display:none!important}
+  section.page.on{display:block!important}
+  main{max-width:none;padding:0 8px 8px}
+  body{font-size:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rep-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .rep-charts{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
@@ -168,6 +196,7 @@ video#camPrev{width:100%;border-radius:8px;background:#000;max-height:240px}
     <button class="tab" data-page="p-rt" aria-selected="false"><span class="n">2</span><span data-pt="Reverberação" data-en="Reverberation">Reverberação</span></button>
     <button class="tab" data-page="p-light" aria-selected="false"><span class="n">3</span><span data-pt="Luz" data-en="Light">Luz</span></button>
     <button class="tab" data-page="p-export" aria-selected="false"><span class="n">4</span><span data-pt="Exportar" data-en="Export">Exportar</span></button>
+    <button class="tab" data-page="p-present" aria-selected="false"><span class="n">5</span><span data-pt="Apresentar" data-en="Present">Apresentar</span></button>
   </div></nav>
 </header>
 
@@ -359,6 +388,16 @@ video#camPrev{width:100%;border-radius:8px;background:#000;max-height:240px}
   <div class="panel-body tbl-scroll"><table class="data" id="tbl-rounds"><thead><tr><th>Ronda</th><th>Ruído</th><th>RT</th><th data-pt="Luz int/ext" data-en="Light in/out">Luz int/ext</th></tr></thead><tbody><tr><td colspan="4" style="text-align:center;color:var(--faint)">—</td></tr></tbody></table>
   <div class="keylist"><span class="keyitem"><i class="swatch" style="background:#D97706"></i><span data-pt="10:00 base da manhã · 13:00 pico de dia · 18:00 transição · 22:00 noite" data-en="10:00 morning base · 13:00 midday peak · 18:00 transition · 22:00 night">10:00 base da manhã · 13:00 pico de dia · 18:00 transição · 22:00 noite</span></div></div></div>
   <div class="hint" id="export-summary">—</div>
+</section>
+<!-- ============ 5 PRESENT ============ -->
+<section class="page" id="p-present">
+  <div class="pagehead"><h2 data-pt="Apresentação — relatório gráfico" data-en="Presentation — graphic report">Apresentação — relatório gráfico</h2>
+  <p data-pt="Junta todos os resultados das 4 rondas em cartões prontos a apresentar. Exporte em PDF para o PowerPoint ou para entregar." data-en="Joins all results from the 4 rounds in presentation-ready cards. Export to PDF for PowerPoint or hand-in.">Junta todos os resultados das 4 rondas em cartões prontos a apresentar. Exporte em PDF para o PowerPoint ou para entregar.</p></div>
+  <div class="controls no-print">
+    <div class="ctl"><button class="btn solid" id="btn-pdf" data-pt="Exportar PDF" data-en="Export PDF">Exportar PDF</button></div>
+    <div class="ctl"><span data-pt="Na janela de impressão escolha «Guardar como PDF» (paisagem recomendado)." data-en="In the print dialog choose 'Save as PDF' (landscape recommended).">Na janela de impressão escolha «Guardar como PDF» (paisagem recomendado).</span><span class="pill empty" id="rep-status">—</span></div>
+  </div>
+  <div id="report"></div>
 </section>
 </main>
 
@@ -600,7 +639,44 @@ $('btn-csv-noise2').onclick=()=>$('btn-noise-csv').click();$('btn-csv-rt2').oncl
 $('btn-json').onclick=()=>{readSite();download('field-all.json',new Blob([JSON.stringify({app:'Field Advisor v1.0.0',site,noiseSessions,rtMeas,lightReads},null,2)],{type:'application/json'}));};
 $('btn-copy-sum').onclick=async()=>{readSite();const s='Field Advisor · '+(site.place||'—')+' '+site.inout+' · '+site.lat+','+site.lon+' · ruído '+noiseSessions.length+' (LAeq '+(noiseSessions.length?noiseSessions[noiseSessions.length-1].leq:'—')+' dB) · RT '+(rtMeas.length?rtMeas[rtMeas.length-1].rt60+' s':'—')+' · luz '+(lightReads.length?lightReads[lightReads.length-1].lux+' lx':'—');try{await navigator.clipboard.writeText(s);toast('copied');}catch(e){toast(s);}};
 $('btn-clear').onclick=()=>{if(!confirm(LANG==='pt'?'Apagar todas as medições locais?':'Erase all local measurements?'))return;noiseSessions=[];rtMeas=[];lightReads=[];persist();renderAll();toast('cleared');};
-function renderAll(){renderNoise();renderRT();renderLight();renderExport();updateChip();}
+/* ================= PRESENT ================= */
+function snap(id){try{return $(id).toDataURL('image/png');}catch(e){return '';}}
+function renderReport(){const R=$('report');if(!R)return;readSite();
+  const slots=['10:00','13:00','18:00','22:00'];
+  const L=LANG==='pt';
+  const cover=slots.filter(sl=>noiseSessions.some(s=>(s.round||'livre')===sl)&&lightReads.some(s=>(s.round||'livre')===sl));
+  const st=$('rep-status');if(st){st.textContent=cover.length+'/4 '+(L?'rondas':'rounds');st.className='pill '+(cover.length>=4?'ok':cover.length?'live':'empty');}
+  const hyp=(site.hyp||[]).join(' ')||'—';
+  let h='<div class="rep-title"><h2>FA—'+escapeHtml(site.place||'Field Advisor')+'</h2><div class="meta">'+escapeHtml(site.inout+' · '+(site.spacetype||'')+' · lat '+(site.lat||'—')+' lon '+(site.lon||'—'))+'<br>'+escapeHtml((site.stamp||'').slice(0,16).replace('T',' ')+' · '+site.windows+'/'+site.occup+'/'+site.sky)+' · hip '+escapeHtml(hyp)+'</div></div>';
+  h+=slots.map(sl=>{
+    const nz=noiseSessions.filter(s=>(s.round||'livre')===sl);
+    const rt=rtMeas.filter(s=>(s.round||'livre')===sl);
+    const li=lightReads.filter(s=>(s.round||'livre')===sl&&s.where==='interior');
+    const le=lightReads.filter(s=>(s.round||'livre')===sl&&s.where==='exterior');
+    const leq=nz.length?(nz.reduce((a,s)=>a+s.leq,0)/nz.length):null;
+    const luxI=li.length?li[li.length-1].lux:null, luxE=le.length?le[le.length-1].lux:null;
+    const df=(luxI!=null&&luxE&&luxE>0)?(luxI/luxE*100):null;
+    const rtv=rt.length?rt[rt.length-1].rt60:null;
+    const nbar=leq==null?0:Math.max(0,Math.min(100,(leq-25)/70*100));
+    const lbar=luxI==null?0:Math.max(2,Math.min(100,(Math.log10(Math.max(1,luxI))-1)/4.1*100));
+    const rbar=rtv==null?0:Math.max(2,Math.min(100,rtv/1.5*100));
+    const card=(k,v,sub,bar)=>'<div class="stat"><div class="k">'+k+'</div><div class="v" style="font-size:21px">'+v+'</div><div class="s">'+sub+'</div>'+bar+'</div>';
+    return '<div class="rep-slide"><div class="rep-slide-head"><b>'+sl+'</b><span>'+(L?'ronda':'round')+' · '+nz.length+'×'+(L?'ruído':'noise')+' '+rt.length+'×RT '+li.length+'/'+le.length+' '+(L?'luz int/ext':'light in/out')+'</span></div><div class="rep-grid">'
+      +card(L?'Ruído LAeq':'Noise LAeq',leq==null?'—':leq.toFixed(1)+'<small> dB</small>',L?'ref sala 35 · rua 55 dB':'ref classroom 35 · street 55 dB','<div class="rep-bar"><i style="width:'+nbar+'%"></i></div>')
+      +card(L?'Luz interior':'Indoor light',luxI==null?'—':luxI+'<small> lx</small>',(L?'ext ':'out ')+(luxE==null?'—':luxE+' lx')+' · DF '+(df==null?'—':df.toFixed(1)+' %'),'<div class="rep-bar lux"><i style="width:'+lbar+'%"></i></div>')
+      +card('RT60',rtv==null?'—':rtv.toFixed(2)+'<small> s</small>',L?'alvo sala 0,6–0,8 s':'classroom target 0.6–0.8 s','<div class="rep-bar rt"><i style="width:'+rbar+'%"></i></div>')
+      +'</div></div>';
+  }).join('');
+  const imgs=[];
+  if(noiseSessions.length)imgs.push([snap('canvas-noise'),L?'Ruído — registo temporal':'Noise — time history']);
+  if(lightReads.length)imgs.push([snap('canvas-light'),L?'Luz — histórico (log)':'Light — history (log)']);
+  if(rtMeas.length)imgs.push([snap('canvas-rt'),L?'RT — decaimento de Schroeder':'RT — Schroeder decay']);
+  if(imgs.length)h+='<div class="rep-slide"><div class="rep-slide-head"><b>'+(L?'Gráficos':'Charts')+'</b></div><div class="rep-charts">'+imgs.map(im=>'<figure><img src="'+im[0]+'"><figcaption>'+im[1]+'</figcaption></figure>').join('')+'</div></div>';
+  if(!noiseSessions.length&&!rtMeas.length&&!lightReads.length)h+='<div class="warn"><b>'+(L?'Sem dados. ':'No data. ')+'</b><span>'+(L?'Complete as rondas nos separadores 1–3 e volte aqui.':'Complete the rounds in tabs 1–3 and come back.')+'</span></div>';
+  R.innerHTML=h;}
+$('btn-pdf').onclick=()=>{renderReport();toast(LANG==='pt'?'A imprimir — guarde como PDF':'Printing — save as PDF');setTimeout(()=>window.print(),350);};
+document.querySelector('.tab[data-page="p-present"]').addEventListener('click',()=>setTimeout(renderReport,50));
+function renderAll(){renderNoise();renderRT();renderLight();renderExport();renderReport();updateChip();}
 /* ================= PWA manifest (blob) ================= */
 (function(){try{const man={name:'Field Advisor — Conforto Ambiental',short_name:'Field Advisor',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',start_url:'.'};const b=new Blob([JSON.stringify(man)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
 window.addEventListener('resize',()=>{drawNoise();drawRT();drawLight();});
