@@ -188,8 +188,20 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
   .stat .v{font-size:22px}
   .filechip .meta{display:none}
 }
+#photo-prev,#cover-prev{display:none;width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+#photo-prev.on,#cover-prev.on{display:block}
+.thumbcell{width:36px;height:27px;object-fit:cover;border-radius:5px;border:1px solid var(--line);cursor:zoom-in}
+.rep-photos{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 14px}
+.rep-photos img{width:112px;height:84px;object-fit:cover;border-radius:8px;border:1px solid var(--line2)}
+.rep-cover{display:block;width:100%;max-height:300px;object-fit:cover;border-radius:8px;margin-top:10px;border:1px solid var(--line2)}
+#viewer{position:fixed;inset:0;z-index:99;background:rgba(10,12,14,.93);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:20px}
+#viewer.on{display:flex}
+#viewer img{max-width:100%;max-height:82vh;border-radius:10px}
+#viewer span{color:#fff;font-size:12px}
+.btn.pulse{animation:pulse 1s ease-in-out 4}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(37,99,235,.35);transform:scale(1.03)}}
 @media print{
-  header,nav.tabs,footer,#toast,#tip,.panel-tools,.no-print{display:none!important}
+  header,nav.tabs,footer,#toast,#tip,#viewer,.panel-tools,.no-print{display:none!important}
   section.page{display:none!important}
   section.page.on{display:block!important}
   main{max-width:none;padding:0 8px 8px}
@@ -360,6 +372,7 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
   <div class="controls">
     <div class="ctl"><button class="btn" id="btn-light-sensor" data-pt="Ler sensor" data-en="Read sensor" data-pl="Odczytaj czujnik">Ler sensor</button><button class="btn" id="btn-light-cam" data-pt="Estimar por câmara" data-en="Estimate via camera" data-pl="Szacuj kamerą">Estimar por câmara</button><span class="pill empty" id="light-sensor-status">sensor ?</span></div>
     <div class="ctl"><label data-pt="Observação" data-en="Observe" data-pl="Obserwuj">Observação</label><select id="obs-dur"><option value="30">0:30</option><option value="60" selected>1:00</option><option value="120">2:00</option></select><button class="btn" id="btn-obs-start">⏱ <span data-pt="Iniciar" data-en="Start" data-pl="Start">Iniciar</span></button><span class="pill empty" id="obs-count" style="font-family:var(--mono)">1:00</span></div>
+    <div class="ctl"><label data-pt="Foto" data-en="Photo" data-pl="Zdjęcie">Foto</label><button class="btn" id="btn-photo">📷 <span data-pt="Cenário" data-en="Scene" data-pl="Sceneria">Cenário</span></button><img id="photo-prev" alt=""><input type="file" id="file-photo" accept="image/*" capture="environment" style="display:none"></div>
     <div class="ctl"><label>lux</label><input type="number" id="light-manual" min="0" max="200000" step="1" data-ph-pt="Ex. 450" data-ph-en="E.g. 450" data-ph-pl="Np. 450" placeholder="Ex. 450" style="width:110px"></div>
     <div class="ctl"><label data-pt="Tipo" data-en="Type" data-pl="Typ">Tipo</label><span class="seg" id="seg-ltype"><button data-v="natural" aria-pressed="true">Natural</button><button data-v="artificial" aria-pressed="false">Artificial</button><button data-v="mista" aria-pressed="false">Mista</button></span></div>
     <div class="ctl"><label data-pt="Onde" data-en="Where" data-pl="Gdzie">Onde</label><span class="seg" id="seg-lwhere"><button data-v="interior" aria-pressed="true">Interior</button><button data-v="exterior" aria-pressed="false">Exterior</button></span></div>
@@ -383,7 +396,7 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
   <video id="camPrev" playsinline muted style="display:none"></video>
   <div class="keylist"><span class="keyitem"><i class="swatch" style="background:#D97706"></i>natural</span><span class="keyitem"><i class="swatch" style="background:#7C3AED"></i>artificial</span><span class="keyitem"><i class="swatch" style="background:#0891B2"></i>mista</span><span class="keyitem">○ exterior / ● interior</span></div></div></div>
   <div class="sechead"><h3 data-pt="Leituras" data-en="Readings" data-pl="Odczyty">Leituras</h3><span id="light-count">0</span></div>
-  <div class="panel"><div class="panel-body tbl-scroll"><table class="data" id="tbl-light"><thead><tr><th data-pt="Hora" data-en="Time" data-pl="Czas">Hora</th><th>lux</th><th data-pt="tipo" data-en="type" data-pl="typ">tipo</th><th>int/ext</th><th data-pt="plano" data-en="plane" data-pl="płaszczyzna">plano</th><th>src</th></tr></thead><tbody><tr><td colspan="6" style="text-align:center;color:var(--faint)">—</td></tr></tbody></table></div></div>
+  <div class="panel"><div class="panel-body tbl-scroll"><table class="data" id="tbl-light"><thead><tr><th data-pt="Hora" data-en="Time" data-pl="Czas">Hora</th><th>lux</th><th data-pt="tipo" data-en="type" data-pl="typ">tipo</th><th>int/ext</th><th data-pt="plano" data-en="plane" data-pl="płaszczyzna">plano</th><th>src</th><th data-pt="Foto" data-en="Photo" data-pl="Zdjęcie">Foto</th></tr></thead><tbody><tr><td colspan="7" style="text-align:center;color:var(--faint)">—</td></tr></tbody></table></div></div>
   <div class="hint"><b>Protocolo sugerido:</b> <span data-pt="telemóvel pousado no plano, ecrã para cima, sem sombra do corpo; 3 pontos por sala (junto à janela / centro / fundo) + 1 exterior simultâneo para o DF; à noite repita só com artificial." data-en="phone resting on the plane, screen up, no body shadow; 3 points per room (window / centre / back) + 1 simultaneous outdoor for DF; at night repeat with electric light only." data-pl="telefon leży na płaszczyźnie ekranem do góry, bez cienia ciała; 3 punkty na salę (okno / środek / tło) + 1 jednoczesny na zewnątrz do DF; nocą powtórz tylko przy sztucznym.">telemóvel pousado no plano, ecrã para cima, sem sombra do corpo; 3 pontos por sala (junto à janela / centro / fundo) + 1 exterior simultâneo para o DF; à noite repita só com artificial.</span></div>
 </section>
 
@@ -415,6 +428,7 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
   <p data-pt="Junta todos os resultados das 4 rondas em cartões prontos a apresentar. Exporte em PDF para o PowerPoint ou para entregar." data-en="Joins all results from the 4 rounds in presentation-ready cards. Export to PDF for PowerPoint or hand-in." data-pl="Łączy wszystkie wyniki z 4 rund w karty gotowe do prezentacji. Wyeksportuj do PDF dla PowerPoint lub do oddania.">Junta todos os resultados das 4 rondas em cartões prontos a apresentar. Exporte em PDF para o PowerPoint ou para entregar.</p></div>
   <div class="controls no-print">
     <div class="ctl"><button class="btn solid" id="btn-pdf" data-pt="Exportar PDF" data-en="Export PDF" data-pl="Eksportuj PDF">Exportar PDF</button></div>
+    <div class="ctl"><label data-pt="Imagem do cenário" data-en="Scene image" data-pl="Zdjęcie scenariusza">Imagem do cenário</label><button class="btn" id="btn-cover">📷 <span data-pt="Escolher" data-en="Choose" data-pl="Wybierz">Escolher</span></button><img id="cover-prev" alt=""><button class="btn warn" id="btn-cover-del" data-pt="Remover" data-en="Remove" data-pl="Usuń">Remover</button><input type="file" id="file-cover" accept="image/*" style="display:none"></div>
     <div class="ctl"><span data-pt="Na janela de impressão escolha «Guardar como PDF» (paisagem recomendado)." data-en="In the print dialog choose 'Save as PDF' (landscape recommended)." data-pl="W oknie drukowania wybierz „Zapisz jako PDF” (zalecana orientacja pozioma).">Na janela de impressão escolha «Guardar como PDF» (paisagem recomendado).</span><span class="pill empty" id="rep-status">—</span></div>
   </div>
   <div id="report"></div>
@@ -444,6 +458,7 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
     <div class="foot-legal">Field Advisor v1.0.0 · <span data-pt="Companheiro de campo do Architecture Advisor (forma/orientação) e do Construction Advisor (SCE): meça aqui, desenhe lá, verifique acolá." data-en="Field companion to Architecture Advisor (form/orientation) and Construction Advisor (SCE): measure here, design there, check there." data-pl="Terenowy towarzysz Architecture Advisor (forma/orientacja) i Construction Advisor (SCE): mierz tutaj, projektuj tam, sprawdzaj tam.">Companheiro de campo do Architecture Advisor (forma/orientação) e do Construction Advisor (SCE): meça aqui, desenhe lá, verifique acolá.</span></div>
   </div>
 </footer>
+<div id="viewer"><img id="viewer-img" alt=""><span data-pt="Toque para fechar" data-en="Tap to close" data-pl="Dotknij, aby zamknąć">Toque para fechar</span></div>
 <div id="toast"></div>
 <div id="tip"></div>
 
@@ -622,15 +637,15 @@ $('light-manual').oninput=e=>{const v=parseFloat(e.target.value);if(isFinite(v)&
 $('btn-light-add').onclick=()=>{let v=lightLive;const m=parseFloat($('light-manual').value);if(isFinite(m)&&m>=0&&lightSrc==='manual')v=m;
   if($('light-manual').value!==''&&isFinite(parseFloat($('light-manual').value))&&document.activeElement===$('light-manual'))v=parseFloat($('light-manual').value);
   if(v==null||!isFinite(v)){const mv=parseFloat($('light-manual').value);if(isFinite(mv)){v=mv;lightSrc='manual';}else{toast('lux ?');return;}}
-  readSite();lightReads.push({t:new Date().toISOString(),lux:Math.round(v),type:segGet('seg-ltype'),where:segGet('seg-lwhere'),plane:$('sel-light-plane').value,round:site.round||'livre',src:lightSrc,place:site.place||'',sky:site.sky});
+  readSite();lightReads.push({t:new Date().toISOString(),lux:Math.round(v),type:segGet('seg-ltype'),where:segGet('seg-lwhere'),plane:$('sel-light-plane').value,round:site.round||'livre',src:lightSrc,img:pendingPhoto||'',place:site.place||'',sky:site.sky});
   stopCam();$('light-sensor-status').textContent='saved';$('light-sensor-status').className='pill ok';
-  $('light-manual').value='';persist();renderLight();renderExport();toast(Math.round(v)+' lux');};
+  $('light-manual').value='';pendingPhoto='';const _pp=$('photo-prev');_pp.classList.remove('on');_pp.src='';persist();renderLight();renderExport();toast(Math.round(v)+' lux');};
 function renderLight(){const n=lightReads.length;$('light-count').textContent=n;$('exp-n-light').textContent=n;$('light-n').textContent=n;
   if(n){const vs=lightReads.map(r=>r.lux).sort((a,b)=>a-b);const mean=vs.reduce((a,b)=>a+b,0)/vs.length;$('light-mean').textContent=Math.round(mean);$('light-med').textContent=Math.round(vs[Math.floor(vs.length/2)]);
     const sel=$('sel-light-ref');const outs=lightReads.map((r,i)=>({r,i})).filter(o=>o.r.where==='exterior');const cur=sel.value;sel.innerHTML='<option value="">—</option>'+outs.map(o=>'<option value="'+o.i+'">'+o.r.t.slice(11,19)+' · '+o.r.lux+' lx</option>').join('');if(cur)sel.value=cur;
     const ri=sel.value===''?'':+sel.value;if(ri!==''&&lightReads[ri]){const inn=lightReads.filter(r=>r.where==='interior').slice(-1)[0];if(inn&&lightReads[ri].lux>0)$('light-df').textContent=(inn.lux/lightReads[ri].lux*100).toFixed(1);else $('light-df').textContent='—';}else $('light-df').textContent='—';
   }else{$('light-mean').textContent='—';$('light-med').textContent='—';$('light-df').textContent='—';}
-  const tb=$('tbl-light').querySelector('tbody');tb.innerHTML=n?lightReads.slice().reverse().map(r=>'<tr><td>'+r.t.slice(5,16).replace('T',' ')+'</td><td>'+r.lux+'</td><td style="font-family:var(--sans)">'+r.type+'</td><td style="font-family:var(--sans)">'+r.where+'</td><td style="font-family:var(--sans)">'+escapeHtml(r.plane)+'</td><td style="font-family:var(--sans)">'+r.src+'</td></tr>').join(''):'<tr><td colspan="6" style="text-align:center;color:var(--faint)">—</td></tr>';
+  const tb=$('tbl-light').querySelector('tbody');tb.innerHTML=n?lightReads.slice().reverse().map(r=>'<tr><td>'+r.t.slice(5,16).replace('T',' ')+'</td><td>'+r.lux+'</td><td style="font-family:var(--sans)">'+r.type+'</td><td style="font-family:var(--sans)">'+r.where+'</td><td style="font-family:var(--sans)">'+escapeHtml(r.plane)+'</td><td style="font-family:var(--sans)">'+r.src+'</td><td>'+(r.img?'<img class="thumbcell" src="'+r.img+'" onclick="openViewer(this.src)">':'—')+'</td></tr>').join(''):'<tr><td colspan="7" style="text-align:center;color:var(--faint)">'+T('Sem leituras — meça e prima + Adicionar leitura.','No readings — measure and press + Add reading.','Brak odczytów — zmierz i naciśnij + Dodaj odczyt.')+'</td></tr>';
   drawLight();}
 $('sel-light-ref').onchange=renderLight;
 function drawLight(){const c=$('canvas-light');const{x,W,H}=fitCanvas(c);x.clearRect(0,0,W,H);x.fillStyle='#fff';x.fillRect(0,0,W,H);
@@ -641,9 +656,15 @@ function drawLight(){const c=$('canvas-light');const{x,W,H}=fitCanvas(c);x.clear
   const col=t=>t==='natural'?'#D97706':t==='artificial'?'#7C3AED':'#0891B2';
   lightReads.forEach((r,i)=>{const px=44+(i/Math.max(1,lightReads.length-1))*(W-56);const py=yOf(r.lux);x.fillStyle=col(r.type);x.beginPath();x.arc(px,py,r.where==='exterior'?4:6,0,7);x.strokeStyle='#fff';x.lineWidth=2;if(r.where==='exterior'){x.stroke();}else{x.fill();}});
   }
-$('btn-light-csv').onclick=()=>{if(!lightReads.length){toast('empty');return;}download('field-light.csv',csvBlob(['time_iso','lux','type','indoor_outdoor','plane','round','source','sky','place','lat','lon'],lightReads.map(r=>[r.t,r.lux,r.type,r.where,r.plane,r.round||'livre',r.src,r.sky,site.place,site.lat,site.lon]),'hipoteses: '+((site.hyp||[]).join(' ')||'—')+'; illuminance; sensor/camera/manual'));};
+let pendingPhoto='';
+function fileToPhoto(file,maxDim,q){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const im=new Image();im.onload=()=>{try{const sc=Math.min(1,maxDim/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(url);res(c.toDataURL('image/jpeg',q));}catch(e){rej(e);}};im.onerror=rej;im.src=url;});}
+$('btn-photo').onclick=()=>$('file-photo').click();
+$('file-photo').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{pendingPhoto=await fileToPhoto(f,900,0.7);const pv=$('photo-prev');pv.src=pendingPhoto;pv.classList.add('on');toast(T('Foto pronta — fica guardada na próxima leitura.','Photo ready — it will be saved with the next reading.','Zdjęcie gotowe — zapisze się z następnym odczytem.'));}catch(err){toast('foto?')}e.target.value='';};
+function openViewer(src){if(!src)return;const v=$('viewer');if(!v)return;$('viewer-img').src=src;v.classList.add('on');}
+$('viewer').onclick=()=>{const v=$('viewer');v.classList.remove('on');$('viewer-img').src='';};
+$('btn-light-csv').onclick=()=>{if(!lightReads.length){toast('empty');return;}download('field-light.csv',csvBlob(['time_iso','lux','type','indoor_outdoor','plane','round','foto','source','sky','place','lat','lon'],lightReads.map(r=>[r.t,r.lux,r.type,r.where,r.plane,r.round||'livre',(r.img?'sim':'não'),r.src,r.sky,site.place,site.lat,site.lon]),'hipoteses: '+((site.hyp||[]).join(' ')||'—')+'; illuminance; sensor/camera/manual'));};
 let obsT=null,obsEnd=0,obsLast='';
-function obsTick(){const rem=Math.max(0,(obsEnd-Date.now())/1000);const t=fmtT(rem);if(t!==obsLast){obsLast=t;$('obs-count').textContent=t;document.title=t+' · FA—'+(site.place||'Field Advisor');}if(rem<=0){clearInterval(obsT);obsT=null;$('obs-count').textContent=fmtT(+$('obs-dur').value||60);$('obs-count').className='pill ok';updateTitle();stopCam();beep();toast(T('Tempo! Adicione a leitura de luz.','Time! Add the light reading.','Czas! Dodaj odczyt światła.'));}}
+function obsTick(){const rem=Math.max(0,(obsEnd-Date.now())/1000);const t=fmtT(rem);if(t!==obsLast){obsLast=t;$('obs-count').textContent=t;document.title=t+' · FA—'+(site.place||'Field Advisor');}if(rem<=0){clearInterval(obsT);obsT=null;$('obs-count').textContent=fmtT(+$('obs-dur').value||60);$('obs-count').className='pill ok';updateTitle();stopCam();beep();$('btn-light-add').classList.add('pulse');setTimeout(()=>$('btn-light-add').classList.remove('pulse'),4500);toast(T('Tempo! Adicione a leitura de luz.','Time! Add the light reading.','Czas! Dodaj odczyt światła.'));}}
 $('btn-obs-start').onclick=()=>{if(obsT){clearInterval(obsT);obsT=null;$('obs-count').textContent=fmtT(+$('obs-dur').value||60);$('obs-count').className='pill empty';updateTitle();stopCam();toast(T('Observação cancelada','Observation cancelled','Obserwację anulowano'));return;}readSite();obsEnd=Date.now()+(+$('obs-dur').value||60)*1000;obsLast='';$('obs-count').className='pill live';obsT=setInterval(obsTick,250);obsTick();};
 $('obs-dur').onchange=()=>{if(!obsT)$('obs-count').textContent=fmtT(+$('obs-dur').value||60);};
 $('btn-light-png').onclick=()=>stampPNG($('canvas-light'),'field-light.png','Light');
@@ -670,7 +691,7 @@ function renderReport(){const R=$('report');if(!R)return;readSite();
   const cover=slots.filter(sl=>noiseSessions.some(s=>(s.round||'livre')===sl)&&lightReads.some(s=>(s.round||'livre')===sl));
   const st=$('rep-status');if(st){st.textContent=cover.length+'/4 '+(T('rondas','rounds','rundy'));st.className='pill '+(cover.length>=4?'ok':cover.length?'live':'empty');}
   const hyp=(site.hyp||[]).join(' ')||'—';
-  let h='<div class="rep-title"><h2>FA—'+escapeHtml(site.place||'Field Advisor')+'</h2><div class="meta">'+escapeHtml(site.inout+' · '+(site.spacetype||'')+' · lat '+(site.lat||'—')+' lon '+(site.lon||'—'))+'<br>'+escapeHtml((site.stamp||'').slice(0,16).replace('T',' ')+' · '+site.windows+'/'+site.occup+'/'+site.sky)+' · hip '+escapeHtml(hyp)+'</div></div>';
+  let h='<div class="rep-title"><h2>FA—'+escapeHtml(site.place||'Field Advisor')+'</h2><div class="meta">'+escapeHtml(site.inout+' · '+(site.spacetype||'')+' · lat '+(site.lat||'—')+' lon '+(site.lon||'—'))+'<br>'+escapeHtml((site.stamp||'').slice(0,16).replace('T',' ')+' · '+site.windows+'/'+site.occup+'/'+site.sky)+' · hip '+escapeHtml(hyp)+'</div>'+(getCover()?'<img class="rep-cover" src="'+getCover()+'">':'')+'</div>';
   h+=slots.map(sl=>{
     const nz=noiseSessions.filter(s=>(s.round||'livre')===sl);
     const rt=rtMeas.filter(s=>(s.round||'livre')===sl);
@@ -680,6 +701,7 @@ function renderReport(){const R=$('report');if(!R)return;readSite();
     const luxI=li.length?li[li.length-1].lux:null, luxE=le.length?le[le.length-1].lux:null;
     const df=(luxI!=null&&luxE&&luxE>0)?(luxI/luxE*100):null;
     const rtv=rt.length?rt[rt.length-1].rt60:null;
+    const ph=li.concat(le).filter(r=>r.img);
     const nbar=leq==null?0:Math.max(0,Math.min(100,(leq-25)/70*100));
     const lbar=luxI==null?0:Math.max(2,Math.min(100,(Math.log10(Math.max(1,luxI))-1)/4.1*100));
     const rbar=rtv==null?0:Math.max(2,Math.min(100,rtv/1.5*100));
@@ -688,7 +710,7 @@ function renderReport(){const R=$('report');if(!R)return;readSite();
       +card(T('Ruído LAeq','Noise LAeq','Hałas LAeq'),leq==null?'—':leq.toFixed(1)+'<small> dB</small>',T('ref sala 35 · rua 55 dB','ref classroom 35 · street 55 dB','odn. sala 35 · ulica 55 dB'),'<div class="rep-bar"><i style="width:'+nbar+'%"></i></div>')
       +card(T('Luz interior','Indoor light','Światło wewnątrz'),luxI==null?'—':luxI+'<small> lx</small>',(T('ext ','out ','zewn. '))+(luxE==null?'—':luxE+' lx')+' · DF '+(df==null?'—':df.toFixed(1)+' %'),'<div class="rep-bar lux"><i style="width:'+lbar+'%"></i></div>')
       +card('RT60',rtv==null?'—':rtv.toFixed(2)+'<small> s</small>',T('alvo sala 0,6–0,8 s','classroom target 0.6–0.8 s','cel sala 0,6–0,8 s'),'<div class="rep-bar rt"><i style="width:'+rbar+'%"></i></div>')
-      +'</div></div>';
+      +'</div>'+(ph.length?'<div class="rep-photos">'+ph.map(r=>'<img src="'+r.img+'">').join('')+'</div>':'')+'</div></div>';
   }).join('');
   const imgs=[];
   if(noiseSessions.length)imgs.push([snap('canvas-noise'),T('Ruído — registo temporal','Noise — time history','Hałas — rejestracja czasu')]);
@@ -697,9 +719,14 @@ function renderReport(){const R=$('report');if(!R)return;readSite();
   if(imgs.length)h+='<div class="rep-slide"><div class="rep-slide-head"><b>'+(T('Gráficos','Charts','Wykresy'))+'</b></div><div class="rep-charts">'+imgs.map(im=>'<figure><img src="'+im[0]+'"><figcaption>'+im[1]+'</figcaption></figure>').join('')+'</div></div>';
   if(!noiseSessions.length&&!rtMeas.length&&!lightReads.length)h+='<div class="warn"><b>'+(T('Sem dados. ','No data. ','Brak danych. '))+'</b><span>'+(T('Complete as rondas nos separadores 1–3 e volte aqui.','Complete the rounds in tabs 1–3 and come back.','Uzupełnij rundy w zakładkach 1–3 i wróć tutaj.'))+'</span></div>';
   R.innerHTML=h;}
+function getCover(){try{return localStorage.getItem('fa-cover')||'';}catch(e){return '';}}
+function showCover(){const c=getCover(),pv=$('cover-prev');if(!pv)return;if(c){pv.src=c;pv.classList.add('on');}else{pv.classList.remove('on');pv.src='';}}
+$('btn-cover').onclick=()=>$('file-cover').click();
+$('file-cover').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const d=await fileToPhoto(f,1200,0.72);try{localStorage.setItem('fa-cover',d);}catch(q){toast(T('Imagem grande demais para guardar.','Image too large to store.','Za duży obraz do zapisania.'));return;}showCover();renderReport();toast(T('Imagem do cenário guardada.','Scene image saved.','Zapisano zdjęcie scenariusza.'));}catch(err){toast('foto?')}e.target.value='';};
+$('btn-cover-del').onclick=()=>{try{localStorage.removeItem('fa-cover');}catch(e){}showCover();renderReport();};
 $('btn-pdf').onclick=()=>{renderReport();toast(T('A imprimir — guarde como PDF','Printing — save as PDF','Drukowanie — zapisz jako PDF'));setTimeout(()=>window.print(),350);};
 document.querySelector('.tab[data-page="p-present"]').addEventListener('click',()=>setTimeout(renderReport,50));
-function renderAll(){renderNoise();renderRT();renderLight();renderExport();renderReport();updateChip();}
+function renderAll(){renderNoise();renderRT();renderLight();renderExport();renderReport();showCover();updateChip();}
 /* ================= PWA manifest (blob) ================= */
 (function(){try{const man={name:'Field Advisor — Conforto Ambiental',short_name:'Field Advisor',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',start_url:'.'};const b=new Blob([JSON.stringify(man)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
 window.addEventListener('resize',()=>{drawNoise();drawRT();drawLight();});
