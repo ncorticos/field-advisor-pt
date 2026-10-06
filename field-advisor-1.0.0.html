@@ -187,6 +187,8 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
   .icobtn{padding:8px 10px;min-height:40px}
   .stat .v{font-size:22px}
   .filechip .meta{display:none}
+  #btn-kill span{display:none}
+  #btn-kill{padding:10px 11px;min-height:44px}
 }
 #photo-prev,#cover-prev{display:none;width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
 #photo-prev.on,#cover-prev.on{display:block}
@@ -216,6 +218,7 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
   <div class="hbar">
     <div class="brand"><b>Field Advisor</b><span data-pt="Conforto Ambiental · Trabalho de campo" data-en="Environmental Comfort · Fieldwork" data-pl="Komfort środowiskowy · Praca w terenie">Conforto Ambiental · Trabalho de campo</span></div>
     <div class="filechip" id="filechip"><span class="loc" id="chip-loc">—</span><span class="meta" id="chip-meta">—</span></div>
+    <button class="btn" id="btn-kill" style="min-height:40px;padding:6px 10px" title="kill sensors">⛔ <span data-pt="Sensores" data-en="Sensors" data-pl="Czujniki">Sensores</span></button>
     <div class="langsel" role="group" aria-label="Language">
       <button id="lang-pt" aria-pressed="true">PT</button>
       <button id="lang-en" aria-pressed="false">EN</button>
@@ -374,6 +377,7 @@ video#camPrev{width:100%;max-width:240px;border-radius:8px;background:#000;max-h
     <div class="ctl"><label data-pt="Observação" data-en="Observe" data-pl="Obserwuj">Observação</label><select id="obs-dur"><option value="30">0:30</option><option value="60" selected>1:00</option><option value="120">2:00</option></select><button class="btn" id="btn-obs-start">⏱ <span data-pt="Iniciar" data-en="Start" data-pl="Start">Iniciar</span></button><span class="pill empty" id="obs-count" style="font-family:var(--mono)">1:00</span></div>
     <div class="ctl"><label data-pt="Foto" data-en="Photo" data-pl="Zdjęcie">Foto</label><button class="btn" id="btn-photo">📷 <span data-pt="Cenário" data-en="Scene" data-pl="Sceneria">Cenário</span></button><img id="photo-prev" alt=""><input type="file" id="file-photo" accept="image/*" capture="environment" style="display:none"></div>
     <div class="ctl"><label>lux</label><input type="number" id="light-manual" min="0" max="200000" step="1" data-ph-pt="Ex. 450" data-ph-en="E.g. 450" data-ph-pl="Np. 450" placeholder="Ex. 450" style="width:110px"></div>
+    <div class="ctl"><label data-pt="Cal câmara" data-en="Cam cal" data-pl="Kal. kamery">Cal câmara</label><input type="number" id="cam-cal" min="1" max="1000000" step="1" value="1000" style="width:90px"><button class="btn" id="btn-cam-cal" data-pt="Calibrar" data-en="Calibrate" data-pl="Kalibruj">Calibrar</button></div>
     <div class="ctl"><label data-pt="Tipo" data-en="Type" data-pl="Typ">Tipo</label><span class="seg" id="seg-ltype"><button data-v="natural" aria-pressed="true">Natural</button><button data-v="artificial" aria-pressed="false">Artificial</button><button data-v="mista" aria-pressed="false">Mista</button></span></div>
     <div class="ctl"><label data-pt="Onde" data-en="Where" data-pl="Gdzie">Onde</label><span class="seg" id="seg-lwhere"><button data-v="interior" aria-pressed="true">Interior</button><button data-v="exterior" aria-pressed="false">Exterior</button></span></div>
     <div class="ctl"><label data-pt="Plano" data-en="Plane" data-pl="Płaszczyzna">Plano</label><select id="sel-light-plane"><option value="trabalho-0.8">Plano trabalho 0,8 m</option><option value="chao">Chão / Floor</option><option value="fachada">Fachada / Façade</option><option value="cobertura">Cobertura / Roof</option><option value="rua">Rua 1,5 m</option></select>
@@ -615,10 +619,32 @@ $('btn-rt-png').onclick=()=>stampPNG($('canvas-rt'),'field-rt.png','RT60');
 /* ================= LIGHT ================= */
 let lightLive=null,lightSrc='manual',camStream=null;
 function stopCam(){try{if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}}catch(e){}const v=$('camPrev');if(v){v.srcObject=null;v.style.display='none';}}
-function setLight(v,src){lightLive=v;lightSrc=src;$('light-live').textContent=v==null?'—':Math.round(v);$('light-src').textContent=src+(src==='cam-est'?' (≈, não calibrado)':src==='sensor'?' (lux sensor)':src==='manual'?'':'');}
+let lightSensor=null;
+function killSensors(){
+  if(logging){try{$('btn-log-stop').click();}catch(e){logging=false;}}
+  if(obsT){clearInterval(obsT);obsT=null;const oc=$('obs-count');if(oc){oc.textContent=fmtT(+$('obs-dur').value||60);oc.className='pill empty';}}
+  try{if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;}}catch(e){}
+  micOn=false;try{cancelAnimationFrame(rafId);}catch(e){}
+  stopCam();
+  try{if(lightSensor&&lightSensor.stop)lightSensor.stop();}catch(e){}
+  lightSensor=null;
+  const ms=$('mic-status');if(ms){ms.textContent='mic off';ms.className='pill empty';}
+  const ls=$('log-status');if(ls){ls.textContent='idle';ls.className='pill empty';}
+  const cd=$('countdown');if(cd){cd.textContent=logDur?fmtT(logDur):'∞';cd.className='pill empty';}
+  const ss=$('light-sensor-status');if(ss){ss.textContent='off';ss.className='pill empty';}
+  const bm=$('btn-mic');if(bm){bm.innerHTML='<span data-pt="Ativar microfone" data-en="Enable microphone" data-pl="Włącz mikrofon">…</span>';}
+  const bl=$('btn-log-start');if(bl)bl.disabled=true;
+  const be=$('btn-log-stop');if(be)be.disabled=true;
+  updateTitle();setLang(LANG);
+  toast(T('Sensores desligados.','Sensors off.','Czujniki wyłączone.'));
+}
+$('btn-kill').onclick=killSensors;
+let camCal=1000,lastLuma=null;
+try{const _cc=parseFloat(localStorage.getItem('fa-camcal'));if(isFinite(_cc)&&_cc>0)camCal=_cc;}catch(e){}
+function setLight(v,src){lightLive=v;lightSrc=src;$('light-live').textContent=v==null?'—':Math.round(v);$('light-src').textContent=src+(src==='cam-est'?' (≈, '+T('não calibrado','uncalibrated','nieskalibrowane')+')':src==='sensor'?' (lux sensor)':src==='manual'?'':'');}
 $('btn-light-sensor').onclick=async()=>{
   try{
-    if('AmbientLightSensor' in window){const S=window.AmbientLightSensor;const s=new S({frequency:1});s.onreading=()=>setLight(s.illuminance,'sensor');s.onerror=e=>{$('light-sensor-status').textContent='err';$('light-sensor-status').className='pill bad';toast('sensor: '+(e.error&&e.error.message));};s.start();$('light-sensor-status').textContent='listening…';$('light-sensor-status').className='pill live';toast('sensor on');return;}
+    if('AmbientLightSensor' in window){const S=window.AmbientLightSensor;const s=new S({frequency:1});lightSensor=s;s.onreading=()=>setLight(s.illuminance,'sensor');s.onerror=e=>{$('light-sensor-status').textContent='err';$('light-sensor-status').className='pill bad';toast('sensor: '+(e.error&&e.error.message));};s.start();$('light-sensor-status').textContent='listening…';$('light-sensor-status').className='pill live';toast('sensor on');return;}
     throw new Error('no AmbientLightSensor (iOS/Safari)');
   }catch(e){$('light-sensor-status').textContent='n/a';$('light-sensor-status').className='pill empty';toast(T('Sem sensor — use câmara ou manual','No sensor — use camera or manual','Brak czujnika — użyj kamery albo wpisu ręcznego'));}
 };
@@ -629,7 +655,7 @@ $('btn-light-cam').onclick=async()=>{
     v.srcObject=camStream;await v.play();
     $('light-sensor-status').textContent='cam…';$('light-sensor-status').className='pill live';
     const cap=document.createElement('canvas');cap.width=64;cap.height=64;const cx=cap.getContext('2d',{willReadFrequently:true});
-    const sample=()=>{if(!camStream)return;try{cx.drawImage(v,0,0,64,64);const d=cx.getImageData(0,0,64,64).data;let L=0;for(let i=0;i<d.length;i+=4)L+=0.2126*d[i]+0.7152*d[i+1]+0.0722*d[i+2];L/=(64*64);const lux=8*Math.pow(Math.max(1,L)/18,2.2)*120;setLight(Math.min(120000,lux),'cam-est');}catch(e){}if(camStream)setTimeout(sample,800);};
+    const sample=()=>{if(!camStream)return;try{cx.drawImage(v,0,0,64,64);const d=cx.getImageData(0,0,64,64).data;let L=0;for(let i=0;i<d.length;i+=4)L+=0.2126*d[i]+0.7152*d[i+1]+0.0722*d[i+2];L/=(64*64);lastLuma=L;const lux=camCal*Math.pow(Math.max(0,L)/255,2.2);setLight(Math.min(120000,lux),'cam-est');}catch(e){}if(camStream)setTimeout(sample,800);};
     sample();toast(T('Câmara a estimar (≈)','Camera estimating (≈)','Kamera szacuje (≈)'));
   }catch(e){toast('cam: '+e.message);}
 };
@@ -662,6 +688,9 @@ $('btn-photo').onclick=()=>$('file-photo').click();
 $('file-photo').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{pendingPhoto=await fileToPhoto(f,900,0.7);const pv=$('photo-prev');pv.src=pendingPhoto;pv.classList.add('on');toast(T('Foto pronta — fica guardada na próxima leitura.','Photo ready — it will be saved with the next reading.','Zdjęcie gotowe — zapisze się z następnym odczytem.'));}catch(err){toast('foto?')}e.target.value='';};
 function openViewer(src){if(!src)return;const v=$('viewer');if(!v)return;$('viewer-img').src=src;v.classList.add('on');}
 $('viewer').onclick=()=>{const v=$('viewer');v.classList.remove('on');$('viewer-img').src='';};
+$('cam-cal').value=Math.round(camCal);
+$('cam-cal').onchange=()=>{const c=parseFloat($('cam-cal').value);if(isFinite(c)&&c>0){camCal=c;try{localStorage.setItem('fa-camcal',String(c));}catch(e){}}};
+$('btn-cam-cal').onclick=()=>{const ref=parseFloat($('light-manual').value);if(!(ref>0)){toast(T('Escreva no campo lux o valor de referência (luxímetro).','Type the reference value in the lux field (meter).','Wpisz wartość odniesienia w polu lux (miernik).'));return;}if(lastLuma==null||!(lastLuma>0)){toast(T('Ligue «Estimar por câmara» primeiro.','Start “Estimate via camera” first.','Najpierw włącz „Szacuj kamerą”.'));return;}camCal=ref/Math.pow(lastLuma/255,2.2);try{localStorage.setItem('fa-camcal',String(camCal));}catch(e){}$('cam-cal').value=Math.round(camCal);toast(T('Câmara calibrada.','Camera calibrated.','Skalibrowano kamerę.'));};
 $('btn-light-csv').onclick=()=>{if(!lightReads.length){toast('empty');return;}download('field-light.csv',csvBlob(['time_iso','lux','type','indoor_outdoor','plane','round','foto','source','sky','place','lat','lon'],lightReads.map(r=>[r.t,r.lux,r.type,r.where,r.plane,r.round||'livre',(r.img?'sim':'não'),r.src,r.sky,site.place,site.lat,site.lon]),'hipoteses: '+((site.hyp||[]).join(' ')||'—')+'; illuminance; sensor/camera/manual'));};
 let obsT=null,obsEnd=0,obsLast='';
 function obsTick(){const rem=Math.max(0,(obsEnd-Date.now())/1000);const t=fmtT(rem);if(t!==obsLast){obsLast=t;$('obs-count').textContent=t;document.title=t+' · FA—'+(site.place||'Field Advisor');}if(rem<=0){clearInterval(obsT);obsT=null;$('obs-count').textContent=fmtT(+$('obs-dur').value||60);$('obs-count').className='pill ok';updateTitle();stopCam();beep();$('btn-light-add').classList.add('pulse');setTimeout(()=>$('btn-light-add').classList.remove('pulse'),4500);toast(T('Tempo! Adicione a leitura de luz.','Time! Add the light reading.','Czas! Dodaj odczyt światła.'));}}
