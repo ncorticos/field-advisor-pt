@@ -356,6 +356,9 @@ details.how .place-grid{padding:12px}
 .snd-cell{display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end}
 .snd-cell span{display:inline-flex; align-items:center; gap:4px; font-family:var(--sans); font-size:11px; color:var(--ink2)}
 .snd-cell i{width:8px; height:8px; border-radius:50%}
+.s-load{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 12px; width:min(640px,100%)}
+.s-load .sub{font-size:11px; color:var(--muted)}
+@media(max-width:1100px){.s-load .sub{display:none}}
 /* ---------- Footer ---------- */
 footer{border-top:1px solid var(--line); margin-top:26px; background:var(--wash)}
 .foot{max-width:1680px; margin:0 auto; padding:30px 24px 40px}
@@ -571,6 +574,7 @@ body.setup-mode .filechip{display:none!important}
     </div>
    </div>
    <div class="s-go">
+    <div class="s-load"><button class="btn" type="button" id="btn-load-json" data-pt="↥ Continuar medição anterior (.json)" data-en="↥ Continue a previous measurement (.json)" data-pl="↥ Kontynuuj poprzedni pomiar (.json)">↥ Continuar medição anterior (.json)</button><span class="sub" data-pt="O ficheiro de «Descarregar tudo (.json)»: traz a ficha e as medições já feitas." data-en="The file from “Download all (.json)”: brings back the record and the measurements already made." data-pl="Plik z „Pobierz wszystko (.json)”: przywraca kartę i wykonane pomiary.">O ficheiro de «Descarregar tudo (.json)»: traz a ficha e as medições já feitas.</span></div>
     <button class="btn solid" id="btn-go" data-pt="Começar a medir" data-en="Start measuring" data-pl="Zacznij mierzyć">Começar a medir</button>
    </div>
   </div>
@@ -697,6 +701,7 @@ body.setup-mode .filechip{display:none!important}
   </div>
   <div class="controls" style="margin-top:14px">
     <div class="ctl"><button class="btn solid" id="btn-json" data-pt="Descarregar tudo (.json)" data-en="Download all (.json)" data-pl="Pobierz wszystko (.json)">Descarregar tudo (.json)</button></div>
+    <div class="ctl"><button class="btn" type="button" id="btn-load-json2" data-pt="↥ Continuar medição anterior (.json)" data-en="↥ Continue a previous measurement (.json)" data-pl="↥ Kontynuuj poprzedni pomiar (.json)">↥ Continuar medição anterior (.json)</button></div>
     <div class="ctl"><button class="btn" id="btn-copy-sum" data-pt="Copiar resumo" data-en="Copy summary" data-pl="Kopiuj podsumowanie">Copiar resumo</button></div>
     <div class="ctl"><button class="btn warn" id="btn-clear" data-pt="Apagar dados locais" data-en="Erase local data" data-pl="Usuń dane lokalne">Apagar dados locais</button></div>
   </div>
@@ -754,7 +759,7 @@ body.setup-mode .filechip{display:none!important}
   <div class="foot">
     <div class="foot-top">
       <div>
-        <span class="appname">Field Advisor PT</span><span class="ver" id="footVer">v1.9.0</span>
+        <span class="appname">Field Advisor PT</span><span class="ver" id="footVer">v1.10.0</span>
         <p class="tag" data-pt="Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento." data-en="A didactic field meter for architecture students: the noise, reverberation and light of their workspace — inside and out — before any regulation applies." data-pl="Dydaktyczny miernik terenowy dla studentów architektury: hałas, pogłos i światło ich przestrzeni pracy — wewnątrz i na zewnątrz — zanim zastosuje się jakiekolwiek przepisy.">Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento.</p>
       </div>
       <div>
@@ -815,13 +820,14 @@ body.setup-mode .filechip{display:none!important}
     <p class="hint" data-pt="Toque em «A minha posição» para ir logo para onde está. Aproxime com + / −, a roda do rato ou dois dedos; arraste para explorar; clique para acertar o local. Depois use esta posição para voltar." data-en="Tap “My position” to jump to where you are. Zoom with + / −, the mouse wheel or two fingers; drag to explore; click to fine-tune the site. Then use this position to return." data-pl="Dotknij „Moje położenie”, by od razu przejść tam, gdzie jesteś. Przybliżaj przyciskami + / −, kółkiem myszy lub dwoma palcami; przeciągnij, by się rozejrzeć; kliknij, by doprecyzować miejsce. Potem użyj tego położenia, by wrócić.">Toque em «A minha posição» para ir logo para onde está. Aproxime com + / −, a roda do rato ou dois dedos; arraste para explorar; clique para acertar o local. Depois use esta posição para voltar.</p>
   </div>
 </div>
+<input type="file" id="file-json" accept=".json,application/json" style="display:none">
 <div id="viewer"><img id="viewer-img" alt=""><span data-pt="Toque para fechar" data-en="Tap to close" data-pl="Dotknij, aby zamknąć">Toque para fechar</span></div>
 <div id="toast"></div>
 <div id="tip"></div>
 
 <script>
 "use strict";
-const APP={name:'Field Advisor PT',tag:'FA PT',version:'1.9.0',built:'2026-10-29T12:12',author:'Nuno Dinis Cortiços',institution:'Lisbon School of Architecture, Universidade de Lisboa',builtWith:'Claude Opus 5.5 Medium (Anthropic)'};
+const APP={name:'Field Advisor PT',tag:'FA PT',version:'1.10.0',built:'2026-10-29T12:14',author:'Nuno Dinis Cortiços',institution:'Lisbon School of Architecture, Universidade de Lisboa',builtWith:'Claude Opus 5.5 Medium (Anthropic)'};
 function appStamp(){const d=new Date(APP.built),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],p2=v=>String(v).padStart(2,'0');return 'v'+APP.version+' · '+d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear()+' '+p2(d.getHours())+':'+p2(d.getMinutes());}
 /* ================= i18n / tabs / site ================= */
 const $=id=>document.getElementById(id);
@@ -2188,6 +2194,25 @@ $('btn-mic').addEventListener('click',()=>setTimeout(()=>{if(SND.on&&micOn)sndAt
 $('btn-log-start').addEventListener('click',()=>{SND.sec=[];_sndKey='';sndRender();});
 if(SND.want)setTimeout(()=>{sndLoad().then(ok=>{if(ok){SND.on=true;$('btn-snd').textContent=T('Desligar identificação','Switch identification off','Wyłącz rozpoznawanie');sndStatus(micOn?T('a ouvir','listening','słucham'):T('pronto — ligue o microfone','ready — switch the mic on','gotowe — włącz mikrofon'),micOn?'live':'ok');if(micOn)sndAttach();sndRender();}});},800);
 
+/* ================= CONTINUE: a previous measurement brought back from its .json =================
+   The file "Download all (.json)" writes holds the record and every session,
+   decay and reading. Loading it puts them back on this device, so a student
+   can stop, change phone or browser, and carry on where the work stopped. */
+function faImportJSON(file){if(!file)return;const fr=new FileReader();
+  fr.onerror=()=>toast(T('Não foi possível ler o ficheiro.','The file could not be read.','Nie udało się odczytać pliku.'));
+  fr.onload=()=>{let d;try{d=JSON.parse(fr.result);}catch(e){toast(T('Este ficheiro não é um JSON válido.','This file is not valid JSON.','To nie jest poprawny plik JSON.'));return;}
+    const arr=k=>Array.isArray(d&&d[k])?d[k]:[];const nz=arr('noiseSessions'),rt=arr('rtMeas'),li=arr('lightReads');
+    if(!d||(!d.site&&!nz.length&&!rt.length&&!li.length)){toast(T('O ficheiro não traz uma medição do Field Advisor.','The file holds no Field Advisor measurement.','Plik nie zawiera pomiaru Field Advisor.'));return;}
+    let replace=true;
+    if(noiseSessions.length||rtMeas.length||lightReads.length)replace=confirm(T('Já há medições neste aparelho.\n\nOK — substituir pelas do ficheiro.\nCancelar — juntar as do ficheiro às atuais.','There are measurements on this device already.\n\nOK — replace them with the file’s.\nCancel — add the file’s to the current ones.','Na tym urządzeniu są już pomiary.\n\nOK — zastąp je danymi z pliku.\nAnuluj — dodaj dane z pliku do obecnych.'));
+    const merge=(cur,add)=>{const seen=new Set(cur.map(x=>x.t));return cur.concat(add.filter(x=>x&&x.t&&!seen.has(x.t))).sort((a,b)=>String(a.t).localeCompare(String(b.t)));};
+    if(replace){noiseSessions=nz.slice();rtMeas=rt.slice();lightReads=li.slice();}else{noiseSessions=merge(noiseSessions,nz);rtMeas=merge(rtMeas,rt);lightReads=merge(lightReads,li);}
+    if(d.site&&(replace||!site.place)){Object.assign(site,d.site);if(!Array.isArray(site.hyp))site.hyp=[];try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}loadSite();segSet('seg-lwhere',site.inout||'interior');}
+    persist();if(window.faMapSeed)window.faMapSeed();enterApp();
+    toast(T('Medição retomada: ','Measurement resumed: ','Pomiar wznowiony: ')+nz.length+'× '+T('ruído','noise','hałas')+' · '+rt.length+'× RT · '+li.length+'× '+T('luz','light','światło')+(d.app?' · '+d.app:''));};
+  fr.readAsText(file);}
+['btn-load-json','btn-load-json2'].forEach(id=>{const b=$(id);if(b)b.onclick=()=>$('file-json').click();});
+$('file-json').onchange=e=>{const f=e.target.files&&e.target.files[0];faImportJSON(f);e.target.value='';};
 /* ================= PWA manifest (blob) ================= */
 (function(){try{const man={name:'Field Advisor PT — Acústica e Iluminação',short_name:'FA PT',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',start_url:'.'};const b=new Blob([JSON.stringify(man)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
 window.addEventListener('resize',()=>{drawNoise();drawRT();drawLight();});
