@@ -333,6 +333,26 @@ details.how .place-grid{padding:12px}
 .s-side .demo-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
 #demo-setup{max-width:620px}
 @media(max-width:700px){.demo-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ---------- Site map, as in Architecture Advisor PT ---------- */
+#setupMapWrap{position:relative; border-radius:8px; border:1px solid var(--line2); background:#eceee8; overflow:hidden}
+#setupMap{display:block; width:100%; height:230px; background:#eceee8; cursor:zoom-in}
+#setupMapGrip{position:absolute; right:6px; bottom:6px; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-size:15px; line-height:1; color:var(--ink); background:rgba(255,255,255,.92); border:1px solid var(--line); border-radius:6px; cursor:pointer; padding:0}
+#setupMapGrip:hover{background:#fff; border-color:#c6cbc4}
+#setupMapOverlay{position:fixed; inset:0; z-index:90; display:flex; align-items:center; justify-content:center; padding:18px; background:rgba(20,23,26,.55)}
+#setupMapOverlay[hidden]{display:none}
+#setupMapSheet{width:min(920px,94vw); max-height:92vh; overflow:auto; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:0 18px 60px rgba(0,0,0,.3)}
+#setupMapSheetHead{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+#setupMapSheetHead h3{font-size:14px; margin:0}
+#setupMapSheetHead .btn{margin-left:auto}
+#setupMapBig{display:block; width:100%; height:min(58vh,520px); min-height:280px; border-radius:8px; border:1px solid var(--line2); background:#eceee8; cursor:crosshair; touch-action:none}
+#setupMapBigRow{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:10px}
+#setupMapBigRow .fld input{font-family:var(--mono); font-size:13px}
+#setupMapZoomRow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:10px}
+@media(max-width:640px){#setupMapBigRow{grid-template-columns:minmax(0,1fr)}#setupMapSheet{padding:12px}#setupMapOverlay{padding:8px}}
+.sitefind{display:flex; gap:6px; margin:0}.sitefind input{flex:1; min-width:0; font:inherit; font-size:13px; padding:6px 8px; border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--ink); max-width:none}
+.sitefindres{display:flex; flex-direction:column; gap:3px; margin:0; font-size:12.5px}.sitefindres:empty{display:none}.sitefindres button{text-align:left; font:inherit; font-size:12.5px; padding:5px 8px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); cursor:pointer}.sitefindres button:hover{background:var(--wash)}.sitefindres .msg{color:var(--muted); font-size:12px}
+#setupMapFind{margin:0 0 8px}#setupMapFindRes{margin:0 0 8px}
+@media(max-width:700px){.sitefind input{font-size:16px}}
 /* ---------- Footer ---------- */
 footer{border-top:1px solid var(--line); margin-top:26px; background:var(--wash)}
 .foot{max-width:1680px; margin:0 auto; padding:30px 24px 40px}
@@ -475,8 +495,12 @@ body.setup-mode .filechip{display:none!important}
     <div class="gh" data-pt="Coordenadas" data-en="Coordinates" data-pl="Współrzędne">Coordenadas</div>
     <div class="sbox two">
       <div class="fld wide"><div class="rowbtns"><button class="btn" id="btn-gps">⌖ GPS</button></div><span class="sub" id="gps-status" data-pt="Sem posição. O GPS só funciona com autorização e céu aberto." data-en="No fix yet. GPS needs permission and open sky." data-pl="Brak pozycji. GPS wymaga zgody i otwartego nieba.">Sem posição. O GPS só funciona com autorização e céu aberto.</span></div>
+      <div class="fld wide"><div id="setupMapWrap"><canvas id="setupMap" role="img" aria-label="Satellite view of the site"></canvas><button type="button" id="setupMapGrip" title="Ampliar o mapa / Enlarge the map" aria-label="Enlarge the map">⤢</button></div>
+        <span class="sub" data-pt="Vista de satélite centrada nas coordenadas — 900 m de largura. Clique no mapa para o ampliar: arraste para explorar, clique para pôr o local — a altitude lê-se sozinha — e volte." data-en="Satellite view centred on the coordinates — 900 m across. Click the map to enlarge it: drag to explore, click to place the site — the altitude reads itself — then return." data-pl="Widok satelitarny wyśrodkowany na współrzędnych — 900 m szerokości. Kliknij mapę, aby ją powiększyć: przeciągnij, by się rozejrzeć, kliknij, by wskazać miejsce — wysokość odczyta się sama — i wróć.">Vista de satélite centrada nas coordenadas — 900 m de largura. Clique no mapa para o ampliar: arraste para explorar, clique para pôr o local — a altitude lê-se sozinha — e volte.</span></div>
+      <div class="fld wide"><label for="setupSiteFindQ" data-pt="Procurar por morada" data-en="Find by address" data-pl="Szukaj po adresie">Procurar por morada</label><form id="setupSiteFind" class="sitefind" autocomplete="off"><input type="search" id="setupSiteFindQ" aria-label="Address search"><button type="submit" class="btn" data-pt="Procurar" data-en="Search" data-pl="Szukaj">Procurar</button></form><div id="setupSiteFindRes" class="sitefindres" aria-live="polite"></div></div>
       <div class="fld"><label for="f-lat">Latitude ° (N +)</label><input type="number" id="f-lat" step="0.00001" placeholder="38.72225" inputmode="decimal"></div>
       <div class="fld"><label for="f-lon">Longitude ° (E +)</label><input type="number" id="f-lon" step="0.00001" placeholder="-9.13933" inputmode="decimal"></div>
+      <div class="fld wide"><label for="f-alt" data-pt="Altitude do local (m)" data-en="Altitude of the site (m)" data-pl="Wysokość miejsca (m)">Altitude do local (m)</label><div style="display:flex;gap:8px"><input type="number" id="f-alt" step="1" min="-50" max="4000" inputmode="decimal" style="flex:1"><button type="button" class="btn" id="btn-alt" data-pt="Ler" data-en="Look up" data-pl="Odczytaj">Ler</button></div><span class="sub" id="alt-status"></span></div>
     </div>
     <div class="install"><b data-pt="Instalar no telemóvel (PWA):" data-en="Install on the phone (PWA):" data-pl="Zainstaluj na telefonie (PWA):">Instalar no telemóvel (PWA):</b> <span data-pt="Chrome/Safari → Partilhar → Adicionar ao ecrã principal. Abre em ecrã cheio e funciona offline." data-en="Chrome/Safari → Share → Add to Home Screen. It opens full-screen and works offline." data-pl="Chrome/Safari → Udostępnij → Dodaj do ekranu głównego. Otwiera się na pełnym ekranie i działa offline.">Chrome/Safari → Partilhar → Adicionar ao ecrã principal. Abre em ecrã cheio e funciona offline.</span></div>
    </div>
@@ -728,7 +752,7 @@ body.setup-mode .filechip{display:none!important}
   <div class="foot">
     <div class="foot-top">
       <div>
-        <span class="appname">Field Advisor PT</span><span class="ver" id="footVer">v1.2.0</span>
+        <span class="appname">Field Advisor PT</span><span class="ver" id="footVer">v1.3.0</span>
         <p class="tag" data-pt="Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento." data-en="A didactic field meter for architecture students: the noise, reverberation and light of their workspace — inside and out — before any regulation applies." data-pl="Dydaktyczny miernik terenowy dla studentów architektury: hałas, pogłos i światło ich przestrzeni pracy — wewnątrz i na zewnątrz — zanim zastosuje się jakiekolwiek przepisy.">Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento.</p>
       </div>
       <div>
@@ -743,7 +767,7 @@ body.setup-mode .filechip{display:none!important}
         <h5 data-pt="Método" data-en="Method" data-pl="Metoda">Método</h5>
         <p data-pt="Ruído: RMS em janela curta → dBA aproximado por offset calibrável; LAeq logarítmico. RT: impulso + Schroeder, RT20×3/RT30×2 (ISO 3382-2). Luz: sensor / câmara / manual; DF = Ein/Eout×100." data-en="Noise: short-window RMS → approximate dBA via a calibratable offset; logarithmic LAeq. RT: impulse + Schroeder, RT20×3/RT30×2 (ISO 3382-2). Light: sensor / camera / manual; DF = Ein/Eout×100." data-pl="Hałas: RMS w krótkim oknie → przybliżone dBA przez kalibrowany offset; logarytmiczne LAeq. RT: impuls + Schroeder, RT20×3/RT30×2 (ISO 3382-2). Światło: czujnik / kamera / ręcznie; DF = Ewew/Ezew×100.">Ruído: RMS em janela curta → dBA aproximado por offset calibrável; LAeq logarítmico. RT: impulso + Schroeder, RT20×3/RT30×2 (ISO 3382-2). Luz: sensor / câmara / manual; DF = Ein/Eout×100.</p>
         <h5 style="margin-top:14px" data-pt="Privacidade" data-en="Privacy" data-pl="Prywatność">Privacidade</h5>
-        <p style="color:var(--muted)" data-pt="Nada é enviado nem guardado fora deste browser. O áudio e a imagem da câmara são processados neste aparelho; os ficheiros CSV/PNG/JSON são gerados localmente." data-en="Nothing is uploaded or stored outside this browser. Audio and camera images are processed on this device; CSV/PNG/JSON files are generated locally." data-pl="Nic nie jest wysyłane ani przechowywane poza tą przeglądarką. Dźwięk i obraz z kamery są przetwarzane na tym urządzeniu; pliki CSV/PNG/JSON powstają lokalnie.">Nada é enviado nem guardado fora deste browser. O áudio e a imagem da câmara são processados neste aparelho; os ficheiros CSV/PNG/JSON são gerados localmente.</p>
+        <p style="color:var(--muted)" data-pt="Nada é guardado fora deste browser. O áudio e a imagem da câmara são processados neste aparelho; os ficheiros são gerados localmente. As coordenadas só vão para os serviços que preenchem algo: o mapa de satélite (Esri), a pesquisa por morada (Nominatim, OpenStreetMap) e a altitude (Open-Meteo)." data-en="Nothing is stored outside this browser. Audio and camera images are processed on this device; files are generated locally. Coordinates go only to the services that fill something in: the satellite map (Esri), the address search (Nominatim, OpenStreetMap) and the altitude (Open-Meteo)." data-pl="Nic nie jest przechowywane poza tą przeglądarką. Dźwięk i obraz z kamery są przetwarzane na tym urządzeniu; pliki powstają lokalnie. Współrzędne trafiają tylko do usług, które coś uzupełniają: mapy satelitarnej (Esri), wyszukiwania adresu (Nominatim, OpenStreetMap) i wysokości (Open-Meteo).">Nada é guardado fora deste browser. O áudio e a imagem da câmara são processados neste aparelho; os ficheiros são gerados localmente. As coordenadas só vão para os serviços que preenchem algo: o mapa de satélite (Esri), a pesquisa por morada (Nominatim, OpenStreetMap) e a altitude (Open-Meteo).</p>
       </div>
     </div>
 
@@ -767,13 +791,33 @@ body.setup-mode .filechip{display:none!important}
     <p class="foot-legal"><span data-pt="© 2026 Nuno Dinis Cortiços. Instrumento de ensino. Compara valores medidos com o telemóvel com as referências que a literatura e as normas publicam e nomeia a fonte de cada uma, mas um telemóvel não é um sonómetro nem um luxímetro. Nada do que reporta é uma declaração de conformidade. Companheiro de campo do Architecture Advisor PT: meça aqui, desenhe lá." data-en="© 2026 Nuno Dinis Cortiços. A teaching instrument. It compares the values measured with the phone with the references the literature and the standards publish and names the source of each, but a phone is not a sound-level meter nor a light meter. Nothing it reports is a compliance statement. Field companion to Architecture Advisor PT: measure here, design there." data-pl="© 2026 Nuno Dinis Cortiços. Narzędzie dydaktyczne. Porównuje wartości zmierzone telefonem z odniesieniami z literatury i norm i podaje źródło każdego, ale telefon nie jest miernikiem dźwięku ani luksomierzem. Nic, co raportuje, nie jest deklaracją zgodności. Terenowy towarzysz Architecture Advisor PT: mierz tutaj, projektuj tam.">© 2026 Nuno Dinis Cortiços. Instrumento de ensino. Compara valores medidos com o telemóvel com as referências que a literatura e as normas publicam e nomeia a fonte de cada uma, mas um telemóvel não é um sonómetro nem um luxímetro. Nada do que reporta é uma declaração de conformidade. Companheiro de campo do Architecture Advisor PT: meça aqui, desenhe lá.</span></p>
   </div>
 </footer>
+<div id="setupMapOverlay" hidden>
+  <div id="setupMapSheet" role="dialog" aria-modal="true" aria-labelledby="setupMapSheetTitle">
+    <div id="setupMapSheetHead"><h3 id="setupMapSheetTitle" data-pt="Escolha a posição do local" data-en="Choose the site position" data-pl="Wybierz położenie miejsca">Escolha a posição do local</h3><button type="button" class="btn" id="setupMapClose" data-pt="Voltar ao tamanho normal" data-en="Back to regular size" data-pl="Wróć do zwykłego rozmiaru">Voltar ao tamanho normal</button></div>
+    <form id="setupMapFind" class="sitefind" autocomplete="off"><input type="search" id="setupMapFindQ" aria-label="Address search"><button type="submit" class="btn" data-pt="Procurar" data-en="Search" data-pl="Szukaj">Procurar</button></form><div id="setupMapFindRes" class="sitefindres" aria-live="polite"></div>
+    <canvas id="setupMapBig" role="img" aria-label="Enlarged satellite view"></canvas>
+    <p class="hint" id="setupMapPos"></p>
+    <div id="setupMapBigRow">
+      <div class="fld"><label for="setupMapBigLat">Latitude</label><input type="number" id="setupMapBigLat" step="0.0001" inputmode="decimal"></div>
+      <div class="fld"><label for="setupMapBigLon">Longitude</label><input type="number" id="setupMapBigLon" step="0.0001" inputmode="decimal"></div>
+      <div class="fld"><label for="setupMapBigAlt" data-pt="Altitude do local" data-en="Altitude of the site" data-pl="Wysokość miejsca">Altitude do local</label><input type="number" id="setupMapBigAlt" step="1" inputmode="decimal"></div>
+    </div>
+    <div id="setupMapZoomRow">
+      <div class="seg" id="setupMapZoom" role="group" aria-label="Map width"><button type="button" data-across="300">300 m</button><button type="button" data-across="900" aria-pressed="true">900 m</button><button type="button" data-across="2000">2 km</button></div>
+      <button type="button" class="btn" id="setupMapRecentre" title="Centrar no local / Centre on site">⌖</button>
+      <button type="button" class="btn" id="setupMapBigAltBtn" data-pt="Ler altitude" data-en="Look up" data-pl="Odczytaj wysokość">Ler altitude</button>
+      <button type="button" class="btn solid" id="setupMapDone" data-pt="Usar esta posição" data-en="Use this position" data-pl="Użyj tego położenia">Usar esta posição</button>
+    </div>
+    <p class="hint" data-pt="Arraste para explorar, clique para pôr o local — as coordenadas seguem e a altitude lê-se sozinha. Depois use esta posição para voltar." data-en="Drag to explore, click to place the site — the coordinates follow and the altitude reads itself. Then use this position to return." data-pl="Przeciągnij, by się rozejrzeć, kliknij, by wskazać miejsce — współrzędne i wysokość uzupełnią się same. Potem użyj tego położenia, by wrócić.">Arraste para explorar, clique para pôr o local — as coordenadas seguem e a altitude lê-se sozinha. Depois use esta posição para voltar.</p>
+  </div>
+</div>
 <div id="viewer"><img id="viewer-img" alt=""><span data-pt="Toque para fechar" data-en="Tap to close" data-pl="Dotknij, aby zamknąć">Toque para fechar</span></div>
 <div id="toast"></div>
 <div id="tip"></div>
 
 <script>
 "use strict";
-const APP={name:'Field Advisor PT',tag:'FA PT',version:'1.2.0',built:'2026-10-29T10:23',author:'Nuno Dinis Cortiços',institution:'Lisbon School of Architecture, Universidade de Lisboa',builtWith:'Claude Opus 5.5 Medium (Anthropic)'};
+const APP={name:'Field Advisor PT',tag:'FA PT',version:'1.3.0',built:'2026-10-29T10:27',author:'Nuno Dinis Cortiços',institution:'Lisbon School of Architecture, Universidade de Lisboa',builtWith:'Claude Opus 5.5 Medium (Anthropic)'};
 function appStamp(){const d=new Date(APP.built),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],p2=v=>String(v).padStart(2,'0');return 'v'+APP.version+' · '+d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear()+' '+p2(d.getHours())+':'+p2(d.getMinutes());}
 /* ================= i18n / tabs / site ================= */
 const $=id=>document.getElementById(id);
@@ -789,8 +833,8 @@ function segWire(id,cb){const s=$(id);s.querySelectorAll('button').forEach(b=>b.
 function segGet(id){const b=document.querySelector('#'+id+' button[aria-pressed="true"]');return b?b.dataset.v:'';}
 const site={place:'',spacetype:'quarto',inout:'interior',round:'livre',lat:'',lon:'',windows:'fechadas',occup:'vazio',sky:'limpo',sources:'',hyp:[],notes:'',stamp:''};
 const SRC_LBL={trafego:'Tráfego rodoviário',aereo:'Aviões',vozes:'Vozes / conversa',avac:'AVAC',obra:'Obra / equipamentos',natureza:'Pássaros / natureza',vento:'Vento / chuva',silencio:'Silêncio / fundo'};
-function readSite(){site.place=$('f-place').value.trim();site.spacetype=$('f-spacetype').value;site.inout=segGet('seg-inout');site.round=segGet('seg-round')||'livre';site.lat=$('f-lat').value;site.lon=$('f-lon').value;site.windows=$('f-windows').value;site.occup=$('f-occup').value;site.sky=$('f-sky').value;site.sources=$('f-sources').value.trim();site.notes=$('f-notes').value.trim();if(!Array.isArray(site.hyp))site.hyp=[];try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}}
-function loadSite(){try{const s=JSON.parse(localStorage.getItem('fa-site')||'null');if(!s)return;Object.assign(site,s);if(!Array.isArray(site.hyp))site.hyp=[];$('f-place').value=site.place||'';$('f-spacetype').value=site.spacetype||'quarto';segSet('seg-inout',site.inout||'interior');$('f-lat').value=site.lat||'';$('f-lon').value=site.lon||'';$('f-windows').value=site.windows||'fechadas';$('f-occup').value=site.occup||'vazio';$('f-sky').value=site.sky||'limpo';$('f-sources').value=site.sources||'';$('f-notes').value=site.notes||'';segSet('seg-round',site.round||'livre');syncChips();}catch(e){}}
+function readSite(){site.place=$('f-place').value.trim();site.spacetype=$('f-spacetype').value;site.inout=segGet('seg-inout');site.round=segGet('seg-round')||'livre';site.lat=$('f-lat').value;site.lon=$('f-lon').value;site.alt=$('f-alt').value;site.windows=$('f-windows').value;site.occup=$('f-occup').value;site.sky=$('f-sky').value;site.sources=$('f-sources').value.trim();site.notes=$('f-notes').value.trim();if(!Array.isArray(site.hyp))site.hyp=[];try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}}
+function loadSite(){try{const s=JSON.parse(localStorage.getItem('fa-site')||'null');if(!s)return;Object.assign(site,s);if(!Array.isArray(site.hyp))site.hyp=[];$('f-place').value=site.place||'';$('f-spacetype').value=site.spacetype||'quarto';segSet('seg-inout',site.inout||'interior');$('f-lat').value=site.lat||'';$('f-lon').value=site.lon||'';$('f-alt').value=site.alt||'';$('f-windows').value=site.windows||'fechadas';$('f-occup').value=site.occup||'vazio';$('f-sky').value=site.sky||'limpo';$('f-sources').value=site.sources||'';$('f-notes').value=site.notes||'';segSet('seg-round',site.round||'livre');syncChips();}catch(e){}}
 function syncChips(){const cur=(site.sources||'').split(',').map(s=>s.trim()).filter(Boolean);document.querySelectorAll('#chips-sources .chip').forEach(b=>b.setAttribute('aria-pressed',cur.includes(SRC_LBL[b.dataset.k]||b.dataset.k)?'true':'false'));document.querySelectorAll('#chips-hyp .chip').forEach(b=>b.setAttribute('aria-pressed',(site.hyp||[]).includes(b.dataset.k)?'true':'false'));}
 function wireChips(){document.querySelectorAll('#chips-sources .chip').forEach(b=>b.onclick=()=>{const lbl=SRC_LBL[b.dataset.k]||b.textContent.trim();let cur=$('f-sources').value.split(',').map(s=>s.trim()).filter(Boolean);if(cur.includes(lbl))cur=cur.filter(s=>s!==lbl);else cur.push(lbl);$('f-sources').value=cur.join(', ');b.setAttribute('aria-pressed',cur.includes(lbl)?'true':'false');readSite();updateChip();});
 document.querySelectorAll('#chips-hyp .chip').forEach(b=>b.onclick=()=>{if(!Array.isArray(site.hyp))site.hyp=[];const k=b.dataset.k;site.hyp=site.hyp.includes(k)?site.hyp.filter(x=>x!==k):[...site.hyp,k];b.setAttribute('aria-pressed',site.hyp.includes(k)?'true':'false');try{localStorage.setItem('fa-site',JSON.stringify(site));}catch(e){}updateChip();renderExport();});}
@@ -1073,7 +1117,7 @@ document.querySelector('.tab[data-page="p-present"]').addEventListener('click',(
 document.querySelector('.tab[data-page="p-eval"]').addEventListener('click',()=>setTimeout(renderEval,30));
 /* ================= SETUP → WORKBENCH (as in Architecture Advisor PT) ================= */
 function inSetup(){return document.body.classList.contains('setup-mode');}
-function showSetup(){document.body.classList.add('setup-mode');$('tabsNav').hidden=true;try{localStorage.setItem('fa-started','0');}catch(e){}updateChip();renderPlacements();window.scrollTo({top:0});}
+function showSetup(){document.body.classList.add('setup-mode');setTimeout(()=>window.faMapRedraw&&window.faMapRedraw(),30);$('tabsNav').hidden=true;try{localStorage.setItem('fa-started','0');}catch(e){}updateChip();renderPlacements();window.scrollTo({top:0});}
 function enterApp(){readSite();site.stamp=site.stamp||new Date().toISOString();try{localStorage.setItem('fa-site',JSON.stringify(site));localStorage.setItem('fa-started','1');}catch(e){}
   document.body.classList.remove('setup-mode');$('tabsNav').hidden=false;updateChip();renderAll();window.scrollTo({top:0});}
 $('btn-go').onclick=()=>{enterApp();toast(T('Ficha guardada — bom trabalho de campo','Record saved — good fieldwork','Karta zapisana — udanej pracy w terenie'));};
@@ -1855,7 +1899,7 @@ async function faExportDeck(format){
     /* 1 · title */
     const hyp=(site.hyp||[]).join(' ')||'—';
     sl.push(head(T('Trabalho de campo — acústica e iluminação','Fieldwork — acoustics and lighting','Praca w terenie — akustyka i oświetlenie'),(site.place||'—')+' · '+stName,'FA PT').concat([
-      text(0.6,1.8,cover?5.6:12,4.8,[T('Posição: ','Position: ','Pozycja: ')+ioT(site.inout),(site.lat&&site.lon)?'lat '+site.lat+' · lon '+site.lon:'',T('Janelas: ','Windows: ','Okna: ')+site.windows+' · '+T('ocupação: ','occupancy: ','obecność: ')+site.occup+' · '+T('céu: ','sky: ','niebo: ')+site.sky,
+      text(0.6,1.8,cover?5.6:12,4.8,[T('Posição: ','Position: ','Pozycja: ')+ioT(site.inout),(site.lat&&site.lon)?'lat '+site.lat+' · lon '+site.lon+(site.alt?' · '+site.alt+' m':''):'',T('Janelas: ','Windows: ','Okna: ')+site.windows+' · '+T('ocupação: ','occupancy: ','obecność: ')+site.occup+' · '+T('céu: ','sky: ','niebo: ')+site.sky,
         T('Fontes: ','Sources: ','Źródła: ')+(site.sources||'—'),T('Hipóteses: ','Hypotheses: ','Hipotezy: ')+hyp,'',noiseSessions.length+'× '+T('ruído','noise','hałas')+' · '+rtMeas.length+'× RT · '+lightReads.length+'× '+T('luz','light','światło'),date,'',APP.name+' '+appStamp()+' · '+APP.author].filter(l=>l!==null),14),
       fit(cover,6.4,1.6,6.4,5.4)].filter(Boolean)));
     /* 2 · acoustics on the scales */
@@ -2002,6 +2046,97 @@ function mountDemo(id){const host=$(id);if(!host)return;
   D.renderStrip();D.draw();DEMOS.push(D);}
 (function demoLoop(){let prev=performance.now();const tick=now=>{const dt=Math.min(.1,(now-prev)/1000);prev=now;DEMOS.forEach(D=>{if(D.play&&D.vis&&D.host.offsetParent!==null){D.t=(D.t+dt)%DEMO_T;D.draw();}});requestAnimationFrame(tick);};requestAnimationFrame(tick);})();
 function relangDemos(){DEMOS.forEach(D=>{D.host.querySelector('.demo-in').textContent=T('Dentro','Inside','Wewnątrz');D.host.querySelector('.demo-out').textContent=T('Fora','Outside','Na zewnątrz');D.renderStrip();D.draw();});}
+
+/* ================= SITE MAP (as in Architecture Advisor PT) =================
+   The same 900 m satellite window under the coordinates: north up, the site in
+   the red ring, following the GPS and the typed coordinates. A click enlarges
+   it: drag to look around, click to place the site, search an address, and the
+   altitude reads itself. Tiles from Esri World Imagery, search from
+   OpenStreetMap's Nominatim, elevation from Open-Meteo — the only requests the
+   page makes, and only when the map is used. */
+const MAP_RAD=Math.PI/180;
+const TILE_SAT={url:(z,x,y)=>'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/'+z+'/'+y+'/'+x,attr:'Imagery: Esri World Imagery — Esri, Maxar, Earthstar Geographics and the GIS User Community'};
+const TILE_CACHE=new Map();
+function tileBlank(img){try{const c=document.createElement('canvas');c.width=c.height=16;const g=c.getContext('2d');g.drawImage(img,0,0,16,16);const d=g.getImageData(0,0,16,16).data;let s1=0,s2=0;for(let i=0;i<d.length;i+=4){const L=.3*d[i]+.59*d[i+1]+.11*d[i+2];s1+=L;s2+=L*L;}const m=s1/256;return Math.sqrt(Math.max(0,s2/256-m*m))<2.5;}catch(e){return false;}}
+function tileImg(url,redraw){let e=TILE_CACHE.get(url);if(!e){e={img:new Image(),ok:false,failed:false,blank:false,waiters:new Set()};e.img.crossOrigin='anonymous';e.img.onload=()=>{e.ok=true;e.blank=tileBlank(e.img);e.waiters.forEach(f=>f());e.waiters.clear();};e.img.onerror=()=>{e.failed=true;e.waiters.forEach(f=>f());e.waiters.clear();};e.img.src=url;TILE_CACHE.set(url,e);}if(!e.ok&&!e.failed&&redraw)e.waiters.add(redraw);return e;}
+const mFmt=(v,d)=>(+v).toFixed(d).replace('.',LANG==='en'?'.':',');
+function paintSiteMap(cv,cLa,cLo,mLa,mLo,across,onTile){const W=cv.clientWidth,H=cv.clientHeight;if(!W||!H)return false;const dpr=window.devicePixelRatio||1;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+  const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#eceee8';ctx.fillRect(0,0,W,H);
+  const msg=t=>{ctx.fillStyle='#7b838b';ctx.font='11px ui-sans-serif,-apple-system,Segoe UI,Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(t,W/2,H/2);};
+  if(!isFinite(cLa)||!isFinite(cLo)||Math.abs(cLa)>84){msg(T('Escreva a latitude e a longitude, ou use o GPS, para ver o local','Enter the latitude and longitude, or use the GPS, to see the site','Wpisz szerokość i długość albo użyj GPS, aby zobaczyć miejsce'));return true;}
+  const cosl=Math.cos(cLa*MAP_RAD),S=Math.min(W,H);const zl=Math.max(10,Math.min(18,Math.floor(Math.log2(40075016.686*cosl*S/(across*256)))+1));
+  const mpp=40075016.686*cosl/Math.pow(2,zl)/256,k=S/across,n2=Math.pow(2,zl);const xt=(cLo+180)/360*n2,lr=cLa*MAP_RAD,yt=(1-Math.log(Math.tan(lr)+1/Math.cos(lr))/Math.PI)/2*n2;
+  const spanX=W/2/k/(256*mpp),spanY=H/2/k/(256*mpp),cx=W/2,cy=H/2;let shown=0;
+  for(let tx=Math.floor(xt-spanX);tx<=Math.floor(xt+spanX);tx++)for(let ty=Math.floor(yt-spanY);ty<=Math.floor(yt+spanY);ty++){const tile=tileImg(TILE_SAT.url(zl,tx,ty),onTile);if(!tile.ok||tile.blank)continue;const side=256*mpp*k;ctx.drawImage(tile.img,cx+(tx-xt)*side,cy+(ty-yt)*side,side+.8,side+.8);shown++;}
+  if(!shown)msg(T('A carregar o mapa…','Loading the map…','Ładowanie mapy…'));
+  ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.strokeRect(0,0,W,H);ctx.strokeStyle='#14171a';ctx.lineWidth=1;ctx.strokeRect(0,0,W,H);
+  const mx=isFinite(mLa)&&isFinite(mLo)?cx+(mLo-cLo)*111320*Math.cos(cLa*MAP_RAD)*k:null,my=isFinite(mLa)&&isFinite(mLo)?cy-(mLa-cLa)*111320*k:null;
+  if(mx!==null&&mx>-40&&mx<W+40&&my>-40&&my<H+40){const rr=Math.max(10,25*k);ctx.beginPath();ctx.arc(mx,my,rr,0,6.284);ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();ctx.strokeStyle='#DC2626';ctx.lineWidth=1.8;ctx.stroke();ctx.fillStyle='#DC2626';ctx.beginPath();ctx.arc(mx,my,2.2,0,6.284);ctx.fill();}
+  ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(cx-8,3,16,13);ctx.fillStyle='#14171a';ctx.font='700 9px ui-sans-serif,Arial,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('N',cx,9.5);
+  const tag=across>=1000?mFmt(across/1000,1)+' km':Math.round(across)+' m';ctx.font='8px ui-monospace,Menlo,monospace';const tw=ctx.measureText(tag).width;ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(4,H-16,tw+12,12);ctx.fillStyle='#14171a';ctx.textAlign='left';ctx.fillText(tag,7,H-9.5);
+  ctx.font='7.5px ui-sans-serif,Arial,sans-serif';const cw=Math.min(W-16,ctx.measureText(TILE_SAT.attr).width);if(cw>60){ctx.fillStyle='rgba(255,255,255,.85)';ctx.fillRect(W-cw-14,4,cw+10,12);ctx.fillStyle='#7b838b';ctx.textAlign='right';ctx.fillText(TILE_SAT.attr,W-9,10,cw);}
+  return true;}
+(function initSiteMap(){
+  const lat=$('f-lat'),lon=$('f-lon'),alt=$('f-alt'),small=$('setupMap'),grip=$('setupMapGrip'),ov=$('setupMapOverlay'),big=$('setupMapBig');
+  const bLat=$('setupMapBigLat'),bLon=$('setupMapBigLon'),bAlt=$('setupMapBigAlt'),bAltBtn=$('setupMapBigAltBtn'),bDone=$('setupMapDone'),bClose=$('setupMapClose'),bPos=$('setupMapPos');
+  const zoomBtns=[...document.querySelectorAll('#setupMapZoom button')];
+  if(!small||!big)return;
+  let bigAcross=900,bigOpen=false,echo=false,altDirty=false;const SMALL=900;
+  const fire=n=>{try{n.dispatchEvent(new Event('input',{bubbles:true}));}catch(e){}};
+  const siteOf=()=>({lat:parseFloat(lat.value),lon:parseFloat(lon.value)});
+  function drawSmall(){if(!small.isConnected)return;const s=siteOf();paintSiteMap(small,s.lat,s.lon,s.lat,s.lon,SMALL,drawSmall);}
+  let st=0;const kickSmall=()=>{clearTimeout(st);st=setTimeout(drawSmall,250);};
+  let view={lat:38.72,lon:-9.14};
+  let lastKey=null,lastAuto=null,autoNote='',autoTimer=0,seq=0;
+  const posText=()=>{if(!bPos)return;const la=parseFloat(lat.value),lo=parseFloat(lon.value),z=alt.value.trim()===''?null:+alt.value;
+    bPos.textContent=isFinite(la)&&isFinite(lo)?mFmt(Math.abs(la),4)+'° '+(la<0?'S':'N')+' · '+mFmt(Math.abs(lo),4)+'° '+(lo<0?'W':'E')+(z!==null&&isFinite(z)?' · '+Math.round(z)+' m':'')+' · '+(bigAcross>=1000?mFmt(bigAcross/1000,1)+' km':bigAcross+' m')+' '+T('de largura','across','szerokości')+(autoNote?' · '+autoNote:''):T('Escreva a latitude e a longitude para ver o local','Enter the latitude and longitude to see the site','Wpisz współrzędne, aby zobaczyć miejsce');};
+  function drawBig(){if(!bigOpen)return;const s=siteOf();paintSiteMap(big,view.lat,view.lon,s.lat,s.lon,bigAcross,drawBig);posText();}
+  let bt=0;const kickBig=()=>{clearTimeout(bt);bt=setTimeout(drawBig,250);};
+  const syncMirrors=()=>{if(!bigOpen||echo)return;if(document.activeElement!==bLat)bLat.value=lat.value;if(document.activeElement!==bLon)bLon.value=lon.value;if(document.activeElement!==bAlt)bAlt.value=alt.value;posText();};
+  const scheduleAlt=()=>{clearTimeout(autoTimer);autoTimer=setTimeout(runAlt,700);};
+  async function runAlt(){const la=parseFloat(lat.value),lo=parseFloat(lon.value);if(!isFinite(la)||!isFinite(lo)||Math.abs(la)>84)return;const key=la.toFixed(4)+','+lo.toFixed(4);if(key===lastKey)return;const my=++seq;lastKey=key;
+    autoNote=T('A ler a altitude…','Looking up elevation…','Odczyt wysokości…');posText();
+    try{const r=await fetch('https://api.open-meteo.com/v1/elevation?latitude='+la+'&longitude='+lo);const d=await r.json();if(my!==seq)return;const v=Math.round(d.elevation[0]);if(!isFinite(v))throw 0;
+      const cur=alt.value.trim()===''?null:+alt.value;if(!altDirty||cur===null||cur===lastAuto){autoNote='';lastAuto=v;echo=true;alt.value=v;altDirty=false;fire(alt);echo=false;syncMirrors();$('alt-status').textContent=T('Altitude lida: ','Altitude read: ','Odczytana wysokość: ')+v+' m (Open-Meteo)';}
+      else{autoNote=T('Altitude automática','Automatic altitude','Wysokość automatyczna')+': '+v+' m';posText();}}
+    catch(e){if(my!==seq)return;autoNote=T('Serviço de altitude indisponível — escreva-a à mão','Elevation service unavailable — enter it by hand','Usługa wysokości niedostępna — wpisz ręcznie');posText();}}
+  function openBig(){if(bigOpen)return;bigOpen=true;bLat.value=lat.value;bLon.value=lon.value;bAlt.value=alt.value;const s=siteOf();if(isFinite(s.lat)&&isFinite(s.lon))view={lat:s.lat,lon:s.lon};
+    zoomBtns.forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.across===bigAcross)));ov.hidden=false;requestAnimationFrame(drawBig);scheduleAlt();}
+  function closeBig(){if(!bigOpen)return;bigOpen=false;ov.hidden=true;drawSmall();}
+  grip.addEventListener('click',openBig);small.addEventListener('click',openBig);small.setAttribute('tabindex','0');small.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openBig();}});
+  bDone.addEventListener('click',closeBig);bClose.addEventListener('click',closeBig);ov.addEventListener('click',ev=>{if(ev.target===ov)closeBig();});document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&bigOpen)closeBig();});
+  [[bLat,lat],[bLon,lon],[bAlt,alt]].forEach(([m,main])=>m.addEventListener('input',()=>{echo=true;main.value=m.value;fire(main);echo=false;if(m===bAlt){altDirty=true;posText();return;}const s=siteOf();if(isFinite(s.lat)&&isFinite(s.lon))view={lat:s.lat,lon:s.lon};kickBig();scheduleAlt();}));
+  [lat,lon].forEach(f=>f.addEventListener('input',()=>{syncMirrors();kickSmall();if(bigOpen)kickBig();if(!echo)scheduleAlt();}));
+  alt.addEventListener('input',()=>{if(!echo)altDirty=true;syncMirrors();});
+  /* the GPS fills the boxes without an input event: follow it */
+  const gpsBtn=$('btn-gps');if(gpsBtn){const obs=new MutationObserver(()=>{kickSmall();scheduleAlt();});obs.observe($('gps-status'),{childList:true,characterData:true,subtree:true});}
+  const parseSpot=q=>{const m=String(q).match(/@?(-?\d{1,2}\.\d+)\s*[,; ]\s*(-?\d{1,3}\.\d+)/);if(!m)return null;const la=+m[1],lo=+m[2];return Math.abs(la)<=90&&Math.abs(lo)<=180?{lat:la,lon:lo}:null;};
+  const pick=(la,lo,res,name)=>{echo=true;lat.value=+la.toFixed(5);lon.value=+lo.toFixed(5);fire(lat);fire(lon);echo=false;syncMirrors();view={lat:la,lon:lo};if(bigOpen)kickBig();kickSmall();scheduleAlt();res.innerHTML='';if(name){const d=document.createElement('div');d.className='msg';d.textContent='✓ '+name;res.appendChild(d);}};
+  const find=pre=>{const form=$(pre+'Find'),inp=$(pre+'FindQ'),res=$(pre+'FindRes');if(!form)return;
+    const ph=()=>{inp.placeholder=T('Morada, lugar, freguesia ou concelho — ou cole uma ligação do Google Maps','Address, place, parish or town — or paste a Google Maps link','Adres, miejscowość lub gmina — albo wklej link Google Maps');};ph();inp.addEventListener('focus',ph);
+    const msg=t=>{res.innerHTML='';const d=document.createElement('div');d.className='msg';d.textContent=t;res.appendChild(d);};
+    form.addEventListener('submit',ev=>{ev.preventDefault();const q=String(inp.value||'').trim();if(!q)return;const sp=parseSpot(q);if(sp){pick(sp.lat,sp.lon,res,null);return;}
+      msg(T('A procurar…','Searching…','Szukam…'));
+      fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&addressdetails=1&accept-language='+(LANG==='pl'?'pl':LANG==='en'?'en':'pt')+'&q='+encodeURIComponent(q)).then(r=>r.ok?r.json():Promise.reject(r.status)).then(js=>{
+        const hits=(js||[]).map(h=>({la:+h.lat,lo:+h.lon,name:String(h.display_name||'').split(',').slice(0,4).join(',').trim()})).filter(h=>isFinite(h.la)&&isFinite(h.lo)).filter((h,i,A)=>A.findIndex(o=>o.name===h.name)===i).slice(0,5);
+        if(!hits.length){msg(T('Nada encontrado com essa morada.','Nothing found for that address.','Nic nie znaleziono pod tym adresem.'));return;}
+        if(hits.length===1){pick(hits[0].la,hits[0].lo,res,hits[0].name);return;}
+        res.innerHTML='';hits.forEach(h=>{const b=document.createElement('button');b.type='button';b.textContent=h.name;b.onclick=()=>pick(h.la,h.lo,res,h.name);res.appendChild(b);});})
+        .catch(()=>msg(T('A pesquisa por morada não está disponível — escreva as coordenadas ou cole uma ligação do Google Maps.','The address search is unavailable — type the coordinates or paste a Google Maps link.','Wyszukiwanie adresu niedostępne — wpisz współrzędne lub wklej link Google Maps.')));});};
+  find('setupMap');find('setupSite');
+  zoomBtns.forEach(b=>b.addEventListener('click',()=>{bigAcross=+b.dataset.across||900;zoomBtns.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawBig();}));
+  bAltBtn.addEventListener('click',()=>{lastKey=null;altDirty=false;runAlt();});
+  const altBtn=$('btn-alt');if(altBtn)altBtn.addEventListener('click',()=>{lastKey=null;altDirty=false;runAlt();});
+  $('setupMapRecentre').addEventListener('click',()=>{const s=siteOf();if(isFinite(s.lat)&&isFinite(s.lon))view={lat:s.lat,lon:s.lon};drawBig();});
+  let pd=null,raf=0;const mpp=()=>{const r=big.getBoundingClientRect();return bigAcross/Math.min(r.width,r.height);};
+  big.addEventListener('pointerdown',ev=>{pd={x:ev.clientX,y:ev.clientY,vLat:view.lat,vLon:view.lon,pan:false};try{big.setPointerCapture(ev.pointerId);}catch(e){}});
+  big.addEventListener('pointermove',ev=>{if(!pd)return;const dx=ev.clientX-pd.x,dy=ev.clientY-pd.y;if(!pd.pan&&Math.hypot(dx,dy)>6){pd.pan=true;big.style.cursor='grabbing';}if(!pd.pan)return;const m=mpp();view={lat:pd.vLat+dy*m/111320,lon:pd.vLon-dx*m/(111320*Math.cos(pd.vLat*MAP_RAD))};cancelAnimationFrame(raf);raf=requestAnimationFrame(drawBig);});
+  big.addEventListener('pointerup',ev=>{if(!pd)return;const was=pd.pan;pd=null;big.style.cursor='';if(was){drawBig();return;}const r=big.getBoundingClientRect(),dx=(ev.clientX-r.left)-r.width/2,dy=(ev.clientY-r.top)-r.height/2,m=bigAcross/Math.min(r.width,r.height);
+    const la1=view.lat-dy*m/111320,lo1=view.lon+dx*m/(111320*Math.cos(view.lat*MAP_RAD));view={lat:la1,lon:lo1};echo=true;lat.value=+la1.toFixed(5);lon.value=+lo1.toFixed(5);fire(lat);fire(lon);echo=false;syncMirrors();kickBig();scheduleAlt();});
+  big.addEventListener('pointercancel',()=>{pd=null;big.style.cursor='';});
+  window.addEventListener('resize',()=>{drawSmall();if(bigOpen)drawBig();});
+  window.faMapRedraw=()=>{drawSmall();if(bigOpen)drawBig();};
+  drawSmall();})();
 
 mountDemo('demo-setup');mountDemo('demo-guide');
 /* ================= PWA manifest (blob) ================= */
