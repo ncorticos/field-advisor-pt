@@ -297,6 +297,42 @@ details.how .place-grid{padding:12px}
 .eval-sum .big{font-family:var(--mono); font-size:22px; font-weight:600; color:var(--ink)}
 .eval-sum .dots{display:flex; gap:5px}
 
+.exportmenu{position:absolute;z-index:90;min-width:280px;max-width:320px;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 26px rgba(16,24,40,.14);padding:6px}
+.exportitem{display:block;width:100%;text-align:left;border:none;background:none;padding:8px 10px;border-radius:7px;cursor:pointer;font:inherit;color:var(--ink)}
+.exportitem:hover{background:var(--wash)}
+.exportitem b{display:block;font-size:13px}
+.exportitem span{display:block;font-size:11.5px;color:var(--muted)}
+.exportguide{position:fixed;z-index:95;right:24px;top:96px;width:340px;max-width:calc(100vw - 32px);background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 26px rgba(16,24,40,.14);padding:14px 16px;font-size:12.5px;color:var(--ink2)}
+.exportguide b{display:block;font-size:13.5px;color:var(--ink);margin-bottom:6px}
+.exportguide ol{margin:6px 0 10px 18px;padding:0}
+.exportguide li{margin:3px 0;line-height:1.45}
+.exportguide .row{display:flex;gap:8px;justify-content:flex-end}
+.exportguide button{font:inherit;font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer}
+.exportguide button.solid{background:var(--c3);color:#fff;border-color:var(--c3)}
+@media(max-width:700px){.exportguide{right:16px;left:16px;width:auto;top:auto;bottom:calc(16px + env(safe-area-inset-bottom))}}
+.deck-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+@media(max-width:1000px){.deck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.deck-grid{grid-template-columns:1fr}}
+.deck-grid .exportitem{border:1px solid var(--line);background:#fff;padding:10px 12px}
+.deck-grid .exportitem:hover{border-color:#c6cbc4;background:var(--wash)}
+/* ---------- The demonstration: the phone on the sill, as a comic strip ---------- */
+.demo{border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden}
+.demo-stage svg{display:block;width:100%;height:auto}
+.demo-cap{display:flex;gap:10px;align-items:baseline;padding:9px 12px 4px;font-size:12.5px;color:var(--ink);line-height:1.45;min-height:44px}
+.demo-cap b{flex:0 0 auto;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+.demo-bar{display:flex;gap:6px;align-items:center;padding:4px 12px 10px}
+.demo-bar .demo-play{min-width:38px}
+.demo-prog{flex:1 1 auto;height:4px;border-radius:2px;background:var(--line2);overflow:hidden}
+.demo-prog i{display:block;height:100%;width:0;background:var(--ink)}
+.demo-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:10px 12px 12px;border-top:1px solid var(--line2);background:var(--wash)}
+.demo-panel{display:flex;flex-direction:column;gap:4px;padding:0;border:1px solid var(--line);border-radius:7px;background:#fff;overflow:hidden;cursor:pointer;font:inherit;text-align:left}
+.demo-panel svg{display:block;width:100%;height:auto}
+.demo-panel span{font-size:10.5px;line-height:1.35;color:var(--ink2);padding:0 6px 6px}
+.demo-panel.cur{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.demo-panel:hover{border-color:#c6cbc4}
+.s-side .demo-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+#demo-setup{max-width:620px}
+@media(max-width:700px){.demo-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* ---------- Footer ---------- */
 footer{border-top:1px solid var(--line); margin-top:26px; background:var(--wash)}
 .foot{max-width:1680px; margin:0 auto; padding:30px 24px 40px}
@@ -498,6 +534,8 @@ body.setup-mode .filechip{display:none!important}
     </div>
    </div>
    <div class="s-side">
+    <div class="gh" data-pt="Demonstração — o telemóvel no parapeito" data-en="Demonstration — the phone on the sill" data-pl="Demonstracja — telefon na parapecie">Demonstração — o telemóvel no parapeito</div>
+    <div id="demo-setup" style="margin-bottom:6px"></div>
     <div class="gh" data-pt="Como pousar o telemóvel" data-en="How to place the phone" data-pl="Jak położyć telefon">Como pousar o telemóvel</div>
     <div class="place-grid" id="place-setup"></div>
     <div class="gh" data-pt="O que se mede" data-en="What is measured" data-pl="Co jest mierzone">O que se mede</div>
@@ -635,6 +673,7 @@ body.setup-mode .filechip{display:none!important}
     <div class="ctl"><button class="btn" id="btn-copy-sum" data-pt="Copiar resumo" data-en="Copy summary" data-pl="Kopiuj podsumowanie">Copiar resumo</button></div>
     <div class="ctl"><button class="btn warn" id="btn-clear" data-pt="Apagar dados locais" data-en="Erase local data" data-pl="Usuń dane lokalne">Apagar dados locais</button></div>
   </div>
+  <div class="panel"><div class="panel-head"><div class="panel-title"><h3 data-pt="Apresentação — PowerPoint, Google Slides, Canva, LibreOffice" data-en="Presentation — PowerPoint, Google Slides, Canva, LibreOffice" data-pl="Prezentacja — PowerPoint, Google Slides, Canva, LibreOffice">Apresentação — PowerPoint, Google Slides, Canva, LibreOffice</h3><p data-pt="Um relatório em diapositivos editáveis: as escalas de avaliação, as rondas, as tabelas, os gráficos, as fotografias e o método — pronto a juntar à apresentação do grupo." data-en="A report in editable slides: the rating scales, the rounds, the tables, the charts, the photos and the method — ready to drop into the group's presentation." data-pl="Raport w edytowalnych slajdach: skale oceny, rundy, tabele, wykresy, zdjęcia i metoda — gotowy do prezentacji grupy.">Um relatório em diapositivos editáveis: as escalas de avaliação, as rondas, as tabelas, os gráficos, as fotografias e o método — pronto a juntar à apresentação do grupo.</p></div></div><div class="panel-body"><div class="deck-grid" id="deck-items"></div></div></div>
   <div class="panel"><div class="panel-head"><div class="panel-title"><h3 data-pt="Inventário" data-en="Inventory" data-pl="Inwentarz">Inventário</h3><p data-pt="Disponibilidade de dados por módulo." data-en="Data availability per module." data-pl="Dostępność danych wg modułów.">Disponibilidade de dados por módulo.</p></div></div>
   <div class="panel-body tbl-scroll"><table class="data" id="tbl-inv"><thead><tr><th>Módulo</th><th>Estado</th><th>Notas</th></tr></thead><tbody></tbody></table></div></div>
   <div class="sechead"><h3 data-pt="Cobertura das rondas" data-en="Round coverage" data-pl="Pokrycie rund">Cobertura das rondas</h3><span>10:00 · 13:00 · 18:00 · 22:00</span></div>
@@ -648,7 +687,7 @@ body.setup-mode .filechip{display:none!important}
   <div class="pagehead"><h2 data-pt="Apresentação — relatório gráfico" data-en="Presentation — graphic report" data-pl="Prezentacja — raport graficzny">Apresentação — relatório gráfico</h2>
   <p data-pt="Junta todos os resultados das 4 rondas em cartões prontos a apresentar. Exporte em PDF para o PowerPoint ou para entregar." data-en="Joins all results from the 4 rounds in presentation-ready cards. Export to PDF for PowerPoint or hand-in." data-pl="Łączy wszystkie wyniki z 4 rund w karty gotowe do prezentacji. Wyeksportuj do PDF dla PowerPoint lub do oddania.">Junta todos os resultados das 4 rondas em cartões prontos a apresentar. Exporte em PDF para o PowerPoint ou para entregar.</p></div>
   <div class="controls no-print">
-    <div class="ctl"><button class="btn solid" id="btn-pdf" data-pt="Exportar PDF" data-en="Export PDF" data-pl="Eksportuj PDF">Exportar PDF</button></div>
+    <div class="ctl"><button class="btn solid btn-deck" type="button" data-pt="Exportar apresentação ▾" data-en="Export presentation ▾" data-pl="Eksportuj prezentację ▾">Exportar apresentação ▾</button><button class="btn" id="btn-pdf" data-pt="Exportar PDF" data-en="Export PDF" data-pl="Eksportuj PDF">Exportar PDF</button></div>
     <div class="ctl"><label data-pt="Imagem do cenário" data-en="Scene image" data-pl="Zdjęcie scenariusza">Imagem do cenário</label><button class="btn" id="btn-cover">📷 <span data-pt="Escolher" data-en="Choose" data-pl="Wybierz">Escolher</span></button><img id="cover-prev" alt=""><button class="btn warn" id="btn-cover-del" data-pt="Remover" data-en="Remove" data-pl="Usuń">Remover</button><input type="file" id="file-cover" accept="image/*" style="display:none"></div>
     <div class="ctl"><span data-pt="Na janela de impressão escolha «Guardar como PDF» (paisagem recomendado)." data-en="In the print dialog choose 'Save as PDF' (landscape recommended)." data-pl="W oknie drukowania wybierz „Zapisz jako PDF” (zalecana orientacja pozioma).">Na janela de impressão escolha «Guardar como PDF» (paisagem recomendado).</span><span class="pill empty" id="rep-status">—</span></div>
   </div>
@@ -658,6 +697,7 @@ body.setup-mode .filechip{display:none!important}
 <section class="page" id="p-guide">
   <div class="pagehead"><h2 data-pt="Guia — o que é aceitável?" data-en="Guide — what counts as acceptable?" data-pl="Przewodnik — co jest dopuszczalne?">Guia — o que é aceitável?</h2>
   <p data-pt="Semáforo para ler os seus números: verde cumpre a referência, amarelo pede atenção, vermelho reprova. Os mesmos limites colorem os valores medidos e os cartões do relatório." data-en="Traffic lights for your numbers: green meets the reference, amber calls for attention, red fails. The same limits colour the measured values and the report cards." data-pl="Światła drogowe dla Twoich liczb: zielone spełnia odniesienie, bursztynowe wymaga uwagi, czerwone nie zalicza. Te same progi kolorują zmierzone wartości i karty raportu.">Semáforo para ler os seus números: verde cumpre a referência, amarelo pede atenção, vermelho reprova. Os mesmos limites colorem os valores medidos e os cartões do relatório.</p></div>
+  <div class="panel"><div class="panel-head"><div class="panel-title"><h3 data-pt="Demonstração — dentro e fora da janela" data-en="Demonstration — inside and outside the window" data-pl="Demonstracja — wewnątrz i na zewnątrz okna">Demonstração — dentro e fora da janela</h3><p data-pt="Oito passos, como uma banda desenhada: toque num quadro para o ver." data-en="Eight steps, like a comic strip: tap a panel to see it." data-pl="Osiem kroków jak w komiksie: dotknij kadru, aby go zobaczyć.">Oito passos, como uma banda desenhada: toque num quadro para o ver.</p></div></div><div class="panel-body" style="max-width:760px"><div id="demo-guide"></div></div></div>
   <div class="eval-grid" id="guide-scales" style="margin-bottom:16px"></div>
   <div class="panel"><div class="panel-head"><div class="panel-title"><h3 data-pt="Ruído — LAeq de 1 min" data-en="Noise — 1-min LAeq" data-pl="Hałas — 1-min LAeq">Ruído — LAeq de 1 min</h3><p data-pt="Referências OMS 2018 e RRAE; telemóvel com offset calibrável." data-en="WHO 2018 and RRAE references; phone with calibratable offset." data-pl="Odniesienia WHO 2018 i RRAE; telefon z kalibrowanym offsetem.">Referências OMS 2018 e RRAE; telemóvel com offset calibrável.</p></div></div>
   <div class="panel-body tbl-scroll"><table class="data"><thead><tr><th data-pt="Faixa" data-en="Range" data-pl="Zakres">Faixa</th><th data-pt="Comentário" data-en="Comment" data-pl="Komentarz">Comentário</th></tr></thead><tbody>
@@ -688,7 +728,7 @@ body.setup-mode .filechip{display:none!important}
   <div class="foot">
     <div class="foot-top">
       <div>
-        <span class="appname">Field Advisor PT</span><span class="ver">v1.1.0</span>
+        <span class="appname">Field Advisor PT</span><span class="ver" id="footVer">v1.2.0</span>
         <p class="tag" data-pt="Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento." data-en="A didactic field meter for architecture students: the noise, reverberation and light of their workspace — inside and out — before any regulation applies." data-pl="Dydaktyczny miernik terenowy dla studentów architektury: hałas, pogłos i światło ich przestrzeni pracy — wewnątrz i na zewnątrz — zanim zastosuje się jakiekolwiek przepisy.">Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento.</p>
       </div>
       <div>
@@ -697,7 +737,7 @@ body.setup-mode .filechip{display:none!important}
         <h5 style="margin-top:14px" data-pt="Instituição" data-en="Institution" data-pl="Instytucja">Instituição</h5>
         <p>Lisbon School of Architecture,<br>Universidade de Lisboa</p>
         <h5 style="margin-top:14px" data-pt="Desenvolvido com" data-en="Developed with" data-pl="Opracowano z">Desenvolvido com</h5>
-        <p>Muse Spark 1.3 · Claude Opus 5 (Anthropic)</p>
+        <p id="footBuilt">Claude Opus 5.5 Medium (Anthropic)</p>
       </div>
       <div>
         <h5 data-pt="Método" data-en="Method" data-pl="Metoda">Método</h5>
@@ -733,6 +773,8 @@ body.setup-mode .filechip{display:none!important}
 
 <script>
 "use strict";
+const APP={name:'Field Advisor PT',tag:'FA PT',version:'1.2.0',built:'2026-10-29T10:23',author:'Nuno Dinis Cortiços',institution:'Lisbon School of Architecture, Universidade de Lisboa',builtWith:'Claude Opus 5.5 Medium (Anthropic)'};
+function appStamp(){const d=new Date(APP.built),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],p2=v=>String(v).padStart(2,'0');return 'v'+APP.version+' · '+d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear()+' '+p2(d.getHours())+':'+p2(d.getMinutes());}
 /* ================= i18n / tabs / site ================= */
 const $=id=>document.getElementById(id);
 let LANG='pt';
@@ -769,11 +811,11 @@ let noiseSessions=[],rtMeas=[],lightReads=[];
 try{noiseSessions=JSON.parse(localStorage.getItem('fa-noise')||'[]');rtMeas=JSON.parse(localStorage.getItem('fa-rt')||'[]');lightReads=JSON.parse(localStorage.getItem('fa-light')||'[]');}catch(e){}
 function persist(){try{localStorage.setItem('fa-noise',JSON.stringify(noiseSessions));localStorage.setItem('fa-rt',JSON.stringify(rtMeas));localStorage.setItem('fa-light',JSON.stringify(lightReads));}catch(e){}}
 /* ================= canvas helpers ================= */
-function fitCanvas(c){const r=c.getBoundingClientRect(),d=Math.min(3,window.devicePixelRatio||1);const W=Math.max(280,r.width),H=220;c.width=W*d;c.height=H*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x,W,H};}
+function fitCanvas(c){const r=c.getBoundingClientRect(),d=Math.min(3,window.devicePixelRatio||1);const W=Math.max(280,(typeof FORCEW!=="undefined"&&FORCEW)||r.width),H=220;c.width=W*d;c.height=H*d;const x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);return{x,W,H};}
 function siteLines(){readSite();return[(site.place||'—')+' · '+site.inout+' · '+(site.spacetype||''),'lat '+(site.lat||'—')+' lon '+(site.lon||'—')+' · '+(site.stamp||new Date().toISOString()).slice(0,16).replace('T',' ')+' · '+site.windows+'/'+site.occup+'/'+site.sky];}
 function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);}
-function csvBlob(head,rows,extra){const L=siteLines();const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';let s='﻿'+'# Field Advisor PT v1.1.0 · '+L[0]+'\n# '+L[1]+'\n# '+(extra||'')+'\n'+head.map(q).join(',')+'\n'+rows.map(r=>r.map(q).join(',')).join('\n')+'\n';return new Blob([s],{type:'text/csv;charset=utf-8'});}
-function stampPNG(srcCanvas,name,title){const d=Math.min(3,window.devicePixelRatio||1);const src=srcCanvas;const W=src.width/d,H=src.height/d;const c=document.createElement('canvas');c.width=(W)*2;c.height=(H+86)*2;const x=c.getContext('2d');x.scale(2,2);x.fillStyle='#fff';x.fillRect(0,0,W,H+86);x.fillStyle='#14171a';x.font='650 13px ui-sans-serif,system-ui';x.fillText('Field Advisor PT v1.1.0 · '+title,W-8,2,{},{},0);x.fillStyle='#14171a';x.font='650 12px ui-sans-serif,system-ui';x.fillText(siteLines()[0].slice(0,90),10,16);x.fillStyle='#7b838b';x.font='11px ui-monospace,monospace';x.fillText(siteLines()[1].slice(0,110),10,32);x.drawImage(src,0,0,src.width,src.height,10,42,W-20,H-10);x.fillStyle='#a8afb5';x.font='10px ui-sans-serif,system-ui';x.fillText('Teaching instrument — phone sensors not calibrated · N. D. Cortiços, FA-ULisboa',10,H+74);c.toBlob(b=>download(name,b),'image/png');}
+function csvBlob(head,rows,extra){const L=siteLines();const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';let s='﻿'+'# '+APP.name+' v'+APP.version+' · '+L[0]+'\n# '+L[1]+'\n# '+(extra||'')+'\n'+head.map(q).join(',')+'\n'+rows.map(r=>r.map(q).join(',')).join('\n')+'\n';return new Blob([s],{type:'text/csv;charset=utf-8'});}
+function stampPNG(srcCanvas,name,title){const d=Math.min(3,window.devicePixelRatio||1);const src=srcCanvas;const W=src.width/d,H=src.height/d;const c=document.createElement('canvas');c.width=(W)*2;c.height=(H+86)*2;const x=c.getContext('2d');x.scale(2,2);x.fillStyle='#fff';x.fillRect(0,0,W,H+86);x.fillStyle='#14171a';x.font='650 13px ui-sans-serif,system-ui';x.fillText(''+APP.name+' v'+APP.version+' · '+title,W-8,2,{},{},0);x.fillStyle='#14171a';x.font='650 12px ui-sans-serif,system-ui';x.fillText(siteLines()[0].slice(0,90),10,16);x.fillStyle='#7b838b';x.font='11px ui-monospace,monospace';x.fillText(siteLines()[1].slice(0,110),10,32);x.drawImage(src,0,0,src.width,src.height,10,42,W-20,H-10);x.fillStyle='#a8afb5';x.font='10px ui-sans-serif,system-ui';x.fillText('Teaching instrument — phone sensors not calibrated · N. D. Cortiços, FA-ULisboa',10,H+74);c.toBlob(b=>download(name,b),'image/png');}
 /* ================= NOISE ================= */
 let AC=null,micStream=null,analyser=null,timeBuf=null,micOn=false;
 let logging=false,logT=[],logV=[],logStart=0,rafId=0,lastLive=0;
@@ -978,7 +1020,7 @@ function renderExport(){$('exp-n-noise').textContent=noiseSessions.length;$('exp
     return '<tr><td>'+sl+'</td><td>'+cell(nz)+'</td><td>'+cell(rt)+'</td><td>'+cell(li)+' / '+cell(le)+'</td></tr>';}).join('');
   $('export-summary').textContent=(site.place||'—')+' · '+site.inout+' · '+(site.round||'livre')+' · '+noiseSessions.length+'×ruído '+rtMeas.length+'×RT '+lightReads.length+'×luz · hip: '+((site.hyp||[]).join(' ')||'—')+' · '+new Date().toLocaleString();}
 $('btn-csv-noise2').onclick=()=>$('btn-noise-csv').click();$('btn-csv-rt2').onclick=()=>$('btn-rt-csv').click();$('btn-csv-light2').onclick=()=>$('btn-light-csv').click();
-$('btn-json').onclick=()=>{readSite();download('field-all.json',new Blob([JSON.stringify({app:'Field Advisor PT v1.1.0',site,noiseSessions,rtMeas,lightReads},null,2)],{type:'application/json'}));};
+$('btn-json').onclick=()=>{readSite();download('field-all.json',new Blob([JSON.stringify({app:''+APP.name+' v'+APP.version+'',site,noiseSessions,rtMeas,lightReads},null,2)],{type:'application/json'}));};
 $('btn-copy-sum').onclick=async()=>{readSite();const s='Field Advisor · '+(site.place||'—')+' '+site.inout+' · '+site.lat+','+site.lon+' · ruído '+noiseSessions.length+' (LAeq '+(noiseSessions.length?noiseSessions[noiseSessions.length-1].leq:'—')+' dB) · RT '+(rtMeas.length?rtMeas[rtMeas.length-1].rt60+' s':'—')+' · luz '+(lightReads.length?lightReads[lightReads.length-1].lux+' lx':'—');try{await navigator.clipboard.writeText(s);toast('copied');}catch(e){toast(s);}};
 $('btn-clear').onclick=()=>{if(!confirm(T('Apagar todas as medições locais?','Erase all local measurements?','Usunąć wszystkie lokalne pomiary?')))return;noiseSessions=[];rtMeas=[];lightReads=[];persist();renderAll();toast('cleared');};
 /* ================= PRESENT ================= */
@@ -1186,7 +1228,782 @@ function renderLiveScales(){const io=segGet('seg-inout')||'interior',night=isNig
   const dfv=parseFloat(String($('light-df').textContent).replace(',','.'));const de=$('df-scale');if(de)de.innerHTML=scaleHTML('df',isFinite(dfv)?dfv:null,{compact:true,empty:T('Escolha uma referência exterior.','Pick an outdoor reference.','Wybierz odniesienie zewnętrzne.')});}
 function evalSlideHTML(){const r=evalCards('all');if(!r.rate.length)return '';return '<div class="rep-slide"><div class="rep-slide-head"><b>'+escapeHtml(T('Avaliação','Evaluation','Ocena'))+'</b><span>'+escapeHtml(T('todas as rondas · verde bom, vermelho mau','all rounds · green good, red poor','wszystkie rundy · zielony dobrze, czerwony źle'))+'</span></div><div class="rep-grid">'+r.ac.concat(r.lc).join('')+'</div></div>';}
 
-function renderAll(){renderNoise();renderRT();renderLight();renderExport();renderReport();showCover();updateChip();renderPlacements();renderEval();renderGuideScales();renderLiveScales();}
+function renderAll(){if(typeof renderDeckPanel==='function')renderDeckPanel();if(typeof relangDemos==='function')relangDemos();const fv=$('footVer');if(fv)fv.textContent=appStamp();renderNoise();renderRT();renderLight();renderExport();renderReport();showCover();updateChip();renderPlacements();renderEval();renderGuideScales();renderLiveScales();}
+/* ---- slide engines, as in Architecture Advisor PT ---- */
+const VPPTX = (() => {
+  const EMU = 914400;
+  const SW = Math.round(13.333 * EMU), SH = Math.round(7.5 * EMU);
+  const C = { bg:'1B2730', panel:'243B46', line:'3A4F59', amber:'E8A33D', teal:'7FB3A3',
+              white:'FFFFFF', muted:'9AA7B0', box:'3A4034', green:'8FCB8F', red:'D98C8C' };
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const CRC = (() => {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  const crc32 = bytes => {
+    let c = 0xFFFFFFFF;
+    for (let i = 0; i < bytes.length; i++) c = CRC[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  };
+  const enc = new TextEncoder();
+  let idc = 0;
+  const nid = () => ++idc + 1;
+  const X = v => Math.round(v * EMU);
+  // ---- text ----
+  const run = (t, o) => {
+    o = o || {};
+    return '<a:r><a:rPr lang="en-US" sz="' + Math.round((o.sz || 14) * 100) + '"' +
+      (o.b ? ' b="1"' : '') + (o.i ? ' i="1"' : '') +
+      '><a:solidFill><a:srgbClr val="' + (o.color || C.white) + '"/></a:solidFill>' +
+      '<a:latin typeface="Calibri"/><a:cs typeface="Calibri"/></a:rPr>' +
+      '<a:t>' + esc(t) + '</a:t></a:r>';
+  };
+  /* v2.52.0: written to the schema, so PowerPoint opens it without a
+     repair and Slides, Canva and LibreOffice import it whole: a paragraph
+     always closes on its end properties, a text body always holds one */
+  const para = (runs, o) => {
+    o = o || {};
+    const rs = runs.filter(r => String(r.t) !== '');
+    const sz = Math.round(((rs[0] && rs[0].sz) || (runs[0] && runs[0].sz) || 14) * 100);
+    return '<a:p>' + (o.align ? '<a:pPr algn="' + o.align + '"/>' : '') +
+      rs.map(r => run(r.t, r)).join('') + '<a:endParaRPr lang="en-US" sz="' + sz + '" dirty="0"/></a:p>';
+  };
+  const bodyPr = o => '<a:bodyPr wrap="square" lIns="' + X(o.padL !== undefined ? o.padL : 0.1) + '" rIns="' + X(o.padR !== undefined ? o.padR : 0.1) +
+    '" tIns="' + X(o.padT !== undefined ? o.padT : 0.05) + '" bIns="' + X(o.padB !== undefined ? o.padB : 0.05) + '" rtlCol="0" anchor="' +
+    (o.anchor || 't') + '"><a:noAutofit/></a:bodyPr>';
+  const paras = (ps, tag) => '<' + tag + '>' + '__BP__' + '<a:lstStyle/>' +
+    (ps.length ? ps.map(p => para(p.runs, p)).join('') : '<a:p><a:endParaRPr lang="en-US" dirty="0"/></a:p>') + '</' + tag + '>';
+  const txBody = (ps, o) => paras(ps || [], 'p:txBody').replace('__BP__', bodyPr(o || {}));
+  // ---- shapes ----
+  const shape = (o) => {
+    const id = nid();
+    return '<p:sp><p:nvSpPr><p:cNvPr id="' + id + '" name="s' + id + '"/>' +
+      '<p:cNvSpPr><a:spLocks noChangeArrowheads="1"/></p:cNvSpPr><p:nvPr/></p:nvSpPr>' +
+      '<p:spPr><a:xfrm><a:off x="' + X(o.x) + '" y="' + X(o.y) + '"/>' +
+      '<a:ext cx="' + X(o.w) + '" cy="' + X(o.h) + '"/></a:xfrm>' +
+      '<a:prstGeom prst="' + (o.round ? 'roundRect' : 'rect') + '"><a:avLst/></a:prstGeom>' +
+      (o.fill ? '<a:solidFill><a:srgbClr val="' + o.fill + '"/></a:solidFill>' : '<a:noFill/>') +
+      (o.line ? '<a:ln w="' + (o.lnW || 19050) + '"><a:solidFill><a:srgbClr val="' + (o.lineColor || o.fill) + '"/></a:solidFill></a:ln>'
+              : '<a:ln><a:noFill/></a:ln>') +
+      '</p:spPr>' + txBody(o.paras || [], o) + '</p:sp>';
+  };
+  /* a native table (a:tbl), so every importer keeps it a table: rows take
+     their height (o.rowHs per row, or o.rowH), the head row in the panel
+     colour and amber, the body banded */
+  const table = (o) => {
+    const id = nid(), hs = o.rows.map((_, ri) => (o.rowHs ? o.rowHs[ri] : o.rowH) || 0.34);
+    const W = o.colW.reduce((a, b) => a + b, 0), H = hs.reduce((a, b) => a + b, 0);
+    const ln = tag => '<a:' + tag + ' w="6350"><a:solidFill><a:srgbClr val="' + C.line + '"/></a:solidFill></a:' + tag + '>';
+    const rows = o.rows.map((row, ri) => {
+      const idx = (o.r0 || 0) + ri;
+      return '<a:tr h="' + X(hs[ri]) + '">' + row.map((cell, ci) => {
+        const al = (o.aligns && o.aligns[ci]) || (ci === 0 ? 'l' : 'r');
+        const body = paras([{ runs:[{ t:cell.t, sz:cell.sz || o.sz || 11, b:!!cell.b || idx === 0,
+          color:cell.color || (idx === 0 ? C.amber : C.white) }], align:al }], 'a:txBody').replace('__BP__', '<a:bodyPr/>');
+        return '<a:tc>' + body + '<a:tcPr marL="' + X(0.08) + '" marR="' + X(0.08) + '" marT="' + X(0.03) + '" marB="' + X(0.03) + '" anchor="ctr">' +
+          ln('lnL') + ln('lnR') + ln('lnT') + ln('lnB') +
+          '<a:solidFill><a:srgbClr val="' + (idx === 0 ? C.panel : (idx % 2 ? '22313B' : C.bg)) + '"/></a:solidFill></a:tcPr></a:tc>';
+      }).join('') + '</a:tr>';
+    }).join('');
+    return '<p:graphicFrame><p:nvGraphicFramePr><p:cNvPr id="' + id + '" name="Table ' + id + '"/>' +
+      '<p:cNvGraphicFramePr><a:graphicFrameLocks noGrp="1"/></p:cNvGraphicFramePr><p:nvPr/></p:nvGraphicFramePr>' +
+      '<p:xfrm><a:off x="' + X(o.x) + '" y="' + X(o.y) + '"/><a:ext cx="' + X(W) + '" cy="' + X(H) + '"/></p:xfrm>' +
+      '<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/table"><a:tbl>' +
+      '<a:tblPr firstRow="1" bandRow="1"/><a:tblGrid>' + o.colW.map(w => '<a:gridCol w="' + X(w) + '"/>').join('') + '</a:tblGrid>' +
+      rows + '</a:tbl></a:graphicData></a:graphic></p:graphicFrame>';
+  };
+  const bgRect = () => shape({ x:0, y:0, w:13.333, h:7.5, fill:C.bg });
+  /* v1.124 (Architecture Advisor): a PNG picture, placed in inches like a shape */
+  const pic = o => ({ pic:true, x:o.x, y:o.y, w:o.w, h:o.h, bytes:o.bytes });
+  // ---- package ----
+  function pack(slides) {
+    const F = {};
+    const slideNames = slides.map((_, i) => 'ppt/slides/slide' + (i + 1) + '.xml');
+    F['[Content_Types].xml'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+      '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+      '<Default Extension="xml" ContentType="application/xml"/>' +
+      '<Default Extension="png" ContentType="image/png"/>' +
+      '<Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/>' +
+      '<Override PartName="/ppt/slideMasters/slideMaster1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml"/>' +
+      '<Override PartName="/ppt/slideLayouts/slideLayout1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml"/>' +
+      '<Override PartName="/ppt/theme/theme1.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/>' +
+      '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>' +
+      '<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>' +
+      slideNames.map(n => '<Override PartName="/' + n + '" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/>').join('') +
+      '</Types>';
+    F['_rels/.rels'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/>' +
+      '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>' +
+      '<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>' +
+      '</Relationships>';
+    const sldIds = slides.map((_, i) =>
+      '<p:sldId id="' + (256 + i) + '" r:id="rId' + (i + 3) + '"/>').join('');
+    F['ppt/presentation.xml'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<p:presentation xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" ' +
+      'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ' +
+      'xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">' +
+      '<p:sldMasterIdLst><p:sldMasterId id="2147483648" r:id="rId1"/></p:sldMasterIdLst>' +
+      '<p:sldIdLst>' + sldIds + '</p:sldIdLst>' +
+      '<p:sldSz cx="' + SW + '" cy="' + SH + '"/>' +
+      '<p:notesSz cx="6858000" cy="9144000"/></p:presentation>';
+    let rels = '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="slideMasters/slideMaster1.xml"/>' +
+      '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/>';
+    slides.forEach((_, i) => {
+      rels += '<Relationship Id="rId' + (i + 3) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide' + (i + 1) + '.xml"/>';
+    });
+    F['ppt/_rels/presentation.xml.rels'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + rels + '</Relationships>';
+    F['ppt/slideMasters/slideMaster1.xml'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<p:sldMaster xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" ' +
+      'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ' +
+      'xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:cSld><p:bg><p:bgPr>' +
+      '<a:solidFill><a:srgbClr val="' + C.bg + '"/></a:solidFill></p:bgPr></p:bg>' +
+      '<p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>' +
+      '<p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="' + SW + '" cy="' + SH + '"/>' +
+      '<a:chOff x="0" y="0"/><a:chExt cx="' + SW + '" cy="' + SH + '"/></a:xfrm></p:grpSpPr>' +
+      '</p:spTree></p:cSld><p:clrMap bg1="lt1" tx1="dk1" bg2="lt2" tx2="dk2" accent1="accent1" accent2="accent2" ' +
+      'accent3="accent3" accent4="accent4" accent5="accent5" accent6="accent6" hlink="hlink" folHlink="folHlink"/>' +
+      '<p:sldLayoutIdLst><p:sldLayoutId id="2147483649" r:id="rId1"/></p:sldLayoutIdLst>' +
+      '<p:txStyles><p:titleStyle><a:lvl1pPr><a:defRPr sz="4400" b="1"/></a:lvl1pPr></p:titleStyle>' +
+      '<p:bodyStyle><a:lvl1pPr><a:defRPr sz="1800"/></a:lvl1pPr></p:bodyStyle>' +
+      '<p:otherStyle><a:lvl1pPr><a:defRPr sz="1800"/></a:lvl1pPr></p:otherStyle></p:txStyles></p:sldMaster>';
+    F['ppt/slideMasters/_rels/slideMaster1.xml.rels'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>' +
+      '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="../theme/theme1.xml"/>' +
+      '</Relationships>';
+    F['ppt/slideLayouts/slideLayout1.xml'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" ' +
+      'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ' +
+      'xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="blank" preserve="1">' +
+      '<p:cSld name="Blank"><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/>' +
+      '<p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/>' +
+      '<a:ext cx="' + SW + '" cy="' + SH + '"/><a:chOff x="0" y="0"/>' +
+      '<a:chExt cx="' + SW + '" cy="' + SH + '"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld>' +
+      '<p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sldLayout>';
+    F['ppt/slideLayouts/_rels/slideLayout1.xml.rels'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="../slideMasters/slideMaster1.xml"/>' +
+      '</Relationships>';
+    F['ppt/theme/theme1.xml'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="Advisor">' +
+      '<a:themeElements><a:clrScheme name="Advisor">' +
+      '<a:dk1><a:srgbClr val="1B2730"/></a:dk1><a:lt1><a:srgbClr val="FFFFFF"/></a:lt1>' +
+      '<a:dk2><a:srgbClr val="243B46"/></a:dk2><a:lt2><a:srgbClr val="9AA7B0"/></a:lt2>' +
+      '<a:accent1><a:srgbClr val="E8A33D"/></a:accent1><a:accent2><a:srgbClr val="7FB3A3"/></a:accent2>' +
+      '<a:accent3><a:srgbClr val="8FCB8F"/></a:accent3><a:accent4><a:srgbClr val="D98C8C"/></a:accent4>' +
+      '<a:accent5><a:srgbClr val="3A4034"/></a:accent5><a:accent6><a:srgbClr val="33454F"/></a:accent6>' +
+      '<a:hlink><a:srgbClr val="E8A33D"/></a:hlink><a:folHlink><a:srgbClr val="9AA7B0"/></a:folHlink>' +
+      '</a:clrScheme><a:fontScheme name="Advisor">' +
+      '<a:majorFont><a:latin typeface="Calibri"/><a:ea typeface=""/><a:cs typeface=""/></a:majorFont>' +
+      '<a:minorFont><a:latin typeface="Calibri"/><a:ea typeface=""/><a:cs typeface=""/></a:minorFont></a:fontScheme>' +
+      '<a:fmtScheme name="Advisor"><a:fillStyleLst>' +
+      '<a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:fillStyleLst>' +
+      '<a:lnStyleLst><a:ln w="6350"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:ln><a:ln w="12700"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:ln><a:ln w="19050"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:ln></a:lnStyleLst>' +
+      '<a:effectStyleLst><a:effectStyle><a:effectLst/></a:effectStyle><a:effectStyle><a:effectLst/></a:effectStyle><a:effectStyle><a:effectLst/></a:effectStyle></a:effectStyleLst>' +
+      '<a:bgFillStyleLst><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:bgFillStyleLst>' +
+      '</a:fmtScheme></a:themeElements><a:objectDefaults/><a:extraClrSchemeLst/></a:theme>';
+    const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+    F['docProps/core.xml'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" ' +
+      'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" ' +
+      'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' +
+      '<dc:title>Field Advisor PT — fieldwork report</dc:title>' +
+      '<dc:creator>Nuno Dinis Cortiços</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">' +
+      now + '</dcterms:created></cp:coreProperties>';
+    F['docProps/app.xml'] =
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" ' +
+      'xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">' +
+      '<Application>Field Advisor PT</Application><Slides>' + slides.length + '</Slides></Properties>';
+    const head = (shapes) =>
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+      '<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" ' +
+      'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ' +
+      'xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:cSld><p:spTree>' +
+      '<p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>' +
+      '<p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="' + SW + '" cy="' + SH + '"/>' +
+      '<a:chOff x="0" y="0"/><a:chExt cx="' + SW + '" cy="' + SH + '"/></a:xfrm></p:grpSpPr>' +
+      shapes.join('') + '</p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr></p:sld>';
+    let media = 0;
+    slides.forEach((shapes, i) => {
+      let rx = '';
+      const out = shapes.map(s => {
+        if (typeof s === 'string') return s;
+        const n = ++media, rid = 'rId' + (n + 100), id = nid();
+        F['ppt/media/image' + n + '.png'] = s.bytes;
+        rx += '<Relationship Id="' + rid + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/image' + n + '.png"/>';
+        return '<p:pic><p:nvPicPr><p:cNvPr id="' + id + '" name="pic' + id + '"/><p:cNvPicPr><a:picLocks noChangeAspect="1"/></p:cNvPicPr><p:nvPr/></p:nvPicPr>' +
+          '<p:blipFill><a:blip r:embed="' + rid + '"/><a:stretch><a:fillRect/></a:stretch></p:blipFill>' +
+          '<p:spPr><a:xfrm><a:off x="' + X(s.x) + '" y="' + X(s.y) + '"/><a:ext cx="' + X(s.w) + '" cy="' + X(s.h) + '"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></p:spPr></p:pic>';
+      });
+      F[slideNames[i]] = head(out);
+      F['ppt/slides/_rels/slide' + (i + 1) + '.xml.rels'] =
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+        '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>' +
+        rx + '</Relationships>';
+    });
+    // ---- stored zip ----
+    const names = Object.keys(F);
+    const chunks = [];
+    const central = [];
+    let offset = 0;
+    names.forEach(nm => {
+      const data = typeof F[nm] === 'string' ? enc.encode(F[nm]) : F[nm];
+      const crc = crc32(data);
+      const nl = enc.encode(nm);
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true);
+      lh.setUint16(4, 20, true);
+      lh.setUint16(6, 0x0800, true);
+      lh.setUint16(8, 0, true);
+      lh.setUint16(10, 0x21, true);
+      lh.setUint16(12, 0x21, true);
+      lh.setUint32(14, crc, true);
+      lh.setUint32(18, data.length, true);
+      lh.setUint32(22, data.length, true);
+      lh.setUint16(26, nl.length, true);
+      lh.setUint16(28, 0, true);
+      chunks.push(new Uint8Array(lh.buffer), nl, data);
+      central.push({ nm:nl, crc, len:data.length, offset });
+      offset += 30 + nl.length + data.length;
+    });
+    const csize = central.reduce((a, c) => a + 46 + c.nm.length, 0);
+    const cstart = offset;
+    central.forEach(c => {
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true);
+      ch.setUint16(4, 20, true);
+      ch.setUint16(6, 20, true);
+      ch.setUint16(8, 0x0800, true);
+      ch.setUint16(10, 0, true);
+      ch.setUint16(12, 0x21, true);
+      ch.setUint16(14, 0x21, true);
+      ch.setUint32(16, c.crc, true);
+      ch.setUint32(20, c.len, true);
+      ch.setUint32(24, c.len, true);
+      ch.setUint16(28, c.nm.length, true);
+      ch.setUint16(30, 0, true);
+      ch.setUint16(32, 0, true);
+      ch.setUint16(34, 0, true);
+      ch.setUint16(36, 0, true);
+      ch.setUint32(38, 0, true);
+      ch.setUint32(42, c.offset, true);
+      chunks.push(new Uint8Array(ch.buffer), c.nm);
+    });
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true);
+    end.setUint16(8, names.length, true);
+    end.setUint16(10, names.length, true);
+    end.setUint32(12, csize, true);
+    end.setUint32(16, cstart, true);
+    chunks.push(new Uint8Array(end.buffer));
+    return new Blob(chunks, { type:'application/vnd.openxmlformats-officedocument.presentationml.presentation' });
+  }
+  return { build:pack, C, shape, table, bgRect, esc, pic };
+})();
+
+/* ==================== ODP engine (v2.41.0): native OpenDocument output ====================
+   Same shape/table call pattern as the PPTX engine above, so the report code
+   below runs unchanged against either writer. Positioning in inches in,
+   centimetres on the wire. Styling follows what LibreOffice itself writes:
+   fills and strokes live in named graphic styles (note the svg: namespace on
+   stroke attributes), text in named paragraph/text styles — no inline fo:.
+   Tables are grids of boxes, exactly like the .pptx ones. */
+const VODP = (() => {
+  const C = { bg:'1B2730', panel:'243B46', line:'3A4F59', amber:'E8A33D', teal:'7FB3A3',
+              white:'FFFFFF', muted:'9AA7B0', box:'3A4034', green:'8FCB8F', red:'D98C8C' };
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const cm = v => (v * 2.54).toFixed(3) + 'cm';
+  const NS = 'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" ' +
+    'xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" ' +
+    'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" ' +
+    'xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" ' +
+    'xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" ' +
+    'xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" ' +
+    'xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" ' +
+    'xmlns:xlink="http://www.w3.org/1999/xlink"';
+  const NSMETA = 'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" ' +
+    'xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" ' +
+    'xmlns:dc="http://purl.org/dc/elements/1.1/"';
+  let nuid = 0;
+  const gstyles = {};
+  /* v2.52.0: a frame keeps its size and wraps its text — LibreOffice grows
+     a custom shape round its text and padding by default, which pushed
+     values off the slide and split the colour strips — padding and the
+     vertical anchor ride the same style */
+  const gstyle = (fill, stroke, strokew, anchor, pad) => {
+    const k = (fill || '-') + '|' + (stroke || '-') + '|' + (strokew || 0) + '|' + (anchor || 't') + '|' + pad.join(',');
+    if (!gstyles[k]) {
+      const nm = 'gr' + Object.keys(gstyles).length;
+      gstyles[k] = '<style:style style:name="' + nm + '" style:family="graphic">' +
+        '<style:graphic-properties draw:fill="' + (fill ? 'solid' : 'none') + '"' +
+        (fill ? ' draw:fill-color="#' + fill + '"' : '') +
+        ' draw:stroke="' + (stroke ? 'solid' : 'none') + '"' +
+        (stroke ? ' svg:stroke-color="#' + stroke + '" svg:stroke-width="' + strokew + 'pt"' : '') +
+        ' draw:auto-grow-height="false" draw:auto-grow-width="false" fo:wrap-option="wrap"' +
+        ' draw:textarea-horizontal-align="justify" draw:textarea-vertical-align="' + (anchor === 'ctr' ? 'middle' : 'top') + '"' +
+        ' fo:padding-top="' + pad[0] + 'cm" fo:padding-right="' + pad[1] + 'cm" fo:padding-bottom="' + pad[2] + 'cm" fo:padding-left="' + pad[3] + 'cm"' +
+        ' draw:shadow="hidden"/></style:style>';
+    }
+    return 'gr' + Object.keys(gstyles).indexOf(k);
+  };
+  const pstyles = {};
+  const pstyle = (align) => {
+    const k = 'p|' + (align || 'l');
+    if (!pstyles[k]) {
+      const nm = 'P' + Object.keys(pstyles).length;
+      const al = align === 'r' ? 'end' : align === 'ctr' ? 'center' : 'start';
+      pstyles[k] = '<style:style style:name="' + nm + '" style:family="paragraph">' +
+        '<style:paragraph-properties fo:margin-left="0cm" fo:margin-right="0cm" ' +
+        'fo:margin-top="0cm" fo:margin-bottom="0cm" fo:text-align="' + al + '"/>' +
+        '</style:style>';
+    }
+    return 'P' + Object.keys(pstyles).indexOf(k);
+  };
+  const tstyles = {};
+  const tstyle = (o) => {
+    const k = 't|' + (o.sz || 12) + '|' + (o.color || C.white) + '|' + (o.b ? 'b' : '') + (o.i ? 'i' : '');
+    if (!tstyles[k]) {
+      const nm = 'T' + Object.keys(tstyles).length;
+      tstyles[k] = '<style:style style:name="' + nm + '" style:family="text">' +
+        '<style:text-properties fo:font-family="Calibri" fo:font-size="' + (o.sz || 12) + 'pt" ' +
+        'fo:color="#' + (o.color || C.white) + '"' +
+        (o.b ? ' fo:font-weight="bold"' : '') + (o.i ? ' fo:font-style="italic"' : '') +
+        '/></style:style>';
+    }
+    return 'T' + Object.keys(tstyles).indexOf(k);
+  };
+  const run = (t, o) => '<text:span text:style-name="' + tstyle(o) + '">' + esc(t) + '</text:span>';
+  const para = (runs, o) => {
+    o = o || {};
+    return '<text:p text:style-name="' + pstyle(o.align) + '">' +
+      runs.filter(r => String(r.t) !== '').map(r => run(r.t, r)).join('') + '</text:p>';
+  };
+  const txbox = (o) => {
+    const pad = (o.padT !== undefined ? o.padT * 2.54 : 0.15).toFixed(2);
+    return '<draw:text-box fo:padding-left="0.23cm" fo:padding-right="0.18cm" ' +
+      'fo:padding-top="' + pad + 'cm" fo:padding-bottom="0.15cm" fo:min-height="' + cm(o.h) + '">' +
+      (o.paras || []).map(p => para(p.runs, p)).join('') + '</draw:text-box>';
+  };
+  const shape = (o) => {
+    const id = ++nuid;
+    const p2 = v => (v * 2.54).toFixed(2);
+    const gs = gstyle(o.fill || null, o.line ? (o.lineColor || o.fill) : null,
+      o.line ? ((o.lnW || 19050) / 12700).toFixed(2) : 0, o.anchor,
+      [p2(o.padT !== undefined ? o.padT : 0.05), p2(o.padR !== undefined ? o.padR : 0.1), p2(o.padB !== undefined ? o.padB : 0.05), p2(o.padL !== undefined ? o.padL : 0.1)]);
+    // draw:text-style-name gives the shape a default paragraph context (as LO writes it)
+    if (!pstyles['p|l']) pstyle('l');
+    return '<draw:custom-shape draw:style-name="' + gs + '" draw:text-style-name="P0" ' +
+      'draw:name="s' + id + '" draw:layer="layout" svg:x="' + cm(o.x) +
+      '" svg:y="' + cm(o.y) + '" svg:width="' + cm(o.w) + '" svg:height="' + cm(o.h) + '">' +
+      (o.paras || []).map(pp => para(pp.runs, pp)).join('') +
+      '<draw:enhanced-geometry draw:mirror-horizontal="false" draw:mirror-vertical="false" ' +
+      'draw:glue-points="?f0 0 0 ?f1 ?f0 ?f2 ?f3 ?f1" draw:text-areas="0 0 ?f3 ?f2" ' +
+      'svg:viewBox="0 0 0 0" draw:type="ooxml-rect" ' +
+      'draw:enhanced-path="M 0 0 L ?f3 0 ?f3 ?f2 0 ?f2 Z N">' +
+      '<draw:equation draw:name="f0" draw:formula="logwidth/2"/>' +
+      '<draw:equation draw:name="f1" draw:formula="logheight/2"/>' +
+      '<draw:equation draw:name="f2" draw:formula="logheight"/>' +
+      '<draw:equation draw:name="f3" draw:formula="logwidth"/>' +
+      '</draw:enhanced-geometry></draw:custom-shape>';
+  };
+  const table = (o) => {
+    const out = [];
+    let y = o.y;
+    o.rows.forEach((row, ri) => {
+      let x = o.x;
+      const rh = (o.rowHs ? o.rowHs[ri] : o.rowH) || 0.34;
+      const idx = (o.r0 || 0) + ri;
+      row.forEach((cell, ci) => {
+        const w = o.colW[ci];
+        const al = (o.aligns && o.aligns[ci]) || (ci === 0 ? 'l' : 'r');
+        out.push(shape({ x, y, w, h:rh, anchor:'ctr', padT:0.03, padB:0.03, padL:0.08, padR:0.08,
+          fill:idx === 0 ? C.panel : (idx % 2 ? '22313B' : C.bg),
+          line:1, lineColor:C.line, lnW:6350,
+          paras:[{ runs:[{ t:cell.t, sz:cell.sz || o.sz || 11, b:!!cell.b || idx === 0,
+            color:cell.color || (idx === 0 ? C.amber : C.white) }], align:al }] }));
+        x += w;
+      });
+      y += rh;
+    });
+    return out.join('');
+  };
+  const bgRect = () => shape({ x:0, y:0, w:13.333, h:7.5, fill:C.bg,
+    paras:[{ runs:[{ t:' ', sz:10 }] }] });
+  const CRC = (() => {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  const crc32 = bytes => {
+    let c = 0xFFFFFFFF;
+    for (let i = 0; i < bytes.length; i++) c = CRC[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  };
+  const enc = new TextEncoder();
+  /* v1.124 (Architecture Advisor): a PNG picture in a draw:frame, kept in Pictures/ */
+  const pic = o => ({ pic:true, x:o.x, y:o.y, w:o.w, h:o.h, bytes:o.bytes });
+  function pack(slides) {
+    const F = {}, pics = [];
+    slides = slides.map(shapes => shapes.map(s => {
+      if (typeof s === 'string') return s;
+      const nm = 'Pictures/image' + (pics.length + 1) + '.png';
+      pics.push({ nm, bytes:s.bytes });
+      return '<draw:frame draw:name="' + nm + '" draw:layer="layout" svg:x="' + cm(s.x) + '" svg:y="' + cm(s.y) + '" svg:width="' + cm(s.w) + '" svg:height="' + cm(s.h) + '">' +
+        '<draw:image xlink:href="' + nm + '" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/></draw:frame>';
+    }));
+    const autost = ['<style:page-layout style:name="PM0">' +
+      '<style:page-layout-properties fo:margin-top="0cm" fo:margin-bottom="0cm" fo:margin-left="0cm" fo:margin-right="0cm" ' +
+      'fo:page-width="33.867cm" fo:page-height="19.05cm" style:print-orientation="landscape"/>' +
+      '</style:page-layout>'];
+    F['mimetype'] = 'application/vnd.oasis.opendocument.presentation';
+    F['META-INF/manifest.xml'] =
+      '<?xml version="1.0" encoding="UTF-8"?>' +
+      '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">' +
+      '<manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.presentation"/>' +
+      '<manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>' +
+      '<manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>' +
+      '<manifest:file-entry manifest:full-path="meta.xml" manifest:media-type="text/xml"/>' +
+      pics.map(q => '<manifest:file-entry manifest:full-path="' + q.nm + '" manifest:media-type="image/png"/>').join('') +
+      '</manifest:manifest>';
+    pics.forEach(q => { F[q.nm] = q.bytes; });
+    const now = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+    F['meta.xml'] =
+      '<?xml version="1.0" encoding="UTF-8"?>' +
+      '<office:document-meta ' + NSMETA + ' office:version="1.2">' +
+      '<office:meta><meta:generator>Field Advisor PT</meta:generator>' +
+      '<dc:title>Field Advisor PT — fieldwork report</dc:title>' +
+      '<dc:creator>Nuno Dinis Cortiços</dc:creator><dc:date>' + now + '</dc:date>' +
+      '</office:meta></office:document-meta>';
+    F['styles.xml'] =
+      '<?xml version="1.0" encoding="UTF-8"?>' +
+      '<office:document-styles ' + NS + ' office:version="1.2">' +
+      '<office:styles>' +
+      '<style:style style:name="dp1" style:family="drawing-page">' +
+      '<style:drawing-page-properties draw:fill="solid" draw:fill-color="#' + C.bg + '" presentation:background-visible="true" presentation:background-objects-visible="true"/></style:style>' +
+      '</office:styles><office:automatic-styles>' + autost.join('') + '</office:automatic-styles>' +
+      '<office:master-styles>' +
+      '<draw:layer-set><draw:layer draw:name="layout"/><draw:layer draw:name="background"/><draw:layer draw:name="backgroundobjects"/></draw:layer-set>' +
+      /* v2.52.0: a master page is style:master-page — the draw: name made
+         LibreOffice drop it, and its 33.9 cm page with it, for a default 28 cm one */
+      '<style:master-page style:name="Default" style:page-layout-name="PM0" draw:style-name="dp1"/>' +
+      '</office:master-styles></office:document-styles>';
+    F['content.xml'] =
+      '<?xml version="1.0" encoding="UTF-8"?>' +
+      '<office:document-content ' + NS + ' office:version="1.2">' +
+      '<office:scripts/><office:font-face-decls>' +
+      '<style:font-face style:name="Calibri" svg:font-family="Calibri"/>' +
+      '</office:font-face-decls><office:automatic-styles>' +
+      Object.keys(gstyles).map(k => gstyles[k]).join('') +
+      Object.keys(pstyles).map(k => pstyles[k]).join('') +
+      Object.keys(tstyles).map(k => tstyles[k]).join('') +
+      '</office:automatic-styles><office:body><office:presentation>' +
+      slides.map((shapes, i) =>
+        '<draw:page draw:name="page' + (i + 1) + '" draw:style-name="dp1" ' +
+        'draw:master-page-name="Default">' +
+        shapes.join('') + '</draw:page>').join('') +
+      '</office:presentation></office:body></office:document-content>';
+    const names = Object.keys(F);
+    const chunks = [];
+    const central = [];
+    let offset = 0;
+    names.forEach(nm => {
+      const data = typeof F[nm] === 'string' ? enc.encode(F[nm]) : F[nm];
+      const crc = crc32(data);
+      const nl = enc.encode(nm);
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true);
+      lh.setUint16(4, 20, true);
+      lh.setUint16(6, 0x0800, true);
+      lh.setUint16(8, 0, true);
+      lh.setUint16(10, 0x21, true);
+      lh.setUint16(12, 0x21, true);
+      lh.setUint32(14, crc, true);
+      lh.setUint32(18, data.length, true);
+      lh.setUint32(22, data.length, true);
+      lh.setUint16(26, nl.length, true);
+      lh.setUint16(28, 0, true);
+      chunks.push(new Uint8Array(lh.buffer), nl, data);
+      central.push({ nm:nl, crc, len:data.length, offset });
+      offset += 30 + nl.length + data.length;
+    });
+    const csize = central.reduce((a, c) => a + 46 + c.nm.length, 0);
+    const cstart = offset;
+    central.forEach(c => {
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true);
+      ch.setUint16(4, 20, true);
+      ch.setUint16(6, 20, true);
+      ch.setUint16(8, 0x0800, true);
+      ch.setUint16(10, 0, true);
+      ch.setUint16(12, 0x21, true);
+      ch.setUint16(14, 0x21, true);
+      ch.setUint32(16, c.crc, true);
+      ch.setUint32(20, c.len, true);
+      ch.setUint32(24, c.len, true);
+      ch.setUint16(28, c.nm.length, true);
+      ch.setUint16(30, 0, true);
+      ch.setUint16(32, 0, true);
+      ch.setUint16(34, 0, true);
+      ch.setUint16(36, 0, true);
+      ch.setUint32(38, 0, true);
+      ch.setUint32(42, c.offset, true);
+      chunks.push(new Uint8Array(ch.buffer), c.nm);
+    });
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true);
+    end.setUint16(8, names.length, true);
+    end.setUint16(10, names.length, true);
+    end.setUint32(12, csize, true);
+    end.setUint32(16, cstart, true);
+    chunks.push(new Uint8Array(end.buffer));
+    return new Blob(chunks, { type:'application/vnd.oasis.opendocument.presentation' });
+  }
+  return { build:pack, C, shape, table, bgRect, esc, pic };
+})();
+
+/* ================= SLIDE REPORT: PowerPoint, Google Slides, Canva, LibreOffice =================
+   The report of the fieldwork as a deck, built with the same two engines as
+   Architecture Advisor PT (a stored-zip .pptx writer and a native .odp writer,
+   one shape/table call pattern): dark slate ground, amber headings, the rating
+   scales drawn as native shapes so every importer keeps them editable. */
+var FORCEW=0;
+function canvasPng(c){return new Promise(res=>{try{c.toBlob(b=>{if(!b)return res(null);b.arrayBuffer().then(a=>res({bytes:new Uint8Array(a),w:c.width,h:c.height}));},'image/png');}catch(e){res(null);}});}
+function urlPng(url,maxW){return new Promise(res=>{if(!url)return res(null);const im=new Image();im.onload=()=>{const k=Math.min(1,(maxW||1400)/im.width);const c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*k));c.height=Math.max(1,Math.round(im.height*k));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);canvasPng(c).then(res);};im.onerror=()=>res(null);im.src=url;});}
+function svgPng(svg,wpx){const m=svg.match(/viewBox="([-\d. ]+)"/),vb=m?m[1].split(' ').map(Number):[0,0,100,100];const hpx=Math.round(wpx*vb[3]/vb[2]);
+  const s2=svg.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="'+wpx+'" height="'+hpx+'" ');return urlPng('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s2),wpx);}
+async function chartPng(drawFn,id){FORCEW=1100;try{drawFn();return await canvasPng($(id));}finally{FORCEW=0;drawFn();}}
+function placeSvgRaw(k){const p=PLACES[k];return '<svg viewBox="0 0 320 190" font-family="Calibri,Arial,sans-serif">'+arrowDefs()+p.svg()+'</svg>';}
+const DECK_COL={g:'8FCB8F',a:'E8A33D',r:'D98C8C',n1:'3B4A6B',n2:'8A9BBD',n3:'C9D5E6',n4:'F3CF6A'};
+function deckScale(E,x,y,w,kind,v,o){o=o||{};const d=scaleDef(kind,o.night),C=E.C,out=[];if(!d)return out;const has=v!=null&&isFinite(v);
+  out.push(E.shape({x,y,w:w*0.62,h:0.34,paras:[{runs:[{t:(o.title||d.title).toUpperCase(),sz:10.5,b:1,color:C.muted}]}]}));
+  out.push(E.shape({x:x+w*0.62,y,w:w*0.38,h:0.34,paras:[{runs:[{t:has?fmtN(v,d.dec)+' '+d.unit:'—',sz:16,b:1,color:C.white}],align:'r'}]}));
+  let lo=d.min;const by=y+0.48,bh=0.2;
+  d.bands.forEach((b,i)=>{const f0=fracOf(d,lo),f1=fracOf(d,b[0]);const bw=Math.max(0.02,(f1-f0)*w);
+    out.push(E.shape({x:x+f0*w,y:by,w:bw,h:bh,fill:DECK_COL[b[1].replace('2','')]||C.muted}));
+    out.push(E.shape({x:x+f0*w,y:by+bh+0.16,w:bw,h:0.24,padL:0,padR:0,paras:[{runs:[{t:b[2],sz:8,color:C.muted}],align:'ctr'}]}));
+    if(i<d.bands.length-1)out.push(E.shape({x:x+f1*w-0.35,y:by+bh-0.02,w:0.7,h:0.2,padL:0,padR:0,padT:0,padB:0,paras:[{runs:[{t:d.log&&b[0]>=1000?(b[0]/1000)+'k':fmtN(b[0],b[0]%1?1:0),sz:7.5,color:C.muted}],align:'ctr'}]}));
+    lo=b[0];});
+  if(has){const fx=x+fracOf(d,v)*w;out.push(E.shape({x:fx-0.035,y:by-0.12,w:0.07,h:bh+0.24,fill:C.white}));
+    const c=classOf(d,v),col=c==='g'?C.green:c==='r'?C.red:c&&c[0]==='n'?C.white:C.amber;
+    out.push(E.shape({x,y:by+bh+0.42,w,h:0.62,paras:[{runs:[{t:(d.info?'':(c==='g'?T('Bom. ','Good. ','Dobrze. '):c==='r'?T('Mau. ','Poor. ','Źle. '):T('A melhorar. ','Could be better. ','Do poprawy. '))),sz:10.5,b:1,color:col},{t:d.say(c),sz:10.5,color:C.white}]}]}));}
+  else out.push(E.shape({x,y:by+bh+0.42,w,h:0.4,paras:[{runs:[{t:T('Sem medição.','No measurement.','Brak pomiaru.'),sz:10.5,color:C.muted}]}]}));
+  out.push(E.shape({x,y:by+bh+1.02,w,h:0.28,paras:[{runs:[{t:d.ref+(o.n?' · n='+o.n:''),sz:8,color:C.muted}]}]}));
+  return out;}
+/* a bar chart drawn for the slide itself: wide, white, its references dashed */
+function deckBars(items,o){const W=1200,H=760,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);
+  const L=90,R=30,Tp=50,B=120,pw=W-L-R,ph=H-Tp-B;const tf=v=>o.log?Math.log10(Math.max(o.min,v)):v;const y=v=>Tp+ph-(tf(v)-tf(o.min))/(tf(o.max)-tf(o.min))*ph;
+  x.font='22px Arial';x.fillStyle='#7b838b';x.strokeStyle='#e3e6e2';x.lineWidth=1;(o.grid||[]).forEach(g=>{x.beginPath();x.moveTo(L,y(g));x.lineTo(W-R,y(g));x.stroke();x.fillText(o.log&&g>=1000?(g/1000)+'k':String(g),10,y(g)+7);});
+  x.fillStyle='#14171a';x.font='bold 24px Arial';x.fillText(o.unit,10,32);
+  const n=Math.max(1,items.length),bw=Math.min(90,pw/n*0.62);
+  items.forEach((it,i)=>{const cx=L+pw*(i+0.5)/n;const v=Math.max(o.min,Math.min(o.max,it.v));x.fillStyle=it.col;x.fillRect(cx-bw/2,y(v),bw,Tp+ph-y(v));
+    x.fillStyle='#14171a';x.font='bold 22px Arial';x.textAlign='center';x.fillText(fmtN(it.v,o.dec||0),cx,y(v)-10);x.font='19px Arial';x.fillStyle='#3d444b';
+    String(it.label).split('\n').forEach((ln,k)=>x.fillText(ln,cx,Tp+ph+30+k*24));x.textAlign='left';});
+  (o.refs||[]).forEach(r=>{x.strokeStyle=r.col;x.lineWidth=3;x.setLineDash([12,8]);x.beginPath();x.moveTo(L,y(r.v));x.lineTo(W-R,y(r.v));x.stroke();x.setLineDash([]);x.fillStyle=r.col;x.font='bold 20px Arial';x.textAlign='right';x.fillText(r.label,W-R-6,y(r.v)-8);x.textAlign='left';});
+  x.strokeStyle='#14171a';x.lineWidth=2;x.beginPath();x.moveTo(L,Tp+ph);x.lineTo(W-R,Tp+ph);x.stroke();return canvasPng(c);}
+function deckCharts(){const io=s=>ioOf(s)==='exterior';const night=isNight(segGet('seg-round'));
+  const nz=noiseSessions.slice(-10).map(s=>({label:s.t.slice(11,16)+'\n'+(io(s)?T('fora','out','zewn.'):T('dentro','in','wewn.')),v:s.leq,col:io(s)?'#DC2626':'#14171a'}));
+  const dIn=scaleDef('noiseIn',false),dOut=scaleDef('noiseOut',false);
+  const rt=rtMeas.slice(-10).map(m=>({label:m.t.slice(11,16),v:+m.rt60,col:'#0D9488'}));const dRT=scaleDef('rt');
+  const li=lightReads.slice(-10).map(r=>({label:r.t.slice(11,16)+'\n'+(r.where==='exterior'?T('fora','out','zewn.'):T('dentro','in','wewn.')),v:Math.max(1,r.lux),col:r.where==='exterior'?'#5aa0d6':'#D97706'}));
+  return Promise.all([nz.length?deckBars(nz,{min:20,max:90,unit:'dB(A)',dec:1,grid:[30,40,50,60,70,80,90],refs:[{v:dIn.bands[0][0],label:T('dentro: bom ≤ ','inside: good ≤ ','wewn.: dobrze ≤ ')+dIn.bands[0][0],col:'#16A34A'},{v:dOut.bands[1][0],label:T('fora: zona mista ','outside: mixed zone ','zewn.: strefa mieszana ')+dOut.bands[1][0],col:'#DC2626'}]}):null,
+    rt.length?deckBars(rt,{min:0,max:2,unit:'RT60 s',dec:2,grid:[0.5,1,1.5,2],refs:[{v:dRT.bands[0][0],label:T('bom ≤ ','good ≤ ','dobrze ≤ ')+fmtN(dRT.bands[0][0],1)+' s',col:'#16A34A'}]}):null,
+    li.length?deckBars(li,{log:true,min:1,max:120000,unit:'lux',grid:[10,100,1000,10000,100000],refs:[{v:500,label:'500 lx',col:'#16A34A'},{v:300,label:'300 lx',col:'#D97706'}]}):null]);}
+async function faExportDeck(format){
+  const has=noiseSessions.length||rtMeas.length||lightReads.length;
+  if(!has){toast(T('Ainda nada para exportar — meça primeiro.','Nothing to export yet — measure first.','Nic do eksportu — najpierw zmierz.'));return false;}
+  try{readSite();const E=format==='odp'?VODP:VPPTX,C=E.C;
+    const date=new Date().toLocaleDateString(LANG==='pt'?'pt-PT':LANG==='pl'?'pl-PL':'en-GB');
+    const stName=($('f-spacetype').selectedOptions[0]||{}).textContent||'';
+    const fit=(img,x,y,w,h)=>{if(!img)return null;const k=Math.min(w/img.w,h/img.h),ww=img.w*k,hh=img.h*k;return E.pic({x:x+(w-ww)/2,y:y+(h-hh)/2,w:ww,h:hh,bytes:img.bytes});};
+    const head=(title,sub,pill)=>[E.bgRect(),E.shape({x:0.6,y:0.35,w:10.4,h:0.75,paras:[{runs:[{t:title,sz:28,b:1}]}]}),
+      E.shape({x:0.6,y:1.05,w:10.4,h:0.45,paras:[{runs:[{t:sub,sz:14,color:C.amber}]}]}),
+      E.shape({x:11.0,y:0.35,w:1.8,h:0.45,fill:C.amber,round:1,padT:0.06,anchor:'ctr',paras:[{runs:[{t:(pill||'FA PT').slice(0,16),sz:11,b:1,color:'1B2730'}],align:'ctr'}]})];
+    const text=(x,y,w,h,lines,sz,color)=>E.shape({x,y,w,h,paras:lines.map(l=>({runs:[{t:l,sz:sz||13,color:color||C.white}]}))});
+    const tbl=(x,y,colW,rows,rowH,sz)=>E.table({x,y,colW,rows:rows.map(r=>r.map(c=>({t:String(c==null?'—':c)}))),rowH:rowH||0.32,sz:sz||10.5});
+    const ioT=io=>io==='exterior'?T('fora','outside','na zewnątrz'):T('dentro','inside','wewnątrz');
+    const nightAny=noiseSessions.some(s=>isNight(s.round));
+    const [[cNoise,cRT,cLight],cover]=await Promise.all([deckCharts(),urlPng(getCover(),1600)]);
+    const places=await Promise.all(['noise-in','noise-out','light-in','light-out'].map(k=>svgPng(placeSvgRaw(k),960)));
+    const sl=[];
+    const ev=evalData('all');const rate=[];
+    /* 1 · title */
+    const hyp=(site.hyp||[]).join(' ')||'—';
+    sl.push(head(T('Trabalho de campo — acústica e iluminação','Fieldwork — acoustics and lighting','Praca w terenie — akustyka i oświetlenie'),(site.place||'—')+' · '+stName,'FA PT').concat([
+      text(0.6,1.8,cover?5.6:12,4.8,[T('Posição: ','Position: ','Pozycja: ')+ioT(site.inout),(site.lat&&site.lon)?'lat '+site.lat+' · lon '+site.lon:'',T('Janelas: ','Windows: ','Okna: ')+site.windows+' · '+T('ocupação: ','occupancy: ','obecność: ')+site.occup+' · '+T('céu: ','sky: ','niebo: ')+site.sky,
+        T('Fontes: ','Sources: ','Źródła: ')+(site.sources||'—'),T('Hipóteses: ','Hypotheses: ','Hipotezy: ')+hyp,'',noiseSessions.length+'× '+T('ruído','noise','hałas')+' · '+rtMeas.length+'× RT · '+lightReads.length+'× '+T('luz','light','światło'),date,'',APP.name+' '+appStamp()+' · '+APP.author].filter(l=>l!==null),14),
+      fit(cover,6.4,1.6,6.4,5.4)].filter(Boolean)));
+    /* 2 · acoustics on the scales */
+    {const s=[],cols=[[0.6,1.75],[6.95,1.75],[0.6,3.75],[6.95,3.75],[0.6,5.75],[6.95,5.75]];const items=[];
+      const d=ev.day,n=ev.night;items.push(['noiseIn',eMean(d.in),{n:d.in.length}],['noiseOut',eMean(d.out),{n:d.out.length}]);
+      if(nightAny)items.push(['noiseIn',eMean(n.in),{night:true,n:n.in.length}],['noiseOut',eMean(n.out),{night:true,n:n.out.length}]);
+      const di=eMean(d.in),dout=eMean(d.out);items.push(['diff',di!=null&&dout!=null?dout-di:null,{}]);items.push(['rt',aMean(ev.rt),{n:ev.rt.length}]);
+      items.slice(0,6).forEach((it,i)=>{const p=cols[i];s.push(...deckScale(E,p[0],p[1],5.8,it[0],it[1],it[2]));const sd=scaleDef(it[0],it[2].night);if(it[1]!=null&&sd&&!sd.info)rate.push(classOf(sd,it[1]));});
+      sl.push(head(T('Acústica — quão bom é o espaço?','Acoustics — how good is the space?','Akustyka — jak dobra jest przestrzeń?'),T('Ruído dentro e fora, isolamento da fachada, reverberação · ','Noise inside and out, façade insulation, reverberation · ','Hałas wewnątrz i na zewnątrz, izolacyjność fasady, pogłos · ')+stName,T('ACÚSTICA','ACOUSTICS','AKUSTYKA')).concat(s));}
+    /* 3 · lighting on the scales */
+    {const s=[],cols=[[0.6,1.75],[6.95,1.75],[0.6,3.75]];[['luxIn',aMean(ev.luxIn),{n:ev.luxIn.length}],['luxOut',aMean(ev.luxOut),{n:ev.luxOut.length}],['df',aMean(ev.df),{n:ev.df.length}]].forEach((it,i)=>{const p=cols[i];s.push(...deckScale(E,p[0],p[1],5.8,it[0],it[1],it[2]));const sd=scaleDef(it[0]);if(it[1]!=null&&!sd.info)rate.push(classOf(sd,it[1]));});
+      const g=rate.filter(c=>c==='g').length,b=rate.filter(c=>c==='r').length;
+      s.push(E.shape({x:6.95,y:3.75,w:5.8,h:1.6,fill:C.panel,round:1,padL:0.2,padT:0.15,paras:[{runs:[{t:T('Resumo','Summary','Podsumowanie').toUpperCase(),sz:10.5,b:1,color:C.muted}]},{runs:[{t:g+' / '+rate.length,sz:30,b:1,color:C.amber},{t:'  '+T('índices bons','indices good','wskaźników dobrych'),sz:14,color:C.white}]},{runs:[{t:g+' '+T('bons','good','dobrych')+' · '+(rate.length-g-b)+' '+T('a melhorar','to improve','do poprawy')+' · '+b+' '+T('maus','poor','złych'),sz:12,color:C.white}]}]}));
+      sl.push(head(T('Iluminação — quão bom é o espaço?','Lighting — how good is the space?','Oświetlenie — jak dobra jest przestrzeń?'),T('Luz na secretária, luz exterior e fator de luz do dia','Light on the desk, outdoor light and daylight factor','Światło na biurku, światło zewnętrzne i współczynnik światła dziennego'),T('LUZ','LIGHT','ŚWIATŁO')).concat(s));}
+    /* 4 · per round */
+    const rounds=['10:00','13:00','18:00','22:00','livre'].filter(r=>noiseSessions.some(s=>(s.round||'livre')===r)||rtMeas.some(s=>(s.round||'livre')===r)||lightReads.some(s=>(s.round||'livre')===r));
+    if(rounds.length){const f=(v,dc)=>v==null?'—':fmtN(v,dc);sl.push(head(T('As rondas do dia','The rounds of the day','Rundy dnia'),'10:00 · 13:00 · 18:00 · 22:00',T('RONDAS','ROUNDS','RUNDY')).concat([tbl(0.6,1.8,[1.6,1.9,1.9,1.6,2.0,2.0,1.1],[[T('Ronda','Round','Runda'),T('LAeq dentro','LAeq inside','LAeq wewn.'),T('LAeq fora','LAeq outside','LAeq zewn.'),'RT60 s',T('lux dentro','lux inside','lx wewn.'),T('lux fora','lux outside','lx zewn.'),'DF %']].concat(rounds.map(r=>{const o=evalData(r);return [r==='livre'?T('livre','free','dowolna'):r,f(eMean(o.day.in.concat(o.night.in)),1),f(eMean(o.day.out.concat(o.night.out)),1),f(aMean(o.rt),2),f(aMean(o.luxIn),0),f(aMean(o.luxOut),0),f(aMean(o.df),1)];})),0.42,12)]));}
+    /* 5 · noise */
+    if(noiseSessions.length)sl.push(head(T('Ruído — sessões','Noise — sessions','Hałas — sesje'),noiseSessions.length+' '+T('sessões · LAeq, Lmáx, Lmín, L90','sessions · LAeq, Lmax, Lmin, L90','sesji · LAeq, Lmax, Lmin, L90'),T('RUÍDO','NOISE','HAŁAS')).concat([
+      tbl(0.6,1.7,[1.0,1.15,0.9,0.95,0.95,0.95],[[T('Hora','Time','Czas'),T('Lado','Side','Strona'),T('Ronda','Round','Runda'),'LAeq','Lmáx','L90']].concat(noiseSessions.slice(-12).map(s=>[s.t.slice(11,16),ioT(ioOf(s)),s.round||'—',fmtN(s.leq,1),fmtN(s.lmax,1),fmtN(s.l90,1)])),0.34,10),
+      fit(cNoise,6.7,1.7,6.1,4.2),text(6.7,6.0,6.1,1.0,[T('Telemóvel não calibrado: compare dentro com fora e as horas entre si; não certifica conformidade.','Uncalibrated phone: compare inside with outside and the times with each other; it does not certify compliance.','Telefon niekalibrowany: porównuj wnętrze z zewnętrzem i pory między sobą; nie poświadcza zgodności.')],10,C.muted)].filter(Boolean)));
+    /* 6 · reverberation */
+    if(rtMeas.length)sl.push(head(T('Reverberação — RT60','Reverberation — RT60','Pogłos — RT60'),rtMeas.length+' '+T('medições por impulso · ISO 3382-2','impulse measurements · ISO 3382-2','pomiarów impulsowych · ISO 3382-2'),'RT60').concat([
+      tbl(0.6,1.7,[1.0,1.0,1.0,1.0,1.9],[[T('Hora','Time','Czas'),'RT60 s','RT20','RT30',T('filtro/fonte','filter/source','filtr/źródło')]].concat(rtMeas.slice(-12).map(m=>[m.t.slice(11,16),fmtN(m.rt60,2),m.rt20===''?'—':fmtN(m.rt20,2),m.rt30===''?'—':fmtN(m.rt30,2),m.ff])),0.34,10),
+      fit(cRT,6.7,1.7,6.1,4.2)].filter(Boolean)));
+    /* 7 · light */
+    if(lightReads.length)sl.push(head(T('Luz — leituras','Light — readings','Światło — odczyty'),lightReads.length+' '+T('leituras · lux no plano','readings · lux on the plane','odczytów · lx na płaszczyźnie'),T('LUZ','LIGHT','ŚWIATŁO')).concat([
+      tbl(0.6,1.7,[1.0,1.0,1.1,1.2,1.6],[[T('Hora','Time','Czas'),'lux',T('Lado','Side','Strona'),T('Tipo','Type','Typ'),T('Plano','Plane','Płaszcz.')]].concat(lightReads.slice(-12).map(r=>[r.t.slice(11,16),String(r.lux),ioT(r.where),r.type,r.plane])),0.34,10),
+      fit(cLight,6.7,1.7,6.1,4.2)].filter(Boolean)));
+    /* 8 · photos */
+    const ph=lightReads.filter(r=>r.img).slice(-6);
+    if(ph.length){const imgs=await Promise.all(ph.map(r=>urlPng(r.img,900)));const s=[];imgs.forEach((im,i)=>{const x=0.6+(i%3)*4.1,y=1.7+Math.floor(i/3)*2.75;const f=fit(im,x,y,3.9,2.35);if(f)s.push(f);s.push(text(x,y+2.35,3.9,0.3,[ph[i].t.slice(11,16)+' · '+ioT(ph[i].where)+' · '+ph[i].lux+' lx'],9,C.muted));});
+      sl.push(head(T('O cenário','The scene','Sceneria'),T('Fotografias das leituras de luz','Photos of the light readings','Zdjęcia odczytów światła'),T('FOTOS','PHOTOS','ZDJĘCIA')).concat(s));}
+    /* 9 · how it was measured */
+    {const s=[];places.forEach((im,i)=>{const x=0.6+(i%2)*6.2,y=1.65+Math.floor(i/2)*2.85;const f=fit(im,x,y,3.4,2.0);if(f)s.push(f);const k=['noise-in','noise-out','light-in','light-out'][i];s.push(E.shape({x:x+3.5,y,w:2.55,h:2.7,paras:[{runs:[{t:PLACES[k].t(),sz:11,b:1,color:C.amber}]}].concat(PLACES[k].steps().map((t,j)=>({runs:[{t:(j+1)+'. '+t,sz:8.5,color:C.white}]})))}));});
+      sl.push(head(T('Como medimos','How we measured','Jak mierzyliśmy'),T('Onde pousar o telemóvel, dentro e fora da janela','Where to place the phone, inside and outside the window','Gdzie położyć telefon, wewnątrz i na zewnątrz okna'),T('MÉTODO','METHOD','METODA')).concat(s));}
+    /* 10 · sources */
+    sl.push(head(T('Fontes','Sources','Źródła'),T('Referências usadas nas escalas','References used in the scales','Odniesienia użyte w skalach'),T('FONTES','SOURCES','ŹRÓDŁA')).concat([text(0.6,1.7,12.1,5.6,[...document.querySelectorAll('#refList li')].map(li=>li.textContent.trim()),11)]));
+    const blob=E.build(sl);
+    const slug=String(site.place||'field').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'field';
+    download('fa-pt-'+slug+'.'+(format==='odp'?'odp':'pptx'),blob);
+    toast(T('Apresentação exportada','Presentation exported','Prezentacja wyeksportowana'));return true;
+  }catch(e){console.error(e);toast(T('Não foi possível construir a apresentação','The presentation could not be built','Nie udało się zbudować prezentacji'));return false;}}
+function drawNoiseDeck(){/* the time history of the last session when no live log is held */
+  if(logV.length>1||!noiseSessions.length)return drawNoise();drawNoise();}
+let faExMenu=null;
+function faCloseExportMenu(){if(!faExMenu)return;faExMenu.remove();faExMenu=null;document.removeEventListener('pointerdown',faOutsideExport,true);}
+function faOutsideExport(ev){if(faExMenu&&!faExMenu.contains(ev.target)&&!(ev.target.closest&&ev.target.closest('.btn-deck')))faCloseExportMenu();}
+function deckItems(){return [
+  ['PowerPoint (.pptx)',T('Descarregar a apresentação .pptx','Download the .pptx presentation','Pobierz prezentację .pptx'),()=>faExportDeck('pptx')],
+  ['Google Slides',T('Guarda um .pptx e abre o Slides para o converter numa apresentação nativa','Saves a .pptx, then opens Slides to convert it into a native deck','Zapisuje .pptx i otwiera Slides, by przekonwertować go na natywną prezentację'),()=>faExportDeck('pptx').then(ok=>ok&&faExportGuide('slides'))],
+  ['Canva',T('Guarda um .pptx e abre o Canva para o converter num design nativo','Saves a .pptx, then opens Canva to convert it into a native design','Zapisuje .pptx i otwiera Canvę, by przekonwertować go na natywny projekt'),()=>faExportDeck('pptx').then(ok=>ok&&faExportGuide('canva'))],
+  ['LibreOffice / OpenOffice (.odp)',T('Descarregar a apresentação .odp','Download the .odp presentation','Pobierz prezentację .odp'),()=>faExportDeck('odp')]];}
+function deckItemEl(it,close){const b=document.createElement('button');b.className='exportitem';b.setAttribute('role','menuitem');b.innerHTML='<b>'+escapeHtml(it[0])+'</b><span>'+escapeHtml(it[1])+'</span>';b.onclick=()=>{if(close)faCloseExportMenu();it[2]();};return b;}
+function faToggleExportMenu(btn){if(faExMenu){faCloseExportMenu();return;}
+  faExMenu=document.createElement('div');faExMenu.className='exportmenu';faExMenu.setAttribute('role','menu');deckItems().forEach(it=>faExMenu.appendChild(deckItemEl(it,true)));
+  document.body.appendChild(faExMenu);const r=btn.getBoundingClientRect();faExMenu.style.top=(r.bottom+window.scrollY+6)+'px';faExMenu.style.left=Math.max(8,Math.min(window.innerWidth-faExMenu.offsetWidth-8,r.left+window.scrollX))+'px';
+  document.addEventListener('pointerdown',faOutsideExport,true);}
+function faExportGuide(kind){const old=document.querySelector('.exportguide');if(old)old.remove();
+  const G=kind==='slides'?{name:'Google Slides',url:'https://docs.google.com/presentation/',steps:[T('A apresentação foi guardada como .pptx nas transferências.','The presentation was saved as a .pptx in your downloads.','Prezentacja została zapisana jako .pptx w pobranych.'),T('Abra o Google Slides e clique no ícone da pasta (Abrir seletor de ficheiros).','Open Google Slides and click the folder icon (Open file picker).','Otwórz Google Slides i kliknij ikonę folderu (Otwórz selektor plików).'),T('Escolha Carregar e largue lá o .pptx — o Slides abre-o como apresentação nativa, editável e partilhável.','Choose Upload and drop the .pptx there — Slides opens it as a native deck you can edit and share.','Wybierz Prześlij i upuść tam .pptx — Slides otworzy go jako natywną, edytowalną prezentację.')]}
+    :{name:'Canva',url:'https://www.canva.com/',steps:[T('A apresentação foi guardada como .pptx nas transferências.','The presentation was saved as a .pptx in your downloads.','Prezentacja została zapisana jako .pptx w pobranych.'),T('Abra o Canva e escolha Criar um design ▸ Importar ficheiro, ou arraste o .pptx para a página inicial.','Open Canva and choose Create a design ▸ Import file, or drag the .pptx onto the Canva home page.','Otwórz Canvę i wybierz Utwórz projekt ▸ Importuj plik albo przeciągnij .pptx na stronę główną.'),T('O Canva abre-o como apresentação editável.','Canva opens it as an editable presentation design.','Canva otworzy go jako edytowalną prezentację.')]};
+  const box=document.createElement('div');box.className='exportguide';box.setAttribute('role','dialog');
+  box.innerHTML='<b>'+escapeHtml(T('Abrir a apresentação no ','Open the presentation in ','Otwórz prezentację w ')+G.name)+'</b><ol>'+G.steps.map(s=>'<li>'+escapeHtml(s)+'</li>').join('')+'</ol><div class="row"><button type="button" data-x="close">'+escapeHtml(T('Fechar','Close','Zamknij'))+'</button><button type="button" class="solid" data-x="open">'+escapeHtml(T('Abrir ','Open ','Otwórz ')+G.name)+'</button></div>';
+  box.querySelector('[data-x=close]').onclick=()=>box.remove();box.querySelector('[data-x=open]').onclick=()=>{window.open(G.url,'_blank','noopener');box.remove();};document.body.appendChild(box);}
+function renderDeckPanel(){const el=$('deck-items');if(!el)return;el.innerHTML='';deckItems().forEach(it=>el.appendChild(deckItemEl(it,false)));}
+document.querySelectorAll('.btn-deck').forEach(b=>b.onclick=()=>faToggleExportMenu(b));
+
+/* ================= DEMONSTRATION: the phone on the sill, inside then outside =================
+   A short animated section through the window, in eight steps like a comic
+   strip: the stage plays the steps in a loop, the strip under it shows each
+   step as a panel, and a panel jumps the stage to it. */
+const DEMO_SCENE=3.4;
+const DEMO_CAP=[
+  ['Feche a janela.','Close the window.','Zamknij okno.'],
+  ['Pouse o telemóvel no parapeito interior, ecrã para cima.','Lay the phone on the inner sill, screen up.','Połóż telefon na wewnętrznym parapecie, ekranem do góry.'],
+  ['Afaste-se, sem sombra nem barulho: meça 1 minuto.','Step away, no shadow, no noise: measure for 1 minute.','Odsuń się, bez cienia i hałasu: mierz 1 minutę.'],
+  ['Guarde a leitura de DENTRO.','Save the INSIDE reading.','Zapisz odczyt WEWNĄTRZ.'],
+  ['Abra a janela e passe o telemóvel para o parapeito exterior.','Open the window and move the phone to the outer sill.','Otwórz okno i przenieś telefon na zewnętrzny parapet.'],
+  ['Ecrã para cima, microfone para a rua. Feche a janela.','Screen up, microphone to the street. Close the window.','Ekranem do góry, mikrofon w stronę ulicy. Zamknij okno.'],
+  ['Meça 1 minuto, à mesma hora que dentro.','Measure for 1 minute, at the same time as inside.','Mierz 1 minutę, o tej samej porze co wewnątrz.'],
+  ['Compare: fora − dentro = isolamento; dentro ÷ fora = DF.','Compare: outside − inside = insulation; inside ÷ outside = DF.','Porównaj: zewn. − wewn. = izolacyjność; wewn. ÷ zewn. = DF.']];
+const DEMO_T=DEMO_CAP.length*DEMO_SCENE;
+const dEase=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const dLerp=(a,b,e)=>a+(b-a)*e;
+const dPath=(pts,e)=>{const n=pts.length-1,k=Math.min(n-1,Math.floor(e*n)),q=e*n-k;return[dLerp(pts[k][0],pts[k+1][0],q),dLerp(pts[k][1],pts[k+1][1],q)];};
+function demoState(t){t=((t%DEMO_T)+DEMO_T)%DEMO_T;const s=Math.floor(t/DEMO_SCENE),p=(t-s*DEMO_SCENE)/DEMO_SCENE;const e=dEase(Math.min(1,p*1.15));
+  const IN=[214,160],OUT=[286,160],START=[70,70],OFF=[-60,40];
+  const st={s,p,win:0,phone:IN,hand:null,held:false,timer:-1,badge:0};
+  if(s===0){st.win=1-e;st.hand=START;st.held=true;st.phone=null;}
+  else if(s===1){if(p<.7){const q=dEase(p/.7);st.hand=dPath([START,[150,90],IN],q);st.held=true;st.phone=null;}else{st.hand=dPath([IN,[120,90],OFF],dEase((p-.7)/.3));}}
+  else if(s===2){st.timer=Math.min(1,p*1.1);}
+  else if(s===3){st.badge=1;}
+  else if(s===4){st.win=Math.min(1,p*3);if(p<.25){st.hand=dPath([OFF,[140,110],IN],dEase(p/.25));}else if(p<.8){const q=dEase((p-.25)/.55);st.hand=dPath([IN,[250,118],OUT],q);st.held=true;st.phone=null;}else{st.phone=OUT;st.hand=dPath([OUT,[250,118],[120,100],OFF],dEase((p-.8)/.2));}if(p<.8&&p>=.25){}else if(p<.25){st.phone=IN;}}
+  else if(s===5){st.phone=OUT;st.win=p<.35?1:1-dEase((p-.35)/.65);}
+  else if(s===6){st.phone=OUT;st.timer=Math.min(1,p*1.1);}
+  else{st.phone=OUT;st.badge=2;}
+  if(s>=5)st.phone=OUT;
+  return st;}
+function demoPhone(x,y,rot,lbl){return '<g transform="translate('+x+','+y+') rotate('+(rot||0)+')"><rect x="-17" y="-6" width="34" height="6" rx="2" fill="#14171a"/><rect x="-14" y="-7.4" width="28" height="1.8" rx=".9" fill="#2563EB"/><circle cx="-13" cy="-3" r="1.2" fill="#DC2626"/></g>'+(lbl?'<text x="'+x+'" y="'+(y-14)+'" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2563EB">'+lbl+'</text>':'');}
+function demoHand(x,y,held){const ax=x-110,ay=y-70;
+  return '<g><path d="M'+ax+','+ay+' L'+(x-10)+','+(y-6)+'" stroke="#3d444b" stroke-width="17" stroke-linecap="round"/><path d="M'+(x-14)+','+(y-9)+' L'+(x-3)+','+(y-2)+'" stroke="#d9a982" stroke-width="12" stroke-linecap="round"/>'+
+    '<ellipse cx="'+(x+2)+'" cy="'+(y+1)+'" rx="10" ry="7" fill="#e7b893" stroke="#c99470" stroke-width="1"/>'+(held?demoPhone(x+6,y+8,-8):'')+'<path d="M'+(x-2)+','+(y+6)+' q8,4 14,0" stroke="#c99470" stroke-width="1.2" fill="none"/></g>';}
+function demoFrame(t,mini){const st=demoState(t);const L=k=>T(k[0],k[1],k[2]);
+  let s='<rect x="0" y="0" width="480" height="270" fill="#fafbf9"/><rect x="250" y="0" width="230" height="270" fill="#eef4fa"/>';
+  s+='<text x="14" y="22" font-size="11" font-weight="700" letter-spacing=".08em" fill="'+(st.s<4?'#14171a':'#a8afb5')+'">'+L(['DENTRO','INSIDE','WEWNĄTRZ'])+'</text><text x="466" y="22" text-anchor="end" font-size="11" font-weight="700" letter-spacing=".08em" fill="'+(st.s>=4?'#14171a':'#a8afb5')+'">'+L(['FORA','OUTSIDE','NA ZEWNĄTRZ'])+'</text>';
+  /* street and its noise */
+  s+='<line x1="250" y1="262" x2="480" y2="262" stroke="#14171a" stroke-width="1.2"/><g transform="translate('+(380+Math.sin(t*1.3)*30)+',262)"><rect x="0" y="-12" width="44" height="12" rx="3" fill="#7b838b"/><rect x="9" y="-20" width="24" height="9" rx="2" fill="#a8afb5"/><circle cx="10" cy="0" r="4" fill="#14171a"/><circle cx="34" cy="0" r="4" fill="#14171a"/></g>';
+  for(let i=0;i<3;i++){const r=14+((t*22+i*14)%42);s+='<circle cx="372" cy="236" r="'+r.toFixed(1)+'" fill="none" stroke="#DC2626" stroke-width="1.3" opacity="'+(1-r/56).toFixed(2)+'"/>';}
+  /* sun and sky light */
+  s+='<circle cx="440" cy="52" r="14" fill="#F5B83D"/>';
+  /* wall, sills, window */
+  s+='<rect x="0" y="236" width="250" height="34" fill="#d9dcd6"/><line x1="0" y1="236" x2="250" y2="236" stroke="#14171a" stroke-width="1.4"/>';
+  s+='<rect x="236" y="30" width="28" height="44" fill="#c9cdc6" stroke="#14171a" stroke-width="1.2"/><rect x="236" y="166" width="28" height="104" fill="#c9cdc6" stroke="#14171a" stroke-width="1.2"/>';
+  s+='<rect x="196" y="160" width="44" height="8" fill="#b8bdb5" stroke="#14171a" stroke-width="1"/><rect x="260" y="160" width="46" height="8" fill="#b8bdb5" stroke="#14171a" stroke-width="1"/>';
+  s+='<text x="232" y="184" text-anchor="end" font-size="9" fill="#7b838b">'+L(['parapeito interior','inner sill','parapet wewn.'])+'</text><text x="268" y="184" text-anchor="start" font-size="9" fill="#7b838b">'+L(['parapeito exterior','outer sill','parapet zewn.'])+'</text>';
+  const ang=st.win*62;
+  s+='<g transform="rotate('+ang.toFixed(1)+' 250 74)"><rect x="246" y="74" width="8" height="86" fill="#ffffff" stroke="#14171a" stroke-width="1.2"/><line x1="250" y1="78" x2="250" y2="156" stroke="#5aa0d6" stroke-width="2.6"/></g>';
+  /* the phone and the hand */
+  if(st.phone){const onIn=st.phone[0]<250;s+=demoPhone(st.phone[0],st.phone[1],0,(st.s===1&&st.p>.7)||st.s===2||st.s===5||st.s===6?L(['ecrã ↑','screen ↑','ekran ↑']):'');}
+  if(st.hand)s+=demoHand(st.hand[0],st.hand[1],st.held);
+  /* the minute */
+  if(st.timer>=0){const cx=st.s===2?110:380,cy=100,R=26,C2=2*Math.PI*R,rem=Math.max(0,60-Math.round(st.timer*60));
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="#fff" stroke="#e3e6e2" stroke-width="5"/><circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="#14171a" stroke-width="5" stroke-dasharray="'+C2.toFixed(1)+'" stroke-dashoffset="'+(C2*(1-st.timer)).toFixed(1)+'" transform="rotate(-90 '+cx+' '+cy+')"/><text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" font-size="14" font-weight="700" font-family="ui-monospace,Menlo,monospace" fill="#14171a">0:'+String(rem).padStart(2,'0')+'</text>';
+    if(st.s===2)s+='<text x="110" y="146" text-anchor="middle" font-size="9.5" fill="#3d444b">≥ 1 m · '+L(['silêncio','quiet','cisza'])+'</text>';}
+  /* the readings */
+  const badge=(x,y,title,lines,col)=>'<g><rect x="'+x+'" y="'+y+'" width="150" height="'+(22+lines.length*15)+'" rx="8" fill="#fff" stroke="'+col+'" stroke-width="2"/><text x="'+(x+10)+'" y="'+(y+16)+'" font-size="10" font-weight="700" letter-spacing=".06em" fill="'+col+'">'+title+'</text>'+lines.map((l,i)=>'<text x="'+(x+10)+'" y="'+(y+33+i*15)+'" font-size="12" font-family="ui-monospace,Menlo,monospace" fill="#14171a">'+l+'</text>').join('')+'</g>';
+  if(st.badge>=1)s+=badge(30,64,L(['DENTRO ✓','INSIDE ✓','WEWNĄTRZ ✓']),['38 dB(A)','420 lx'],'#16A34A');
+  if(st.badge===2){s+=badge(318,64,L(['FORA ✓','OUTSIDE ✓','NA ZEWN. ✓']),['64 dB(A)','15 000 lx'],'#16A34A');
+    s+='<g><rect x="96" y="192" width="290" height="40" rx="8" fill="#14171a"/><text x="241" y="208" text-anchor="middle" font-size="11" font-family="ui-monospace,Menlo,monospace" fill="#fff">64 − 38 = 26 dB · '+L(['isolamento','insulation','izolacyjność'])+'</text><text x="241" y="224" text-anchor="middle" font-size="11" font-family="ui-monospace,Menlo,monospace" fill="#F5B83D">420 ÷ 15 000 = 2,8 % · DF</text></g>';}
+  /* the step number */
+  s+='<g><circle cx="'+(mini?24:30)+'" cy="'+(mini?246:242)+'" r="'+(mini?17:15)+'" fill="#14171a"/><text x="'+(mini?24:30)+'" y="'+(mini?252:247)+'" text-anchor="middle" font-size="'+(mini?17:14)+'" font-weight="700" fill="#fff">'+(st.s+1)+'</text></g>';
+  return '<svg viewBox="0 0 480 270" role="img" font-family="ui-sans-serif,-apple-system,Segoe UI,Arial,sans-serif">'+s+'</svg>';}
+const DEMOS=[];
+function mountDemo(id){const host=$(id);if(!host)return;
+  host.innerHTML='<div class="demo"><div class="demo-stage"></div><div class="demo-cap"><b class="demo-step"></b><span class="demo-txt"></span></div><div class="demo-bar"><button type="button" class="btn demo-play">❚❚</button><button type="button" class="btn demo-in">'+escapeHtml(T('Dentro','Inside','Wewnątrz'))+'</button><button type="button" class="btn demo-out">'+escapeHtml(T('Fora','Outside','Na zewnątrz'))+'</button><span class="demo-prog"><i></i></span></div><div class="demo-strip"></div></div>';
+  const D={host,t:0,play:true,last:0,vis:true,stage:host.querySelector('.demo-stage'),cap:host.querySelector('.demo-txt'),step:host.querySelector('.demo-step'),prog:host.querySelector('.demo-prog i'),strip:host.querySelector('.demo-strip'),lastS:-1};
+  const btn=host.querySelector('.demo-play');btn.onclick=()=>{D.play=!D.play;btn.textContent=D.play?'❚❚':'▶';};
+  host.querySelector('.demo-in').onclick=()=>{D.t=0;D.play=true;btn.textContent='❚❚';};
+  host.querySelector('.demo-out').onclick=()=>{D.t=4*DEMO_SCENE;D.play=true;btn.textContent='❚❚';};
+  D.renderStrip=()=>{D.strip.innerHTML=DEMO_CAP.map((c,i)=>'<button type="button" class="demo-panel" data-i="'+i+'">'+demoFrame(i*DEMO_SCENE+DEMO_SCENE*.62,true)+'<span>'+escapeHtml(T(c[0],c[1],c[2]))+'</span></button>').join('');
+    D.strip.querySelectorAll('.demo-panel').forEach(b=>b.onclick=()=>{D.t=(+b.dataset.i)*DEMO_SCENE;D.play=false;btn.textContent='▶';D.draw();});D.lastS=-1;};
+  D.draw=()=>{D.stage.innerHTML=demoFrame(D.t);const s=Math.floor((D.t%DEMO_T)/DEMO_SCENE);if(s!==D.lastS){D.lastS=s;const c=DEMO_CAP[s];D.step.textContent=(s+1)+'/'+DEMO_CAP.length+' · '+(s<4?T('DENTRO','INSIDE','WEWNĄTRZ'):T('FORA','OUTSIDE','NA ZEWNĄTRZ'));D.cap.textContent=T(c[0],c[1],c[2]);D.strip.querySelectorAll('.demo-panel').forEach((b,i)=>b.classList.toggle('cur',i===s));}D.prog.style.width=((D.t%DEMO_T)/DEMO_T*100).toFixed(1)+'%';};
+  if('IntersectionObserver' in window){new IntersectionObserver(es=>{D.vis=es.some(x=>x.isIntersecting);}).observe(host);}
+  D.renderStrip();D.draw();DEMOS.push(D);}
+(function demoLoop(){let prev=performance.now();const tick=now=>{const dt=Math.min(.1,(now-prev)/1000);prev=now;DEMOS.forEach(D=>{if(D.play&&D.vis&&D.host.offsetParent!==null){D.t=(D.t+dt)%DEMO_T;D.draw();}});requestAnimationFrame(tick);};requestAnimationFrame(tick);})();
+function relangDemos(){DEMOS.forEach(D=>{D.host.querySelector('.demo-in').textContent=T('Dentro','Inside','Wewnątrz');D.host.querySelector('.demo-out').textContent=T('Fora','Outside','Na zewnątrz');D.renderStrip();D.draw();});}
+
+mountDemo('demo-setup');mountDemo('demo-guide');
 /* ================= PWA manifest (blob) ================= */
 (function(){try{const man={name:'Field Advisor PT — Acústica e Iluminação',short_name:'FA PT',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',start_url:'.'};const b=new Blob([JSON.stringify(man)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
 window.addEventListener('resize',()=>{drawNoise();drawRT();drawLight();});
