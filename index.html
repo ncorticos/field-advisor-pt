@@ -494,7 +494,7 @@ body.setup-mode .filechip{display:none!important}
     </div>
     <div class="gh" data-pt="Coordenadas" data-en="Coordinates" data-pl="Współrzędne">Coordenadas</div>
     <div class="sbox two">
-      <div class="fld wide"><div class="rowbtns"><button class="btn" id="btn-gps">⌖ GPS</button></div><span class="sub" id="gps-status" data-pt="Sem posição. O GPS só funciona com autorização e céu aberto." data-en="No fix yet. GPS needs permission and open sky." data-pl="Brak pozycji. GPS wymaga zgody i otwartego nieba.">Sem posição. O GPS só funciona com autorização e céu aberto.</span></div>
+      <div class="fld wide"><div class="rowbtns"><button class="btn" id="btn-gps">⌖ GPS</button></div><span class="sub" id="gps-status" data-pt="Começa na FA-ULisboa. Use o GPS (com autorização), a morada ou o mapa para pôr o seu local." data-en="Starts at FA-ULisboa. Use the GPS (with permission), the address or the map to place your site." data-pl="Start: FA-ULisboa. Użyj GPS (za zgodą), adresu lub mapy, aby wskazać swoje miejsce.">Começa na FA-ULisboa. Use o GPS (com autorização), a morada ou o mapa para pôr o seu local.</span></div>
       <div class="fld wide"><div id="setupMapWrap"><canvas id="setupMap" role="img" aria-label="Satellite view of the site"></canvas><button type="button" id="setupMapGrip" title="Ampliar o mapa / Enlarge the map" aria-label="Enlarge the map">⤢</button></div>
         <span class="sub" data-pt="Vista de satélite centrada nas coordenadas — 900 m de largura. Clique no mapa para o ampliar: arraste para explorar, clique para pôr o local — a altitude lê-se sozinha — e volte." data-en="Satellite view centred on the coordinates — 900 m across. Click the map to enlarge it: drag to explore, click to place the site — the altitude reads itself — then return." data-pl="Widok satelitarny wyśrodkowany na współrzędnych — 900 m szerokości. Kliknij mapę, aby ją powiększyć: przeciągnij, by się rozejrzeć, kliknij, by wskazać miejsce — wysokość odczyta się sama — i wróć.">Vista de satélite centrada nas coordenadas — 900 m de largura. Clique no mapa para o ampliar: arraste para explorar, clique para pôr o local — a altitude lê-se sozinha — e volte.</span></div>
       <div class="fld wide"><label for="setupSiteFindQ" data-pt="Procurar por morada" data-en="Find by address" data-pl="Szukaj po adresie">Procurar por morada</label><form id="setupSiteFind" class="sitefind" autocomplete="off"><input type="search" id="setupSiteFindQ" aria-label="Address search"><button type="submit" class="btn" data-pt="Procurar" data-en="Search" data-pl="Szukaj">Procurar</button></form><div id="setupSiteFindRes" class="sitefindres" aria-live="polite"></div></div>
@@ -752,7 +752,7 @@ body.setup-mode .filechip{display:none!important}
   <div class="foot">
     <div class="foot-top">
       <div>
-        <span class="appname">Field Advisor PT</span><span class="ver" id="footVer">v1.3.0</span>
+        <span class="appname">Field Advisor PT</span><span class="ver" id="footVer">v1.4.0</span>
         <p class="tag" data-pt="Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento." data-en="A didactic field meter for architecture students: the noise, reverberation and light of their workspace — inside and out — before any regulation applies." data-pl="Dydaktyczny miernik terenowy dla studentów architektury: hałas, pogłos i światło ich przestrzeni pracy — wewnątrz i na zewnątrz — zanim zastosuje się jakiekolwiek przepisy.">Um medidor de campo didático para estudantes de arquitetura: o ruído, a reverberação e a luz do seu espaço de trabalho — dentro e fora — antes de qualquer regulamento.</p>
       </div>
       <div>
@@ -817,7 +817,7 @@ body.setup-mode .filechip{display:none!important}
 
 <script>
 "use strict";
-const APP={name:'Field Advisor PT',tag:'FA PT',version:'1.3.0',built:'2026-10-29T10:27',author:'Nuno Dinis Cortiços',institution:'Lisbon School of Architecture, Universidade de Lisboa',builtWith:'Claude Opus 5.5 Medium (Anthropic)'};
+const APP={name:'Field Advisor PT',tag:'FA PT',version:'1.4.0',built:'2026-10-29T10:32',author:'Nuno Dinis Cortiços',institution:'Lisbon School of Architecture, Universidade de Lisboa',builtWith:'Claude Opus 5.5 Medium (Anthropic)'};
 function appStamp(){const d=new Date(APP.built),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],p2=v=>String(v).padStart(2,'0');return 'v'+APP.version+' · '+d.getDate()+' '+M[d.getMonth()]+' '+d.getFullYear()+' '+p2(d.getHours())+':'+p2(d.getMinutes());}
 /* ================= i18n / tabs / site ================= */
 const $=id=>document.getElementById(id);
@@ -1144,7 +1144,7 @@ function roomShell(opts){opts=opts||{};const open=!!opts.open;
   s+='<rect x="0" y="166" width="212" height="24" fill="#d9dcd6"/><line x1="0" y1="166" x2="212" y2="166" stroke="#14171a" stroke-width="1.4"/>';
   s+='<rect x="200" y="24" width="12" height="166" fill="#c9cdc6" stroke="#14171a" stroke-width="1.2"/>';
   s+='<rect x="200" y="62" width="12" height="58" fill="'+(open?'#eef4fa':'#fff')+'" stroke="none"/>';
-  s+=open?'<line x1="200" y1="62" x2="176" y2="70" stroke="#5aa0d6" stroke-width="2.2"/>':'<line x1="206" y1="62" x2="206" y2="120" stroke="#5aa0d6" stroke-width="2.4"/>';
+  s+=open?'<line x1="212" y1="62" x2="250" y2="74" stroke="#5aa0d6" stroke-width="2.4"/>':'<line x1="206" y1="62" x2="206" y2="120" stroke="#5aa0d6" stroke-width="2.4"/>';
   s+='<line x1="198" y1="120" x2="216" y2="120" stroke="#14171a" stroke-width="2"/>';
   s+='<rect x="0" y="20" width="212" height="4" fill="#c9cdc6"/>';
   return s;}
@@ -1152,27 +1152,36 @@ function waves(x,y,dir,col){let s='';for(let i=0;i<3;i++){const r=8+i*7;s+='<pat
 function car(x,y){return '<g><rect x="'+x+'" y="'+(y-9)+'" width="34" height="9" rx="2.5" fill="#7b838b"/><rect x="'+(x+7)+'" y="'+(y-15)+'" width="18" height="7" rx="2" fill="#a8afb5"/><circle cx="'+(x+8)+'" cy="'+y+'" r="3" fill="#14171a"/><circle cx="'+(x+26)+'" cy="'+y+'" r="3" fill="#14171a"/></g>';}
 function tripod(x,ytop,yfl){return '<line x1="'+x+'" y1="'+ytop+'" x2="'+(x-13)+'" y2="'+yfl+'" stroke="#3d444b" stroke-width="1.6"/><line x1="'+x+'" y1="'+ytop+'" x2="'+(x+13)+'" y2="'+yfl+'" stroke="#3d444b" stroke-width="1.6"/><line x1="'+x+'" y1="'+ytop+'" x2="'+x+'" y2="'+yfl+'" stroke="#3d444b" stroke-width="1.6"/>';}
 function sunRays(){return '<circle cx="300" cy="34" r="10" fill="#F5B83D"/>'+[0,1,2].map(i=>'<line x1="'+(288-i*4)+'" y1="'+(44+i*6)+'" x2="'+(150-i*22)+'" y2="'+(118+i*0)+'" stroke="#F5B83D" stroke-width="1.3" stroke-dasharray="4 3"/>').join('');}
+/* the phone on the inner sill, the window closed or open: the one spot of every reading */
+function sillScene(open,kind){let s=roomShell({open})+'<rect x="168" y="118" width="34" height="5" fill="#b8bdb5" stroke="#14171a" stroke-width="1"/>'+phoneFlat(184,118)+'<text x="184" y="136" text-anchor="middle" font-size="8.5" fill="#7b838b">'+T('parapeito','sill','parapet')+'</text>';
+  s+='<rect x="236" y="168" width="46" height="9" rx="2" fill="#7b838b"/><circle cx="244" cy="179" r="3" fill="#14171a"/><circle cx="274" cy="179" r="3" fill="#14171a"/><line x1="212" y1="183" x2="320" y2="183" stroke="#14171a" stroke-width="1.2"/>';
+  if(kind==='noise')s+=waves(258,150,-1,'#DC2626');else s+='<circle cx="300" cy="34" r="10" fill="#F5B83D"/>'+[0,1].map(i=>'<line x1="'+(290-i*5)+'" y1="'+(42+i*5)+'" x2="'+(190+i*4)+'" y2="'+(112-i*2)+'" stroke="#F5B83D" stroke-width="1.3" stroke-dasharray="4 3"/>').join('');
+  s+='<text x="100" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="'+(open?'#DC2626':'#16A34A')+'">'+(open?T('janela ABERTA','window OPEN','okno OTWARTE'):T('janela FECHADA','window CLOSED','okno ZAMKNIĘTE'))+'</text>';
+  s+='<text x="100" y="76" text-anchor="middle" font-size="9.5" fill="#3d444b">'+(open?T('= leitura de FORA','= OUTSIDE reading','= odczyt NA ZEWNĄTRZ'):T('= leitura de DENTRO','= INSIDE reading','= odczyt WEWNĄTRZ'))+'</text>';
+  return s;}
 const PLACES={
+  /* one spot for every reading: the phone on the inner sill; the window
+     closed reads the inside, the window opened (the phone untouched) the outside */
   'noise-in':{io:'interior',t:()=>T('Ruído — dentro','Noise — inside','Hałas — wewnątrz'),
-    svg:()=>roomShell()+tripod(100,96,166)+phoneFlat(100,96)+dimV(78,96,166,'1,2–1,5 m')+dimH(114,200,80,'≥ 1 m')+car(240,166)+'<line x1="212" y1="166" x2="320" y2="166" stroke="#14171a" stroke-width="1.2"/>'+waves(232,140,-1),
-    steps:()=>[T('Janela fechada (anote na ficha se estiver aberta).','Window closed (note it on the record if it is open).','Okno zamknięte (zanotuj na karcie, jeśli otwarte).'),
-      T('Telemóvel sobre uma pilha de livros ou tripé a 1,2–1,5 m do chão, ≥ 1 m das paredes e da janela.','Phone on a stack of books or a tripod 1.2–1.5 m above the floor, ≥ 1 m from walls and window.','Telefon na stosie książek lub statywie 1,2–1,5 m nad podłogą, ≥ 1 m od ścian i okna.'),
-      T('Ecrã para cima, microfone (bordo de baixo) para o centro do quarto. Afaste-se e fique em silêncio 1–5 min.','Screen up, microphone (bottom edge) towards the middle of the room. Step away and keep quiet for 1–5 min.','Ekranem do góry, mikrofon (dolna krawędź) w stronę środka pokoju. Odsuń się i zachowaj ciszę 1–5 min.')]},
+    svg:()=>sillScene(false,'noise'),
+    steps:()=>[T('Pouse o telemóvel no parapeito interior da janela, ecrã para cima.','Lay the phone on the inner window sill, screen up.','Połóż telefon na wewnętrznym parapecie, ekranem do góry.'),
+      T('Janela fechada.','Window closed.','Okno zamknięte.'),
+      T('Afaste-se e fique em silêncio durante 1 minuto.','Step away and keep quiet for 1 minute.','Odsuń się i zachowaj ciszę przez 1 minutę.')]},
   'noise-out':{io:'exterior',t:()=>T('Ruído — fora','Noise — outside','Hałas — na zewnątrz'),
-    svg:()=>roomShell()+'<rect x="212" y="166" width="84" height="6" fill="#c9cdc6" stroke="#14171a" stroke-width="1"/><line x1="294" y1="132" x2="294" y2="166" stroke="#14171a" stroke-width="1.4"/><line x1="282" y1="132" x2="296" y2="132" stroke="#14171a" stroke-width="1.4"/>'+tripod(258,96,166)+phoneFlat(258,96)+dimV(240,96,166,'1,2–1,5')+dimH(212,258,80,'1–2 m')+waves(304,112,-1,'#DC2626')+'<text x="314" y="146" text-anchor="end" font-size="9" fill="#7b838b">'+T('rua','street','ulica')+' ↓</text>',
-    steps:()=>[T('Na varanda ou no parapeito exterior, de preferência a 1–2 m da fachada (ISO 1996-2).','On the balcony or the outer sill, ideally 1–2 m from the façade (ISO 1996-2).','Na balkonie lub zewnętrznym parapecie, najlepiej 1–2 m od fasady (ISO 1996-2).'),
-      T('Ecrã para cima, microfone virado para a rua. Se só puder pousá-lo encostado à fachada, conte com +3 dB de reflexão.','Screen up, microphone facing the street. If it can only rest against the façade, expect +3 dB from the reflection.','Ekranem do góry, mikrofon w stronę ulicy. Jeśli leży przy samej fasadzie, licz się z +3 dB odbicia.'),
-      T('Sem vento forte nem chuva; não o segure junto ao corpo. Meça à mesma hora que dentro.','No strong wind or rain; do not hold it against your body. Measure at the same time as inside.','Bez silnego wiatru i deszczu; nie trzymaj go przy ciele. Mierz o tej samej porze co wewnątrz.')]},
+    svg:()=>sillScene(true,'noise'),
+    steps:()=>[T('O telemóvel fica no mesmo sítio, no parapeito.','The phone stays in the same spot, on the sill.','Telefon zostaje w tym samym miejscu, na parapecie.'),
+      T('Abra a janela.','Open the window.','Otwórz okno.'),
+      T('Meça 1 minuto e volte a fechar a janela.','Measure for 1 minute, then close the window again.','Mierz 1 minutę, potem zamknij okno.')]},
   'light-in':{io:'interior',t:()=>T('Luz — dentro','Light — inside','Światło — wewnątrz'),
-    svg:()=>roomShell()+sunRays()+'<rect x="44" y="121" width="148" height="5" fill="#a8afb5" stroke="#14171a" stroke-width="1"/><line x1="54" y1="126" x2="54" y2="166" stroke="#14171a" stroke-width="1.4"/><line x1="180" y1="126" x2="180" y2="166" stroke="#14171a" stroke-width="1.4"/>'+phoneFlat(176,121,'1')+phoneFlat(118,121,'2')+phoneFlat(64,121,'3')+dimV(38,121,166,'0,8 m')+'<text x="118" y="150" text-anchor="middle" font-size="9" fill="#7b838b">'+T('janela · centro · fundo','window · centre · back','okno · środek · tył')+'</text>',
-    steps:()=>[T('Telemóvel deitado na secretária (plano de trabalho, ≈ 0,8 m), ecrã para cima: o sensor de luz está junto à câmara frontal.','Phone lying on the desk (working plane, ≈ 0.8 m), screen up: the light sensor sits next to the front camera.','Telefon leży na biurku (płaszczyzna pracy, ≈ 0,8 m), ekranem do góry: czujnik światła jest przy przedniej kamerze.'),
-      T('Afaste-se para não fazer sombra; não toque no ecrã durante a leitura.','Step back so you cast no shadow; do not touch the screen while it reads.','Odsuń się, by nie rzucać cienia; nie dotykaj ekranu podczas odczytu.'),
-      T('3 pontos: junto à janela, ao centro e ao fundo. Para o DF, só luz natural (lâmpadas apagadas).','3 points: by the window, in the middle and at the back. For DF, daylight only (lamps off).','3 punkty: przy oknie, w środku i z tyłu. Dla DF tylko światło dzienne (lampy zgaszone).')]},
+    svg:()=>sillScene(false,'light'),
+    steps:()=>[T('Telemóvel no parapeito, ecrã para cima: o sensor de luz está junto à câmara frontal.','Phone on the sill, screen up: the light sensor sits by the front camera.','Telefon na parapecie, ekranem do góry: czujnik światła jest przy przedniej kamerze.'),
+      T('Janela fechada, lâmpadas apagadas.','Window closed, lamps off.','Okno zamknięte, lampy zgaszone.'),
+      T('Sem fazer sombra, leia o valor.','Casting no shadow, read the value.','Nie rzucając cienia, odczytaj wartość.')]},
   'light-out':{io:'exterior',t:()=>T('Luz — fora','Light — outside','Światło — na zewnątrz'),
-    svg:()=>roomShell({open:true})+'<path d="M222,120 A62,62 0 0 1 318,120" fill="none" stroke="#5aa0d6" stroke-width="1.3" stroke-dasharray="3 3"/>'+[0,1,2,3,4].map(i=>{const a=Math.PI*(.12+.19*i);return '<line x1="'+(270+58*Math.cos(Math.PI-a))+'" y1="'+(120-58*Math.sin(a))+'" x2="'+(270+12*Math.cos(Math.PI-a))+'" y2="'+(120-12*Math.sin(a))+'" stroke="#5aa0d6" stroke-width="1" marker-end="url(#ah)"/>';}).join('')+'<rect x="212" y="120" width="100" height="5" fill="#c9cdc6" stroke="#14171a" stroke-width="1"/>'+phoneFlat(270,120)+'<text x="266" y="52" text-anchor="middle" font-size="9" fill="#3d444b">'+T('céu desobstruído','unobstructed sky','odsłonięte niebo')+'</text>',
-    steps:()=>[T('Telemóvel deitado, ecrã para cima, no parapeito exterior, varanda ou terraço — onde veja o máximo de céu.','Phone lying flat, screen up, on the outer sill, balcony or roof — where it sees the most sky.','Telefon leży płasko, ekranem do góry, na zewnętrznym parapecie, balkonie lub tarasie — tam, gdzie widzi najwięcej nieba.'),
-      T('Sem árvores, toldos ou o seu corpo por cima; nada de sol direto se quiser o DF (céu encoberto é o ideal).','No trees, awnings or your body above it; no direct sun if you want the DF (an overcast sky is ideal).','Bez drzew, markiz ani Twojego ciała nad nim; bez bezpośredniego słońca dla DF (najlepsze jest zachmurzenie).'),
-      T('Leia logo antes ou depois da leitura de dentro (≤ 10 min) para o par contar no DF.','Read just before or after the inside reading (≤ 10 min) so the pair counts for DF.','Odczytaj tuż przed lub po odczycie wewnątrz (≤ 10 min), by para liczyła się do DF.')]},
+    svg:()=>sillScene(true,'light'),
+    steps:()=>[T('Mesmo sítio: não mexa no telemóvel.','Same spot: do not move the phone.','To samo miejsce: nie ruszaj telefonu.'),
+      T('Abra a janela.','Open the window.','Otwórz okno.'),
+      T('Leia o valor logo a seguir e feche a janela.','Read the value straight after, then close the window.','Odczytaj wartość od razu i zamknij okno.')]},
   'rt':{io:'interior',t:()=>T('Reverberação — dentro','Reverberation — inside','Pogłos — wewnątrz'),
     svg:()=>roomShell()+'<rect x="56" y="121" width="70" height="5" fill="#a8afb5" stroke="#14171a" stroke-width="1"/><line x1="64" y1="126" x2="64" y2="166" stroke="#14171a" stroke-width="1.4"/><line x1="118" y1="126" x2="118" y2="166" stroke="#14171a" stroke-width="1.4"/>'+phoneFlat(90,121)+'<ellipse cx="160" cy="84" rx="10" ry="12" fill="#DC2626"/><path d="M160,96 L157,100 L163,100 z" fill="#DC2626"/><line x1="160" y1="100" x2="158" y2="118" stroke="#7b838b" stroke-width="1"/>'+waves(150,84,-1,'#DC2626')+dimH(100,152,108,'1–2 m')+'<path d="M24,40 Q60,30 96,40 T168,40" fill="none" stroke="#0D9488" stroke-width="1.2" stroke-dasharray="3 2"/><path d="M24,52 Q60,44 96,52 T168,52" fill="none" stroke="#0D9488" stroke-width="1" stroke-dasharray="2 3" opacity=".6"/>',
     steps:()=>[T('Quarto em silêncio, janela e porta fechadas; telemóvel deitado numa mesa ao centro, ecrã para cima.','Quiet room, window and door closed; phone lying on a table in the middle, screen up.','Cichy pokój, okno i drzwi zamknięte; telefon leży na stole pośrodku, ekranem do góry.'),
@@ -1213,7 +1222,7 @@ function scaleDef(kind,night){const st=stype();
     return{title:T('Reverberação RT60','Reverberation RT60','Pogłos RT60'),unit:'s',min:0,max:2,dec:2,bands:[[b[0],'g',T('seco / claro','dry / clear','suchy / wyraźny')],[b[1],'a',T('vivo','live','żywy')],[2,'r',T('eco','echoey','echo')]],
       say:c=>c==='g'?T('A voz percebe-se bem e o quarto é acusticamente confortável.','Speech is clear and the room is acoustically comfortable.','Mowa jest wyraźna, a pokój akustycznie komfortowy.'):c==='a'?T('Algo vivo: superfícies duras. Um tapete, cortinas e estantes cheias baixam o RT.','Somewhat live: hard surfaces. A rug, curtains and full bookshelves bring RT down.','Nieco żywy: twarde powierzchnie. Dywan, zasłony i pełne regały obniżają RT.'):T('Reverberante: as videochamadas e a concentração sofrem. Junte materiais absorventes.','Reverberant: video calls and concentration suffer. Add absorbent materials.','Pogłosowy: cierpią wideorozmowy i koncentracja. Dodaj materiały pochłaniające.'),
       ref:rest?'DIN 18041: '+T('quartos','small rooms','małe pokoje')+' ≈ 0,4–0,6 s':'RRAE / ISO 3382-2'};}
-  case 'luxIn':return{title:T('Luz na secretária','Light on the desk','Światło na biurku'),unit:'lx',log:true,min:10,max:10000,dec:0,bands:[[300,'r',T('escuro','dark','ciemno')],[500,'a',A],[2000,'g',G],[10000,'a',T('ofuscante','glare','olśnienie')]],
+  case 'luxIn':return{title:T('Luz dentro','Light inside','Światło wewnątrz'),unit:'lx',log:true,min:10,max:10000,dec:0,bands:[[300,'r',T('escuro','dark','ciemno')],[500,'a',A],[2000,'g',G],[10000,'a',T('ofuscante','glare','olśnienie')]],
       say:c=>c==='g'?T('Bom para ler e escrever (≥ 500 lx).','Good for reading and writing (≥ 500 lx).','Dobrze do czytania i pisania (≥ 500 lx).'):c==='r'?T('Escuro para trabalhar: aproxime a secretária da janela ou junte um candeeiro de tarefa.','Too dark to work: move the desk towards the window or add a task lamp.','Za ciemno do pracy: przesuń biurko do okna lub dodaj lampkę.'):c==='aH'?T('Muita luz: provável sol direto. Risco de ofuscamento no ecrã — use cortina ou estore.','A lot of light: probably direct sun. Risk of glare on the screen — use a curtain or blind.','Dużo światła: prawdopodobnie bezpośrednie słońce. Ryzyko olśnienia — użyj zasłony lub rolety.'):T('Chega para tarefas simples; para ler muito tempo, reforce com um candeeiro.','Enough for simple tasks; for long reading, add a lamp.','Wystarcza do prostych zadań; do długiego czytania dodaj lampkę.'),
       ref:'EN 12464-1: '+T('ler/escrever','reading/writing','czytanie/pisanie')+' 500 lx · '+T('sala','classroom','sala')+' 300 lx'};
   case 'luxOut':return{title:T('Luz exterior','Outdoor light','Światło zewnętrzne'),unit:'lx',log:true,min:1,max:120000,dec:0,info:true,bands:[[100,'n1',T('noite','night','noc')],[5000,'n2',T('crepúsculo','dusk','zmierzch')],[20000,'n3',T('encoberto','overcast','pochmurno')],[120000,'n4',T('sol','sun','słońce')]],
@@ -1248,12 +1257,12 @@ function evalCards(round,compactNote){const o=evalData(round);const ac=[],lc=[];
   const add=(arr,kind,vals,mean,opts)=>{const v=mean(vals);arr.push(scaleHTML(kind,v,Object.assign({n:vals.length},opts||{})));if(v!=null){const d=scaleDef(kind,opts&&opts.night);if(d&&!d.info)rate.push(classOf(d,v));}};
   const nightOnly=round==='22:00';
   [['day',false],['night',true]].forEach(([k,n])=>{const d=o[k];if(n&&!d.in.length&&!d.out.length&&!nightOnly)return;if(!n&&nightOnly)return;
-    add(ac,'noiseIn',d.in,eMean,{night:n,empty:T('Meça dentro, de janela fechada.','Measure inside, window closed.','Zmierz wewnątrz, okno zamknięte.')});
-    add(ac,'noiseOut',d.out,eMean,{night:n,empty:T('Meça fora, à mesma hora.','Measure outside, at the same time.','Zmierz na zewnątrz, o tej samej porze.')});
+    add(ac,'noiseIn',d.in,eMean,{night:n,empty:T('Telemóvel no parapeito, janela fechada.','Phone on the sill, window closed.','Telefon na parapecie, okno zamknięte.')});
+    add(ac,'noiseOut',d.out,eMean,{night:n,empty:T('Mesmo sítio, abra a janela.','Same spot, open the window.','To samo miejsce, otwórz okno.')});
     const di=eMean(d.in),dout=eMean(d.out);const v=di!=null&&dout!=null?dout-di:null;ac.push(scaleHTML('diff',v,{note:site.windows&&site.windows!=='fechadas'&&site.windows!=='na'?T('janelas não fechadas na ficha','windows not closed on the record','okna niezamknięte na karcie'):(n?T('noite','night','noc'):''),empty:T('Precisa de um par dentro + fora.','Needs an inside + outside pair.','Potrzebna para wewnątrz + na zewnątrz.')}));if(v!=null)rate.push(classOf(scaleDef('diff'),v));});
   add(ac,'rt',o.rt,aMean,{empty:T('Rebente um balão no separador 02.','Burst a balloon on tab 02.','Przebij balon w zakładce 02.')});
-  add(lc,'luxIn',o.luxIn,aMean,{empty:T('Pouse o telemóvel na secretária.','Lay the phone on the desk.','Połóż telefon na biurku.')});
-  add(lc,'luxOut',o.luxOut,aMean,{empty:T('Pouse o telemóvel fora, ecrã para o céu.','Lay the phone outside, screen to the sky.','Połóż telefon na zewnątrz, ekranem do nieba.')});
+  add(lc,'luxIn',o.luxIn,aMean,{empty:T('Pouse o telemóvel no parapeito, janela fechada.','Lay the phone on the sill, window closed.','Połóż telefon na parapecie, okno zamknięte.')});
+  add(lc,'luxOut',o.luxOut,aMean,{empty:T('Mesmo sítio, abra a janela.','Same spot, open the window.','To samo miejsce, otwórz okno.')});
   add(lc,'df',o.df,aMean,{empty:T('Precisa de leituras dentro + fora com ≤ 10 min de intervalo.','Needs inside + outside readings ≤ 10 min apart.','Potrzebne odczyty wewnątrz + na zewnątrz w odstępie ≤ 10 min.')});
   return{ac,lc,rate};}
 function renderEval(){const sec=$('p-eval');if(!sec)return;const round=segGet('seg-eval-round')||'all';const r=evalCards(round);
@@ -1971,32 +1980,23 @@ document.querySelectorAll('.btn-deck').forEach(b=>b.onclick=()=>faToggleExportMe
    A short animated section through the window, in eight steps like a comic
    strip: the stage plays the steps in a loop, the strip under it shows each
    step as a panel, and a panel jumps the stage to it. */
-const DEMO_SCENE=3.4;
+const DEMO_SCENE=4.2;
 const DEMO_CAP=[
-  ['Feche a janela.','Close the window.','Zamknij okno.'],
-  ['Pouse o telemóvel no parapeito interior, ecrã para cima.','Lay the phone on the inner sill, screen up.','Połóż telefon na wewnętrznym parapecie, ekranem do góry.'],
-  ['Afaste-se, sem sombra nem barulho: meça 1 minuto.','Step away, no shadow, no noise: measure for 1 minute.','Odsuń się, bez cienia i hałasu: mierz 1 minutę.'],
-  ['Guarde a leitura de DENTRO.','Save the INSIDE reading.','Zapisz odczyt WEWNĄTRZ.'],
-  ['Abra a janela e passe o telemóvel para o parapeito exterior.','Open the window and move the phone to the outer sill.','Otwórz okno i przenieś telefon na zewnętrzny parapet.'],
-  ['Ecrã para cima, microfone para a rua. Feche a janela.','Screen up, microphone to the street. Close the window.','Ekranem do góry, mikrofon w stronę ulicy. Zamknij okno.'],
-  ['Meça 1 minuto, à mesma hora que dentro.','Measure for 1 minute, at the same time as inside.','Mierz 1 minutę, o tej samej porze co wewnątrz.'],
-  ['Compare: fora − dentro = isolamento; dentro ÷ fora = DF.','Compare: outside − inside = insulation; inside ÷ outside = DF.','Porównaj: zewn. − wewn. = izolacyjność; wewn. ÷ zewn. = DF.']];
+  ['Pouse o telemóvel no parapeito da janela, ecrã para cima.','Lay the phone on the window sill, screen up.','Połóż telefon na parapecie, ekranem do góry.'],
+  ['Janela fechada: meça 1 minuto — é a leitura de DENTRO.','Window closed: measure 1 minute — the INSIDE reading.','Okno zamknięte: mierz 1 minutę — odczyt WEWNĄTRZ.'],
+  ['Abra a janela, sem mexer no telemóvel: meça 1 minuto — é a leitura de FORA.','Open the window, without moving the phone: measure 1 minute — the OUTSIDE reading.','Otwórz okno, nie ruszając telefonu: mierz 1 minutę — odczyt NA ZEWNĄTRZ.'],
+  ['Feche a janela e compare as duas leituras.','Close the window and compare the two readings.','Zamknij okno i porównaj oba odczyty.']];
 const DEMO_T=DEMO_CAP.length*DEMO_SCENE;
 const dEase=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
 const dLerp=(a,b,e)=>a+(b-a)*e;
 const dPath=(pts,e)=>{const n=pts.length-1,k=Math.min(n-1,Math.floor(e*n)),q=e*n-k;return[dLerp(pts[k][0],pts[k+1][0],q),dLerp(pts[k][1],pts[k+1][1],q)];};
-function demoState(t){t=((t%DEMO_T)+DEMO_T)%DEMO_T;const s=Math.floor(t/DEMO_SCENE),p=(t-s*DEMO_SCENE)/DEMO_SCENE;const e=dEase(Math.min(1,p*1.15));
-  const IN=[214,160],OUT=[286,160],START=[70,70],OFF=[-60,40];
-  const st={s,p,win:0,phone:IN,hand:null,held:false,timer:-1,badge:0};
-  if(s===0){st.win=1-e;st.hand=START;st.held=true;st.phone=null;}
-  else if(s===1){if(p<.7){const q=dEase(p/.7);st.hand=dPath([START,[150,90],IN],q);st.held=true;st.phone=null;}else{st.hand=dPath([IN,[120,90],OFF],dEase((p-.7)/.3));}}
-  else if(s===2){st.timer=Math.min(1,p*1.1);}
-  else if(s===3){st.badge=1;}
-  else if(s===4){st.win=Math.min(1,p*3);if(p<.25){st.hand=dPath([OFF,[140,110],IN],dEase(p/.25));}else if(p<.8){const q=dEase((p-.25)/.55);st.hand=dPath([IN,[250,118],OUT],q);st.held=true;st.phone=null;}else{st.phone=OUT;st.hand=dPath([OUT,[250,118],[120,100],OFF],dEase((p-.8)/.2));}if(p<.8&&p>=.25){}else if(p<.25){st.phone=IN;}}
-  else if(s===5){st.phone=OUT;st.win=p<.35?1:1-dEase((p-.35)/.65);}
-  else if(s===6){st.phone=OUT;st.timer=Math.min(1,p*1.1);}
-  else{st.phone=OUT;st.badge=2;}
-  if(s>=5)st.phone=OUT;
+function demoState(t){t=((t%DEMO_T)+DEMO_T)%DEMO_T;const s=Math.floor(t/DEMO_SCENE),p=(t-s*DEMO_SCENE)/DEMO_SCENE;
+  const IN=[214,160],START=[70,70],OFF=[-60,40];
+  const st={s,p,win:0,phone:IN,hand:null,held:false,timer:-1,badge:0,tc:110};
+  if(s===0){if(p<.65){st.hand=dPath([START,[150,90],IN],dEase(p/.65));st.held=true;st.phone=null;}else st.hand=dPath([IN,[120,90],OFF],dEase((p-.65)/.35));}
+  else if(s===1){st.timer=p>.88?-1:Math.min(1,p*1.15);st.badge=p>.88?1:0;}
+  else if(s===2){st.badge=1;st.win=Math.min(1,dEase(Math.min(1,p*4)));st.timer=p<.25||p>.92?-1:Math.min(1,(p-.25)*1.5);if(p>.92)st.badge=2;}
+  else{st.badge=3;st.win=1-dEase(Math.min(1,p*3));}
   return st;}
 function demoPhone(x,y,rot,lbl){return '<g transform="translate('+x+','+y+') rotate('+(rot||0)+')"><rect x="-17" y="-6" width="34" height="6" rx="2" fill="#14171a"/><rect x="-14" y="-7.4" width="28" height="1.8" rx=".9" fill="#2563EB"/><circle cx="-13" cy="-3" r="1.2" fill="#DC2626"/></g>'+(lbl?'<text x="'+x+'" y="'+(y-14)+'" text-anchor="middle" font-size="9.5" font-weight="700" fill="#2563EB">'+lbl+'</text>':'');}
 function demoHand(x,y,held){const ax=x-110,ay=y-70;
@@ -2004,7 +2004,7 @@ function demoHand(x,y,held){const ax=x-110,ay=y-70;
     '<ellipse cx="'+(x+2)+'" cy="'+(y+1)+'" rx="10" ry="7" fill="#e7b893" stroke="#c99470" stroke-width="1"/>'+(held?demoPhone(x+6,y+8,-8):'')+'<path d="M'+(x-2)+','+(y+6)+' q8,4 14,0" stroke="#c99470" stroke-width="1.2" fill="none"/></g>';}
 function demoFrame(t,mini){const st=demoState(t);const L=k=>T(k[0],k[1],k[2]);
   let s='<rect x="0" y="0" width="480" height="270" fill="#fafbf9"/><rect x="250" y="0" width="230" height="270" fill="#eef4fa"/>';
-  s+='<text x="14" y="22" font-size="11" font-weight="700" letter-spacing=".08em" fill="'+(st.s<4?'#14171a':'#a8afb5')+'">'+L(['DENTRO','INSIDE','WEWNĄTRZ'])+'</text><text x="466" y="22" text-anchor="end" font-size="11" font-weight="700" letter-spacing=".08em" fill="'+(st.s>=4?'#14171a':'#a8afb5')+'">'+L(['FORA','OUTSIDE','NA ZEWNĄTRZ'])+'</text>';
+  s+='<text x="14" y="22" font-size="11" font-weight="700" letter-spacing=".08em" fill="'+(st.win<.5?'#14171a':'#a8afb5')+'">'+L(['DENTRO','INSIDE','WEWNĄTRZ'])+'</text><text x="466" y="22" text-anchor="end" font-size="11" font-weight="700" letter-spacing=".08em" fill="'+(st.win>=.5?'#14171a':'#a8afb5')+'">'+L(['FORA','OUTSIDE','NA ZEWNĄTRZ'])+'</text>';
   /* street and its noise */
   s+='<line x1="250" y1="262" x2="480" y2="262" stroke="#14171a" stroke-width="1.2"/><g transform="translate('+(380+Math.sin(t*1.3)*30)+',262)"><rect x="0" y="-12" width="44" height="12" rx="3" fill="#7b838b"/><rect x="9" y="-20" width="24" height="9" rx="2" fill="#a8afb5"/><circle cx="10" cy="0" r="4" fill="#14171a"/><circle cx="34" cy="0" r="4" fill="#14171a"/></g>';
   for(let i=0;i<3;i++){const r=14+((t*22+i*14)%42);s+='<circle cx="372" cy="236" r="'+r.toFixed(1)+'" fill="none" stroke="#DC2626" stroke-width="1.3" opacity="'+(1-r/56).toFixed(2)+'"/>';}
@@ -2013,22 +2013,22 @@ function demoFrame(t,mini){const st=demoState(t);const L=k=>T(k[0],k[1],k[2]);
   /* wall, sills, window */
   s+='<rect x="0" y="236" width="250" height="34" fill="#d9dcd6"/><line x1="0" y1="236" x2="250" y2="236" stroke="#14171a" stroke-width="1.4"/>';
   s+='<rect x="236" y="30" width="28" height="44" fill="#c9cdc6" stroke="#14171a" stroke-width="1.2"/><rect x="236" y="166" width="28" height="104" fill="#c9cdc6" stroke="#14171a" stroke-width="1.2"/>';
-  s+='<rect x="196" y="160" width="44" height="8" fill="#b8bdb5" stroke="#14171a" stroke-width="1"/><rect x="260" y="160" width="46" height="8" fill="#b8bdb5" stroke="#14171a" stroke-width="1"/>';
-  s+='<text x="232" y="184" text-anchor="end" font-size="9" fill="#7b838b">'+L(['parapeito interior','inner sill','parapet wewn.'])+'</text><text x="268" y="184" text-anchor="start" font-size="9" fill="#7b838b">'+L(['parapeito exterior','outer sill','parapet zewn.'])+'</text>';
+  s+='<rect x="196" y="160" width="44" height="8" fill="#b8bdb5" stroke="#14171a" stroke-width="1"/>';
+  s+='<text x="232" y="184" text-anchor="end" font-size="9" fill="#7b838b">'+L(['parapeito','sill','parapet'])+'</text>';
   const ang=st.win*62;
   s+='<g transform="rotate('+ang.toFixed(1)+' 250 74)"><rect x="246" y="74" width="8" height="86" fill="#ffffff" stroke="#14171a" stroke-width="1.2"/><line x1="250" y1="78" x2="250" y2="156" stroke="#5aa0d6" stroke-width="2.6"/></g>';
   /* the phone and the hand */
-  if(st.phone){const onIn=st.phone[0]<250;s+=demoPhone(st.phone[0],st.phone[1],0,(st.s===1&&st.p>.7)||st.s===2||st.s===5||st.s===6?L(['ecrã ↑','screen ↑','ekran ↑']):'');}
+  if(st.phone){const onIn=st.phone[0]<250;s+=demoPhone(st.phone[0],st.phone[1],0,(st.s===0&&st.p>.65)||st.s===1||st.s===2?L(['ecrã ↑','screen ↑','ekran ↑']):'');}
   if(st.hand)s+=demoHand(st.hand[0],st.hand[1],st.held);
   /* the minute */
-  if(st.timer>=0){const cx=st.s===2?110:380,cy=100,R=26,C2=2*Math.PI*R,rem=Math.max(0,60-Math.round(st.timer*60));
+  if(st.timer>=0){const cx=150,cy=204,R=26,C2=2*Math.PI*R,rem=Math.max(0,60-Math.round(st.timer*60));
     s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="#fff" stroke="#e3e6e2" stroke-width="5"/><circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="#14171a" stroke-width="5" stroke-dasharray="'+C2.toFixed(1)+'" stroke-dashoffset="'+(C2*(1-st.timer)).toFixed(1)+'" transform="rotate(-90 '+cx+' '+cy+')"/><text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" font-size="14" font-weight="700" font-family="ui-monospace,Menlo,monospace" fill="#14171a">0:'+String(rem).padStart(2,'0')+'</text>';
-    if(st.s===2)s+='<text x="110" y="146" text-anchor="middle" font-size="9.5" fill="#3d444b">≥ 1 m · '+L(['silêncio','quiet','cisza'])+'</text>';}
+    if(st.s===1)s+='<text x="112" y="208" text-anchor="end" font-size="9.5" fill="#3d444b">≥ 1 m · '+L(['silêncio','quiet','cisza'])+'</text>';}
   /* the readings */
   const badge=(x,y,title,lines,col)=>'<g><rect x="'+x+'" y="'+y+'" width="150" height="'+(22+lines.length*15)+'" rx="8" fill="#fff" stroke="'+col+'" stroke-width="2"/><text x="'+(x+10)+'" y="'+(y+16)+'" font-size="10" font-weight="700" letter-spacing=".06em" fill="'+col+'">'+title+'</text>'+lines.map((l,i)=>'<text x="'+(x+10)+'" y="'+(y+33+i*15)+'" font-size="12" font-family="ui-monospace,Menlo,monospace" fill="#14171a">'+l+'</text>').join('')+'</g>';
-  if(st.badge>=1)s+=badge(30,64,L(['DENTRO ✓','INSIDE ✓','WEWNĄTRZ ✓']),['38 dB(A)','420 lx'],'#16A34A');
-  if(st.badge===2){s+=badge(318,64,L(['FORA ✓','OUTSIDE ✓','NA ZEWN. ✓']),['64 dB(A)','15 000 lx'],'#16A34A');
-    s+='<g><rect x="96" y="192" width="290" height="40" rx="8" fill="#14171a"/><text x="241" y="208" text-anchor="middle" font-size="11" font-family="ui-monospace,Menlo,monospace" fill="#fff">64 − 38 = 26 dB · '+L(['isolamento','insulation','izolacyjność'])+'</text><text x="241" y="224" text-anchor="middle" font-size="11" font-family="ui-monospace,Menlo,monospace" fill="#F5B83D">420 ÷ 15 000 = 2,8 % · DF</text></g>';}
+  if(st.badge>=1)s+=badge(30,64,L(['DENTRO ✓','INSIDE ✓','WEWNĄTRZ ✓'])+' · '+L(['fechada','closed','zamkn.']),['38 dB(A)','420 lx'],'#16A34A');
+  if(st.badge>=2)s+=badge(30,126,L(['FORA ✓','OUTSIDE ✓','NA ZEWN. ✓'])+' · '+L(['aberta','open','otwarte']),['64 dB(A)','15 000 lx'],'#DC2626');
+  if(st.badge===3)s+='<g><rect x="96" y="192" width="290" height="40" rx="8" fill="#14171a"/><text x="241" y="208" text-anchor="middle" font-size="11" font-family="ui-monospace,Menlo,monospace" fill="#fff">64 − 38 = 26 dB · '+L(['a janela protege','the window protects','okno chroni'])+'</text><text x="241" y="224" text-anchor="middle" font-size="11" font-family="ui-monospace,Menlo,monospace" fill="#F5B83D">420 ÷ 15 000 = 2,8 % · DF</text></g>';
   /* the step number */
   s+='<g><circle cx="'+(mini?24:30)+'" cy="'+(mini?246:242)+'" r="'+(mini?17:15)+'" fill="#14171a"/><text x="'+(mini?24:30)+'" y="'+(mini?252:247)+'" text-anchor="middle" font-size="'+(mini?17:14)+'" font-weight="700" fill="#fff">'+(st.s+1)+'</text></g>';
   return '<svg viewBox="0 0 480 270" role="img" font-family="ui-sans-serif,-apple-system,Segoe UI,Arial,sans-serif">'+s+'</svg>';}
@@ -2038,10 +2038,10 @@ function mountDemo(id){const host=$(id);if(!host)return;
   const D={host,t:0,play:true,last:0,vis:true,stage:host.querySelector('.demo-stage'),cap:host.querySelector('.demo-txt'),step:host.querySelector('.demo-step'),prog:host.querySelector('.demo-prog i'),strip:host.querySelector('.demo-strip'),lastS:-1};
   const btn=host.querySelector('.demo-play');btn.onclick=()=>{D.play=!D.play;btn.textContent=D.play?'❚❚':'▶';};
   host.querySelector('.demo-in').onclick=()=>{D.t=0;D.play=true;btn.textContent='❚❚';};
-  host.querySelector('.demo-out').onclick=()=>{D.t=4*DEMO_SCENE;D.play=true;btn.textContent='❚❚';};
-  D.renderStrip=()=>{D.strip.innerHTML=DEMO_CAP.map((c,i)=>'<button type="button" class="demo-panel" data-i="'+i+'">'+demoFrame(i*DEMO_SCENE+DEMO_SCENE*.62,true)+'<span>'+escapeHtml(T(c[0],c[1],c[2]))+'</span></button>').join('');
+  host.querySelector('.demo-out').onclick=()=>{D.t=2*DEMO_SCENE;D.play=true;btn.textContent='❚❚';};
+  D.renderStrip=()=>{D.strip.innerHTML=DEMO_CAP.map((c,i)=>'<button type="button" class="demo-panel" data-i="'+i+'">'+demoFrame(i*DEMO_SCENE+DEMO_SCENE*(i===0?.5:.97),true)+'<span>'+escapeHtml(T(c[0],c[1],c[2]))+'</span></button>').join('');
     D.strip.querySelectorAll('.demo-panel').forEach(b=>b.onclick=()=>{D.t=(+b.dataset.i)*DEMO_SCENE;D.play=false;btn.textContent='▶';D.draw();});D.lastS=-1;};
-  D.draw=()=>{D.stage.innerHTML=demoFrame(D.t);const s=Math.floor((D.t%DEMO_T)/DEMO_SCENE);if(s!==D.lastS){D.lastS=s;const c=DEMO_CAP[s];D.step.textContent=(s+1)+'/'+DEMO_CAP.length+' · '+(s<4?T('DENTRO','INSIDE','WEWNĄTRZ'):T('FORA','OUTSIDE','NA ZEWNĄTRZ'));D.cap.textContent=T(c[0],c[1],c[2]);D.strip.querySelectorAll('.demo-panel').forEach((b,i)=>b.classList.toggle('cur',i===s));}D.prog.style.width=((D.t%DEMO_T)/DEMO_T*100).toFixed(1)+'%';};
+  D.draw=()=>{D.stage.innerHTML=demoFrame(D.t);const s=Math.floor((D.t%DEMO_T)/DEMO_SCENE);if(s!==D.lastS){D.lastS=s;const c=DEMO_CAP[s];D.step.textContent=(s+1)+'/'+DEMO_CAP.length+' · '+(s===2?T('FORA','OUTSIDE','NA ZEWNĄTRZ'):T('DENTRO','INSIDE','WEWNĄTRZ'));D.cap.textContent=T(c[0],c[1],c[2]);D.strip.querySelectorAll('.demo-panel').forEach((b,i)=>b.classList.toggle('cur',i===s));}D.prog.style.width=((D.t%DEMO_T)/DEMO_T*100).toFixed(1)+'%';};
   if('IntersectionObserver' in window){new IntersectionObserver(es=>{D.vis=es.some(x=>x.isIntersecting);}).observe(host);}
   D.renderStrip();D.draw();DEMOS.push(D);}
 (function demoLoop(){let prev=performance.now();const tick=now=>{const dt=Math.min(.1,(now-prev)/1000);prev=now;DEMOS.forEach(D=>{if(D.play&&D.vis&&D.host.offsetParent!==null){D.t=(D.t+dt)%DEMO_T;D.draw();}});requestAnimationFrame(tick);};requestAnimationFrame(tick);})();
@@ -2136,13 +2136,15 @@ function paintSiteMap(cv,cLa,cLo,mLa,mLo,across,onTile){const W=cv.clientWidth,H
   big.addEventListener('pointercancel',()=>{pd=null;big.style.cursor='';});
   window.addEventListener('resize',()=>{drawSmall();if(bigOpen)drawBig();});
   window.faMapRedraw=()=>{drawSmall();if(bigOpen)drawBig();};
+  /* an empty record starts at the school, as Architecture Advisor PT starts at its region's town: the map is never blank */
+  window.faMapSeed=()=>{if(lat.value===''&&lon.value===''){lat.value='38.71278';lon.value='-9.19416';}drawSmall();};
   drawSmall();})();
 
 mountDemo('demo-setup');mountDemo('demo-guide');
 /* ================= PWA manifest (blob) ================= */
 (function(){try{const man={name:'Field Advisor PT — Acústica e Iluminação',short_name:'FA PT',display:'standalone',background_color:'#ffffff',theme_color:'#ffffff',start_url:'.'};const b=new Blob([JSON.stringify(man)],{type:'application/json'});const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
 window.addEventListener('resize',()=>{drawNoise();drawRT();drawLight();});
-wireChips();loadSite();segSet('seg-lwhere',site.inout||'interior');
+wireChips();loadSite();if(window.faMapSeed)window.faMapSeed();segSet('seg-lwhere',site.inout||'interior');
 try{if(localStorage.getItem('fa-started')==='1'){document.body.classList.remove('setup-mode');$('tabsNav').hidden=false;}}catch(e){}
 updateChip();renderAll();setLang('pt');
 </script>
