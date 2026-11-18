@@ -173,6 +173,19 @@ function frame() {
 /* the near mullion the leaves close on: drawn after the leaf, cut by the section */
 const mullion = () => box(-24, -20, -2.6, 0, BOARD + 3, HEAD, { tone: "mid", crease: "faint" }, 0.2);
 
+/* the roller shutter (estore): its box under the lintel, outside the glass, and
+   two guide rails down the reveal; the slats are drawn live, from how far down it is */
+const SH = { x0: -11, x1: -3, y0: OY0, y1: 0, top: HEAD - 8 };
+function shutterBox() {
+  const out = [];
+  out.push(box(SH.x0 - 1, SH.x1, SH.y0, SH.y1, SH.top, HEAD, { tone: "mid", crease: "lo" }, 0.3, 0.3));
+  out.push(L(k.lineOnTop([SH.x0 + 1, SH.y0 + 2], [SH.x0 + 1, SH.y1 - 1], SH.top, P), { tone: "faint" }));
+  // the far guide, on the reveal face; the near one is cut by the section
+  out.push(box(-8.6, -5.4, SH.y0, SH.y0 + 1.6, BOARD, SH.top, { tone: "mid", crease: "none" }, 0.2));
+  out.push(box(-8.6, -5.4, -1.6, 0, BOARD, SH.top, { tone: "mid", crease: "none" }, 0.2));
+  return out.join("");
+}
+
 /* the façade, one face with a notch; lintel and lower wall cut by the section */
 function facade() {
   const out = [];
@@ -277,7 +290,7 @@ function phone() {
 const INN = [-39, -17, BOARD], OUTS = [12, -17, BOARD];
 const LEAF = { hx: -24, hy: OY0 + 3, w: 34.4, z0: BOARD + 3, z1: HEAD - 2, t: 3 };
 const body = [
-  basePlate(), street(), `<g data-slot="room">${room()}</g>`, reveal(), `<g data-slot="leafA"></g>`, innerSill(), frame(), `<g data-slot="leafB"></g>`, mullion(), facade(), dressings(), bollards(), `<g data-slot="car">${car()}</g>`,
+  basePlate(), street(), `<g data-slot="room">${room()}</g>`, reveal(), `<g data-slot="leafA"></g>`, innerSill(), frame(), `<g data-slot="leafB"></g>`, mullion(), `<g data-slot="shade"></g>`, shutterBox(), facade(), dressings(), bollards(), `<g data-slot="car">${car()}</g>`,
   `<g data-slot="rings"></g>`,
   `<g data-part="shadow"><path class="iso-halo" d="${k.haloOf({ x: -6.5, y: -13, w: 13, d: 26, r: 2 }, 0, 0.1, P)}" style="filter:blur(1.5px)"/></g>`,
   `<g data-part="phone">${phone()}</g>`,
@@ -295,11 +308,14 @@ const FA_CSS = `
 .fa-leaf-wood{fill:var(--anatomy-face);stroke:none;fill-rule:evenodd}
 .fa-leaf-edge{fill:var(--anatomy-shade-1);stroke:none}
 .fa-ring{fill:none;stroke:#e5484d;stroke-width:1.5;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.fa-slats{fill:#a9b1bb;stroke:none}
+.fa-slat-line{fill:none;stroke:#59626c;stroke-width:.6;vector-effect:non-scaling-stroke}
+.fa-slat-edge{fill:none;stroke:var(--anatomy-ink,#1d2329);stroke-width:1;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 `;
 const live = `
 function mountHowFigure(root, say) {
   const P = ${JSON.stringify(P)}, L = ${JSON.stringify(LEAF)}, INN = ${JSON.stringify(INN)}, OUTS = ${JSON.stringify(OUTS)};
-  const SRC = [56, -17, -30], GLASS_X = ${GLASS_X}, BOARD = ${BOARD}, HEAD = ${HEAD};
+  const SRC = [56, -17, -30], GLASS_X = ${GLASS_X}, BOARD = ${BOARD}, HEAD = ${HEAD}, SH = ${JSON.stringify(SH)}, SX = -7;
   const rad = Math.PI / 180, sa = Math.sin(P.azimuth * rad), ca = Math.cos(P.azimuth * rad), se = Math.sin((P.elevation ?? 30) * rad), ce = Math.cos((P.elevation ?? 30) * rad), K = P.scale * ${k.cameraOf({ scale: 1 }).k};
   const iso = (x, y, z) => [P.origin[0] + (x * sa - y * ca) * K, P.origin[1] + ((x * ca + y * sa) * se - z * ce) * K];
   const f = (n) => Math.round(n * 10) / 10;
@@ -334,6 +350,17 @@ function mountHowFigure(root, say) {
     const slot = open > 0.45 ? slotA : slotB;
     if (leaf.parentNode !== slot) slot.appendChild(leaf);
   }
+  /* the shutter: slats in the plane x = SX, from the box down to how far it is let down */
+  const shSlot = q('[data-slot="shade"]'), shFill = mk("fa-slats"), shLines = mk("fa-slat-line"), shEdge = mk("fa-slat-edge");
+  shSlot.append(shFill, shLines, shEdge);
+  function drawShade(down) {
+    if (down < 0.01) { shFill.setAttribute("d", ""); shLines.setAttribute("d", ""); shEdge.setAttribute("d", ""); return; }
+    const zb = SH.top - down * (SH.top - BOARD), y0 = SH.y0 + 1.6, y1 = -1.6;
+    const rect = d([iso(SX, y0, SH.top), iso(SX, y1, SH.top), iso(SX, y1, zb), iso(SX, y0, zb)], true);
+    shFill.setAttribute("d", rect); shEdge.setAttribute("d", rect);
+    let ln = ""; for (let z = SH.top - 3.4; z > zb + 0.8; z -= 3.4) ln += d([iso(SX, y0, z), iso(SX, y1, z)]);
+    shLines.setAttribute("d", ln + d([iso(SX, y0, zb + 1.6), iso(SX, y1, zb + 1.6)]));
+  }
   /* sound from the street, as arcs in the plane through the phone: they stop on the
      wall, cross a closed window weakened, and go through an open one whole */
   const ringSlot = q('[data-slot="rings"]');
@@ -341,7 +368,7 @@ function mountHowFigure(root, say) {
   for (let i = 0; i < RN; i++) { const a = mk("fa-ring"), b = mk("fa-ring"); b.setAttribute("stroke-dasharray", "1.5 3"); a.setAttribute("data-free", ""); b.setAttribute("data-free", ""); ringSlot.append(a, b); rings.push([a, b]); }
   const AIM = Math.atan2(BOARD + 4 - SRC[2], OUTS[0] - 6 - SRC[0]), SPREAD = 26 * rad, RMAX = 176;
   const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
-  function drawRings(t, open) {
+  function drawRings(t, open, shade = 0) {
     rings.forEach(([a, b], i) => {
       const r = ((t * 46 + i * RMAX / RN) % RMAX) + 8;
       const fade = smooth(8, 26, r) * (1 - smooth(RMAX * 0.68, RMAX, r));
@@ -351,7 +378,7 @@ function mountHowFigure(root, say) {
         const inGap = z > BOARD + 1 && z < HEAD - 8;
         let kind = 0;
         if (x >= 0.5) kind = 1;
-        else if (inGap) kind = open > 0.5 ? (x > -110 ? 1 : 0) : (x > GLASS_X ? 1 : (x > -96 ? 2 : 0));
+        else if (inGap) kind = open > 0.5 ? (x > -110 ? 1 : 0) : shade > 0.5 ? (x > SX ? 1 : (x > -66 ? 2 : 0)) : (x > GLASS_X ? 1 : (x > -96 ? 2 : 0));
         (kind === 1 ? strong : kind === 2 ? weak : []).push(kind ? iso(x, SRC[1], z) : 0);
       }
       a.setAttribute("d", strong.length > 1 ? d(strong) : ""); a.setAttribute("opacity", (0.72 * fade).toFixed(3));
@@ -361,10 +388,26 @@ function mountHowFigure(root, say) {
   const phone = q('[data-part="phone"]'), shadow = q('[data-part="shadow"]'), bars = [...svg.querySelectorAll("[data-bar]")];
   const car = q('[data-slot="car"]');
   /* the one timeline: what the student does, in order */
-  const LOOP = 16, ease = (x) => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2, clamp01 = (x) => Math.min(1, Math.max(0, x));
+  const DAY = 16, NIGHT_IN = 5.2, NIGHT_ADD = 5.6; let night = false, LOOP = DAY;
+  const ease = (x) => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2, clamp01 = (x) => Math.min(1, Math.max(0, x));
   const span = (t, a, b) => clamp01((t - a) / (b - a));
   function stateAt(t) {
     t = ((t % LOOP) + LOOP) % LOOP;
+    if (night && t >= NIGHT_IN) {
+      // 5.2–6.4 lower, 6.4–10.0 hold and measure, 10.0–10.8 raise, then the day tour resumes
+      const u = t - NIGHT_IN;
+      if (u < NIGHT_ADD) {
+        const base = dayAt(NIGHT_IN - 0.01);
+        let shade = 1, step = "inshade";
+        if (u < 1.2) { shade = ease(span(u, 0, 1.2)); step = "shade"; }
+        else if (u > 4.8) { shade = 1 - ease(span(u, 4.8, 5.6)); step = "raise"; }
+        return { ...base, shade, step, level: 0.26 - 0.13 * shade, side: "shade" };
+      }
+      return { ...dayAt(t - NIGHT_ADD), shade: 0 };
+    }
+    return { ...dayAt(t), shade: 0 };
+  }
+  function dayAt(t) {
     let win = 0, pos = INN, alpha = 1, step = "in";
     if (t < 1.7) { const e = ease(span(t, 0.1, 1.5)); pos = [INN[0], INN[1], INN[2] + 44 * (1 - e)]; alpha = smooth(0.05, 0.6, t); step = "place"; }
     else if (t < 6.2) { step = "in"; }
@@ -382,7 +425,7 @@ function mountHowFigure(root, say) {
   let lastSide = "", meter = 0.2, shownBars = -1;
   function draw(t, dt) {
     const s = stateAt(t);
-    drawLeaf(s.win); drawRings(t, s.win);
+    drawLeaf(s.win); drawShade(s.shade); drawRings(t, s.win, s.shade);
     phone.setAttribute("transform", shift(s.pos[0], s.pos[1], s.pos[2]));
     phone.setAttribute("opacity", s.alpha.toFixed(3));
     shadow.setAttribute("transform", shift(s.pos[0], s.pos[1], BOARD));
@@ -395,7 +438,7 @@ function mountHowFigure(root, say) {
     if (s.step !== lastSide) { lastSide = s.step; say && say(s.step, s); }
   }
   /* idle tour; Dentro / Fora run forward to their moment and hold there for a while */
-  const HOLD = { in: 3.6, out: 12 }, still = matchMedia("(prefers-reduced-motion: reduce)");
+  const HOLD = { in: 3.6, out: 12 }, HOLD_N = { in: 3.6, shade: 8.2, out: 12 + NIGHT_ADD }, still = matchMedia("(prefers-reduced-motion: reduce)");
   let clock = 0, target = null, frame = 0, last = 0, visible = false, resume = 0, ringT = 0;
   const atHold = () => target !== null && Math.abs(((clock - target) % LOOP + LOOP) % LOOP) < 0.04;
   function tick(now) {
@@ -409,16 +452,23 @@ function mountHowFigure(root, say) {
   function drawAt(dt) {
     const s = stateAt(clock);
     draw(clock, dt);
-    if (ringT) drawRings(ringT, s.win);
+    if (ringT) drawRings(ringT, s.win, s.shade);
   }
   const run = () => { if (!frame && visible && !still.matches) { last = 0; frame = requestAnimationFrame(tick); } };
   const api = {
     show(side, hold = 9000) {
-      target = HOLD[side]; clearTimeout(resume);
+      target = (night ? HOLD_N : HOLD)[side]; if (target === undefined) target = HOLD.in; clearTimeout(resume);
       if (still.matches) { clock = target; ringT = 1.2; drawAt(0.5); return; }
       if (hold) resume = setTimeout(() => { target = null; run(); }, hold);
       run();
     },
+    night(on) {
+      on = !!on; if (on === night) return;
+      night = on; LOOP = on ? DAY + NIGHT_ADD : DAY;
+      if (on && clock >= NIGHT_IN) clock += NIGHT_ADD; else if (!on && clock >= NIGHT_IN + NIGHT_ADD) clock -= NIGHT_ADD; else if (!on && clock >= NIGHT_IN) clock = NIGHT_IN;
+      clock = ((clock % LOOP) + LOOP) % LOOP; target = null; lastSide = ""; drawAt(0.016); run();
+    },
+    isNight: () => night,
     stateAt, redraw() { lastSide = ""; drawAt(0.016); },
     seek(t, r) { target = t; clock = t; ringT = r ?? t; drawAt(1); },
   };
