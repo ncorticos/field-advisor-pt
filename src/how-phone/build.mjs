@@ -7,6 +7,8 @@ import { join } from "node:path";
 const SKILL = process.env.ANATOMY || "/Users/ncorticos/.claude/skills/anatomy";
 const k = await import(SKILL + "/kit/iso-kit.mjs");
 const G = await import(SKILL + "/kit/lathe.mjs");
+const { glScript } = await import(SKILL + "/scripts/inline-kit.mjs");
+const { glCamera } = await import(SKILL + "/kit/gl.mjs");
 const OUT = process.argv[process.argv.indexOf("--out") + 1];
 mkdirSync(OUT, { recursive: true });
 
@@ -134,7 +136,7 @@ function room() {
   out.push(L(keys, { tone: "faint" }));
   const lid = [[lapX - 11, lapY, dz + 2], [lapX + 11, lapY, dz + 2], [lapX + 11, lapY - 4, dz + 16], [lapX - 11, lapY - 4, dz + 16]];
   const lidIn = [[lapX - 9.8, lapY - 0.4, dz + 3.6], [lapX + 9.8, lapY - 0.4, dz + 3.6], [lapX + 9.8, lapY - 3.5, dz + 15], [lapX - 9.8, lapY - 3.5, dz + 15]];
-  out.push(face(lid, { shade: 3, tone: "mid", inner: L(closed(lidIn), { tone: "lo" }) }));
+  out.push(face(lid, { shade: 3, tone: "mid", inner: `<path class="fa-lcd" d="${closed(lidIn)}"/>` + L(closed(lidIn), { tone: "lo" }) }));
   // books and a lamp
   out.push(box(dx0 + 3, dx0 + 15, dy0 + 5, dy0 + 15, dz + 1, dz + 3.4, { tone: "mid" }, 0.3));
   out.push(box(dx0 + 4, dx0 + 14, dy0 + 6, dy0 + 14, dz + 3.4, dz + 5.4, { tone: "hi", crease: "lo" }, 0.3));
@@ -231,6 +233,29 @@ function dressings() {
   return out.join("");
 }
 
+
+/* the street lantern on its wall bracket, between the window and the downpipe: a Lisbon
+   "candeeiro de braço". Its light is the shader's; the glass is drawn here. */
+const LANT = { x0: 12.6, x1: 19.4, y0: -65.4, y1: -58.6, z0: 113, z1: 124, lamp: [16, -62, 118] };
+function lantern() {
+  const out = [], c = LANT, mx = (c.x0 + c.x1) / 2, my = (c.y0 + c.y1) / 2;
+  out.push(box(0, 1.4, my - 3.4, my + 3.4, 121, 136, { tone: "mid", crease: "lo" }, 0.3, 0.3));          // wall plate
+  out.push(D([at([1.4, my - 2, 123.4]), at([1.4, my + 2, 123.4]), at([1.4, my - 2, 133.6]), at([1.4, my + 2, 133.6])], { size: 0.4 }));
+  out.push(L(seg([1.4, my, 124.6], [9.6, my, 131]), { tone: "mid" }));                                    // brace, plate to arm
+  out.push(box(1.4, mx + 1, my - 0.7, my + 0.7, 131, 132.4, { tone: "mid", crease: "none" }, 0.2));        // arm
+  out.push(S(k.cylinder(mx, my, 0.55, 127.6, 3.4, P, 10), { tone: "mid", crease: "none" }));              // hanger
+  out.push(S(k.cylinder(mx, my, 1.1, 109.2, 1.8, P, 12), { tone: "mid" }));                              // drop finial
+  out.push(box(c.x0 - 0.4, c.x1 + 0.4, c.y0 - 0.4, c.y1 + 0.4, 111, c.z0, { tone: "mid", crease: "lo" }, 0.3, 0.3)); // bottom
+  out.push(box(c.x0, c.x0 + 0.9, c.y0, c.y0 + 0.9, c.z0, c.z1, { tone: "mid", crease: "none" }, 0.1)); // far post
+  const pane = (pts) => `<path class="fa-lantern-glass" d="${pathD(pts)}"/>` + L(pathD(pts), { tone: "mid" });
+  out.push(pane([[c.x1, c.y0, c.z0], [c.x1, c.y1, c.z0], [c.x1, c.y1, c.z1], [c.x1, c.y0, c.z1]]));
+  out.push(pane([[c.x0, c.y1, c.z0], [c.x1, c.y1, c.z0], [c.x1, c.y1, c.z1], [c.x0, c.y1, c.z1]]));
+  for (const [x, y] of [[c.x1 - 0.9, c.y0], [c.x0, c.y1 - 0.9], [c.x1 - 0.9, c.y1 - 0.9]]) out.push(box(x, x + 0.9, y, y + 0.9, c.z0, c.z1, { tone: "mid", crease: "none" }, 0.1));
+  out.push(box(c.x0 - 1.6, c.x1 + 1.6, c.y0 - 1.6, c.y1 + 1.6, c.z1, c.z1 + 1.6, { tone: "mid", crease: "lo" }, 0.4, 0.4)); // brim
+  out.push(box(c.x0 + 0.8, c.x1 - 0.8, c.y0 + 0.8, c.y1 - 0.8, c.z1 + 1.6, c.z1 + 3.8, { tone: "mid", crease: "lo" }, 0.4, 0.5)); // roof
+  return out.join("");
+}
+
 /* a car, in side view: a bonnet, a cabin, a boot, glass, wheels and lights */
 function car() {
   const x0 = 38, x1 = 74, fx0 = x0 + 3, fx1 = x1 - 3, g = STREET + 1, wz = g + 7, wr = 7;
@@ -289,13 +314,20 @@ function phone() {
 
 const INN = [-39, -17, BOARD], OUTS = [12, -17, BOARD];
 const LEAF = { hx: -24, hy: OY0 + 3, w: 34.4, z0: BOARD + 3, z1: HEAD - 2, t: 3 };
+const nightFilter = (id) => `<defs><filter id="${id}" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"/></filter></defs>`;
 const body = [
-  basePlate(), street(), `<g data-slot="room">${room()}</g>`, reveal(), `<g data-slot="leafA"></g>`, innerSill(), frame(), `<g data-slot="leafB"></g>`, mullion(), `<g data-slot="shade"></g>`, shutterBox(), facade(), dressings(), bollards(), `<g data-slot="car">${car()}</g>`,
+  nightFilter("fa-night"),
+  basePlate(), street(), `<g data-slot="room">${room()}</g>`, reveal(), `<g data-slot="leafA"></g>`, innerSill(), frame(), `<g data-slot="leafB"></g>`, mullion(), `<g data-slot="shade"></g>`, shutterBox(), facade(), dressings(), lantern(), bollards(), `<g data-slot="car">${car()}</g>`,
+];
+const frontBody = [
+  nightFilter("fa-night-front"),
   `<g data-slot="rings"></g>`,
   `<g data-part="shadow"><path class="iso-halo" d="${k.haloOf({ x: -6.5, y: -13, w: 13, d: 26, r: 2 }, 0, 0.1, P)}" style="filter:blur(1.5px)"/></g>`,
   `<g data-part="phone">${phone()}</g>`,
 ];
-const svg = k.figureSvg({ width: W, height: H, label: "__LABEL__", body });
+const back = k.figureSvg({ width: W, height: H, label: "__LABEL__", body }).replace('class="iso-svg"', 'class="iso-svg fa-back"');
+const front = `<svg xmlns="http://www.w3.org/2000/svg" class="iso-svg fa-front" viewBox="0 0 ${W} ${H}" aria-hidden="true">${frontBody.join("")}</svg>`;
+const svg = `<div class="fa-fig">${back}<canvas class="fa-gl" aria-hidden="true"></canvas>${front}</div>`;
 
 const FA_CSS = `
 .fa-glass{fill:#d9e8f3;stroke:none}
@@ -310,9 +342,122 @@ const FA_CSS = `
 .fa-ring{fill:none;stroke:#e5484d;stroke-width:1.5;stroke-linecap:round;vector-effect:non-scaling-stroke}
 .fa-slats{fill:#a9b1bb;stroke:none}
 .fa-slat-line{fill:none;stroke:#59626c;stroke-width:.6;vector-effect:non-scaling-stroke}
+.fa-fig{position:relative}
+.fa-fig>.fa-gl,.fa-fig>.fa-front{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.fa-gl{mix-blend-mode:color-dodge}
+.fa-lantern-glass{fill:color-mix(in srgb,#ffe7b0 calc(var(--fa-lit,0)*100%),#e8edf1);stroke:none}
+.fa-lcd{fill:color-mix(in srgb,#cfe0ff calc(var(--fa-lcd,0)*100%),transparent);stroke:none}
 .fa-slat-edge{fill:none;stroke:var(--anatomy-ink,#1d2329);stroke-width:1;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 `;
+
+/* ---------------- night: the lamps, as a WebGL layer ----------------
+   The SVG darkens by a colour matrix (the moonless ambient). Over it the canvas is
+   colour-dodged, so it multiplies what is drawn by (1 + gain): a lit wall brightens and
+   warms while its lines stay lines, and the paper round the model stays paper.
+   Where a pixel lands is found by casting its ray into the same boxes the SVG draws. */
+const B = (a, b) => ({ a, b });
+const SC = {
+  // the room
+  floor: B([RX, WY0, STREET], [WX0, 0, 0]), back: B([RX - 8, WY0 - 8, STREET], [WX0, WY0, TOP]), side: B([RX - 8, WY0 - 8, STREET], [RX, 0, TOP]),
+  desk: B([-122, -60, 28], [-74, -32, 31]), seat: B([-108, -30, 17], [-88, -10, 19.4]), chairBack: B([-108, -11.6, 19.4], [-88, -10, 38]),
+  laptop: B([-105, -50, 31], [-83, -37, 32]), books: B([-119, -55, 31], [-107, -45, 35.4]),
+  // the wall and its window
+  wallLow: B([WX0, WY0, STREET], [0, 0, SILL]), pier: B([WX0, WY0, SILL], [0, OY0, HEAD]), wallHigh: B([WX0, WY0, HEAD], [0, 0, TOP]),
+  sillIn: B([-54, OY0, BOARD - 3], [0, 0, BOARD]), sillOut: B([0, OY0 - 8, BOARD - 5], [SILLOUT, 0, BOARD]),
+  shutter: B([SH.x0 - 1, SH.y0, SH.top], [SH.x1, SH.y1, HEAD]), socle: B([0, WY0, STREET + 4], [3, 0, -24]),
+  surround: B([0, OY0 - 10, HEAD], [4, 0, HEAD + 13]), eaves: B([0, WY0, TOP - 8], [7, 0, TOP]),
+  // the street
+  base: B([BASE.x, BASE.y, STREET - 14], [BASE.x + BASE.w, BASE.y + BASE.d, STREET]), walk: B([0, -114, STREET], [20, 0, STREET + 4]),
+  kerb: B([20, -114, STREET], [23, 0, STREET + 5]), road: B([23, -114, STREET], [103, 0, STREET + 1]),
+  // the lantern itself, so its cap and foot stay dark
+  lanBody: B([LANT.x0, LANT.y0, LANT.z0], [LANT.x1, LANT.y1, LANT.z1]), lanBrim: B([LANT.x0 - 1.6, LANT.y0 - 1.6, LANT.z1], [LANT.x1 + 1.6, LANT.y1 + 1.6, LANT.z1 + 3.8]),
+  lanFoot: B([LANT.x0 - 0.4, LANT.y0 - 0.4, 111], [LANT.x1 + 0.4, LANT.y1 + 0.4, LANT.z0]),
+};
+const WALL = ["wallLow", "pier", "wallHigh", "sillOut", "shutter", "surround"];
+const CAST = { desk: ["desk", "seat", "chairBack", "laptop", "books", ...WALL], lant: [...WALL, "eaves"] };
+/* prisms along x, from the same (y, z) profiles the SVG draws: the car's body and cabin, the laptop's lid */
+const CG = STREET + 1, cy = (v) => v - 22;
+const PRISMS = [
+  { x: [38, 74], pts: [[-80, 7], [-80, 19], [-77, 23], [-24, 24], [-7, 20], [0, 15], [0, 7]].map(([a, b]) => [cy(a), CG + b]), cast: true },
+  { x: [41, 71], pts: [[-71, 23.4], [-64, 37], [-36, 37], [-23, 24]].map(([a, b]) => [cy(a), CG + b]), cast: true },
+  { x: [-105, -83], pts: [[-50, 32], [-49.4, 32], [-53.4, 46], [-54, 46]], cast: false },
+];
+function prismGlsl(pr, i, shadow) {
+  const n = pr.pts.length, c = pr.pts.reduce((a, q) => [a[0] + q[0] / n, a[1] + q[1] / n], [0, 0]);
+  let code = `{float te=-1e9,tx=1e9;vec3 nn=vec3(0.);float t1=(${pr.x[0].toFixed(2)}-ro.x)*ird.x,t2=(${pr.x[1].toFixed(2)}-ro.x)*ird.x;if(min(t1,t2)>te){te=min(t1,t2);nn=vec3(-sign(ird.x),0.,0.);}tx=min(tx,max(t1,t2));`;
+  for (let k2 = 0; k2 < n; k2++) {
+    const a = pr.pts[k2], b = pr.pts[(k2 + 1) % n];
+    let ny = b[1] - a[1], nz = -(b[0] - a[0]);
+    const L2 = Math.hypot(ny, nz); ny /= L2; nz /= L2;
+    if ((c[0] - a[0]) * ny + (c[1] - a[1]) * nz > 0) { ny = -ny; nz = -nz; }
+    const cc = a[0] * ny + a[1] * nz;
+    code += `{vec3 m=vec3(0.,${ny.toFixed(4)},${nz.toFixed(4)});float dn=dot(m,rd),d0=${cc.toFixed(3)}-dot(m,ro);if(abs(dn)<1e-6){if(d0<0.)tx=-1e9;}else{float t=d0/dn;if(dn<0.){if(t>te){te=t;nn=m;}}else tx=min(tx,t);}}`;
+  }
+  return code + (shadow ? `if(te<tx&&tx>.002&&te<.998)o=1.;}` : `if(te<tx&&te>0.&&te<T){T=te;N=nn;}}`);
+}
+const v3 = (q) => `vec3(${q.map((n) => (+n).toFixed(2)).join(",")})`;
+const LCD = { o: [-103.8, -50.4, 34.6], u: [19.6, 0, 0], v: [0, -3.1, 11.4] };
+const HEAD_LAMPS = [[43.4, -22, STREET + 12.8], [66.6, -22, STREET + 12.8]];
+const FRAG = `
+uniform vec4 uLamp;   // desk lamp, street lantern, headlights, laptop screen: 0..1 each
+float T; vec3 N;
+void bx(vec3 ro,vec3 ird,vec3 a,vec3 b){vec3 t1=(a-ro)*ird,t2=(b-ro)*ird,tn=min(t1,t2),tf=max(t1,t2);float te=max(max(tn.x,tn.y),tn.z),tx=min(min(tf.x,tf.y),tf.z);
+  if(te<tx&&te>0.&&te<T){T=te;N=te==tn.x?vec3(-sign(ird.x),0.,0.):(te==tn.y?vec3(0.,-sign(ird.y),0.):vec3(0.,0.,-sign(ird.z)));}}
+float sh(vec3 ro,vec3 ird,vec3 a,vec3 b){vec3 t1=(a-ro)*ird,t2=(b-ro)*ird,tn=min(t1,t2),tf=max(t1,t2);float te=max(max(tn.x,tn.y),tn.z),tx=min(min(tf.x,tf.y),tf.z);return te<tx&&tx>.002&&te<.998?1.:0.;}
+void scene(vec3 ro,vec3 ird){vec3 rd=1./ird;${Object.values(SC).map((b) => `bx(ro,ird,${v3(b.a)},${v3(b.b)});`).join("")}${PRISMS.map((q, i) => prismGlsl(q, i, false)).join("")}}
+float occDesk(vec3 ro,vec3 ird){float o=0.;${CAST.desk.map((n) => `o=max(o,sh(ro,ird,${v3(SC[n].a)},${v3(SC[n].b)}));`).join("")}return o;}
+float occLant(vec3 ro,vec3 ird){float o=0.;vec3 rd=1./ird;${CAST.lant.map((n) => `o=max(o,sh(ro,ird,${v3(SC[n].a)},${v3(SC[n].b)}));`).join("")}${PRISMS.filter((q) => q.cast).map((q, i) => prismGlsl(q, i, true)).join("")}return o;}
+const vec3 LD=vec3(-80.,-54.,44.5);
+const vec3 LL=${v3(LANT.lamp)};
+const vec3 C_DESK=vec3(1.,.6,.26);
+const vec3 C_LANT=vec3(1.,.58,.22);
+const vec3 C_HEAD=vec3(.9,.95,1.);
+const vec3 C_LCD=vec3(.55,.74,1.);
+vec3 safeInv(vec3 d){return 1./(d+sign(d)*1e-4+vec3(1e-6));}
+float pl(vec3 p,vec3 n,vec3 L,float r0){vec3 d=L-p;float q=dot(d,d);return max(dot(n,d)*inversesqrt(q),0.)/(1.+q/(r0*r0));}
+float visDesk(vec3 p,float h){float v=0.;for(int i=0;i<8;i++){float a=6.2832*(float(i)+h)/8.,r=mix(.6,2.2,fract(float(i)*.618+h));v+=1.-occDesk(p,safeInv(LD+vec3(cos(a),sin(a),0.)*r-p));}return v*.125;}
+float visLant(vec3 p,float h){float v=0.;for(int i=0;i<8;i++){float a=6.2832*(float(i)+h)/8.,r=mix(.6,2.6,fract(float(i)*.618+h));v+=1.-occLant(p,safeInv(LL+vec3(cos(a)*r,sin(a)*r,0.)-p));}return v*.125;}
+/* a rectangle on a plane, seen along the ray: soft by a pixel, and only where nothing nearer hides it */
+float quad(vec3 ro,vec3 rd,vec3 o,vec3 u,vec3 v,float inset,float px,out float t,out vec2 uv){vec3 n=cross(u,v);t=dot(o-ro,n)/dot(rd,n);vec3 q=ro+rd*t-o;
+  float lu=length(u),lv=length(v);uv=vec2(dot(q,u)/lu,dot(q,v)/lv);return window(uv.x,inset,lu-inset,.7*px)*window(uv.y,inset,lv-inset,.7*px);}
+void main(){
+  vec2 vb=viewOf(gl_FragCoord.xy);
+  vec3 V=towardViewer(),ro=rayOf(vb)+900.*V,rd=-V,ird=1./rd;
+  float px=pixelOf(),h=hash12(gl_FragCoord.xy);
+  T=1e5;N=vec3(0.);scene(ro,ird);
+  vec3 g=vec3(0.);
+  if(T<1e4){
+    vec3 p=ro+rd*T,n=N,pe=p+n*.05;
+    if(uLamp.x>.001){float f=pl(p,n,LD,24.);vec3 dir=normalize(p-LD);f*=mix(1.,.08,smoothstep(-.15,.45,dir.z));if(f>.002)f*=visDesk(pe,h);g+=uLamp.x*2.1*f*C_DESK;}
+    if(uLamp.y>.001){float f=pl(p,n,LL,110.);if(f>.002)f*=visLant(pe,h);g+=uLamp.y*2.3*f*C_LANT;}
+    if(uLamp.z>.001){${HEAD_LAMPS.map((q) => `{vec3 d=p-${v3(q)};float c=dot(normalize(d),normalize(vec3(0.,1.,-.16)));g+=uLamp.z*1.5*pl(p,n,${v3(q)},34.)*smoothstep(.8,.96,c)*C_HEAD;}`).join("")}}
+    if(uLamp.w>.001)g+=uLamp.w*.7*pl(p,n,vec3(-94.,-46.,40.),9.)*C_LCD;
+  }
+  float tq;vec2 uv;
+  // the lantern's two glass faces
+  float e=quad(ro,rd,vec3(${LANT.x1},${LANT.y0},${LANT.z0}),vec3(0.,${(LANT.y1 - LANT.y0).toFixed(2)},0.),vec3(0.,0.,${(LANT.z1 - LANT.z0).toFixed(2)}),.9,px,tq,uv)*step(tq,T+.3);
+  e+=quad(ro,rd,vec3(${LANT.x0},${LANT.y1},${LANT.z0}),vec3(${(LANT.x1 - LANT.x0).toFixed(2)},0.,0.),vec3(0.,0.,${(LANT.z1 - LANT.z0).toFixed(2)}),.9,px,tq,uv)*step(tq,T+.3);
+  g+=uLamp.y*e*vec3(4.2,2.5,1.05);
+  // the desk lamp's shade, fabric lit from inside (a cylinder r 3.8, z 46–51)
+  {vec2 o=ro.xy-vec2(-80.,-54.),d=rd.xy;float a=dot(d,d),b=dot(o,d),c=dot(o,o)-14.44,D=b*b-a*c;
+   if(D>0.){float t=(-b-sqrt(D))/a;float z=ro.z+rd.z*t;float rim=smoothstep(0.,.9*px*a,sqrt(D)/sqrt(a)*.26);
+     g+=uLamp.x*rim*window(z,46.,51.,.7*px)*step(t,T)*mix(1.6,.9,smoothstep(46.,51.,z))*vec3(2.4,1.35,.5);}}
+  // the laptop's screen
+  float s=quad(ro,rd,${v3(LCD.o)},${v3(LCD.u)},${v3(LCD.v)},.5,px,tq,uv)*step(tq,T+.3);
+  g+=uLamp.w*s*mix(1.1,.75,uv.y/11.8)*vec3(.55,.8,1.25);
+  // the headlights
+  ${HEAD_LAMPS.map((q) => `g+=uLamp.z*quad(ro,rd,vec3(${(q[0] - 3.2).toFixed(2)},-22.,${(q[2] - 1.4).toFixed(2)}),vec3(6.4,0.,0.),vec3(0.,0.,2.8),.25,px,tq,uv)*step(tq,T+.3)*vec3(2.6,2.6,2.2);`).join("\n  ")}
+  vec3 sv=g/(1.+g);
+  sv=max(sv+(h-.5)/255.*smoothstep(0.,2./255.,max(sv.r,max(sv.g,sv.b))),0.);
+  float al=smoothstep(0.,.012,max(sv.r,max(sv.g,sv.b)));
+  gl_FragColor=vec4(sv*al,al);
+}`;
+const NIGHT_DATA = { frag: FRAG, camera: glCamera(P) };
 const live = `
+const FA_GL = (function () {
+${glScript()}
+return { glLayer, settle };
+})();
 function mountHowFigure(root, say) {
   const P = ${JSON.stringify(P)}, L = ${JSON.stringify(LEAF)}, INN = ${JSON.stringify(INN)}, OUTS = ${JSON.stringify(OUTS)};
   const SRC = [56, -17, -30], GLASS_X = ${GLASS_X}, BOARD = ${BOARD}, HEAD = ${HEAD}, SH = ${JSON.stringify(SH)}, SX = -7;
@@ -321,8 +466,8 @@ function mountHowFigure(root, say) {
   const f = (n) => Math.round(n * 10) / 10;
   const d = (pts, close) => pts.map((q, i) => (i ? "L" : "M") + f(q[0]) + " " + f(q[1])).join("") + (close ? "Z" : "");
   const shift = (x, y, z) => { const q = iso(x, y, z), o = iso(0, 0, 0); return "translate(" + f(q[0] - o[0]) + " " + f(q[1] - o[1]) + ")"; };
-  const svg = root.querySelector("svg");
-  const q = (s) => svg.querySelector(s);
+  const svg = root.querySelector("svg.fa-back") || root.querySelector("svg"), fsvg = root.querySelector("svg.fa-front");
+  const q = (s) => svg.querySelector(s) || (fsvg && fsvg.querySelector(s));
   const NS = "http://www.w3.org/2000/svg";
   const mk = (cls, tone) => { const e = document.createElementNS(NS, "path"); e.setAttribute("class", cls); if (tone) e.setAttribute("data-tone", tone); return e; };
   /* the leaf: rebuilt each frame from its hinge, since a turn about z is no screen transform */
@@ -385,8 +530,41 @@ function mountHowFigure(root, say) {
       b.setAttribute("d", weak.length > 1 ? d(weak) : ""); b.setAttribute("opacity", (0.42 * fade).toFixed(3));
     });
   }
-  const phone = q('[data-part="phone"]'), shadow = q('[data-part="shadow"]'), bars = [...svg.querySelectorAll("[data-bar]")];
+  const phone = q('[data-part="phone"]'), shadow = q('[data-part="shadow"]'), bars = [...root.querySelectorAll("[data-bar]")];
   const car = q('[data-slot="car"]');
+
+  /* night falls: the drawing darkens by a colour matrix and the lamps come on, each when
+     the dusk passes its own level (the car first, then the lantern's photocell, then the
+     student at the desk), each on its own envelope, so nothing pops */
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
+  const NGT = ${JSON.stringify(NIGHT_DATA)};
+  const cvs = root.querySelector("canvas.fa-gl");
+  const mat = svg.querySelector("#fa-night feColorMatrix"), matF = fsvg && fsvg.querySelector("#fa-night-front feColorMatrix");
+  let layer = null;
+  try { if (cvs) layer = FA_GL.glLayer({ canvas: cvs, fragment: NGT.frag, view: [${W}, ${H}], camera: NGT.camera, uniforms: ["uLamp"], onError: (m) => console.warn("night layer:", m) }); } catch (e) { layer = null; }
+  if (cvs && !layer) cvs.style.display = "none";
+  const dusk = { x: 0, v: 0 }, lamps = [0, 1, 2, 3].map(() => ({ x: 0, v: 0 }));
+  const LAMP_AT = [0.62, 0.42, 0.28, 0.12], LAMP_S = [0.07, 0.5, 0.12, 0.3];
+  let depth = 0, shownD = "", shownL = "", glDirty = true;
+  const matrix = (d) => { const A = [1 - 0.56 * d, 1 - 0.53 * d, 1 - 0.44 * d], k = 0.6 * d, W3 = [0.2126, 0.7152, 0.0722]; let v = ""; for (let i = 0; i < 3; i++) { for (let j = 0; j < 3; j++) v += (A[i] * ((1 - k) * (i === j ? 1 : 0) + k * W3[j])).toFixed(4) + " "; v += "0 0 "; } return v + "0 0 0 1 0"; };
+  function nightStep(dt, calm) {
+    let moving = FA_GL.settle(dusk, depth, dt, 0.8, calm);
+    lamps.forEach((l, i) => { moving = FA_GL.settle(l, dusk.x > LAMP_AT[i] * Math.max(depth, 0.5) ? 1 : 0, dt, LAMP_S[i], calm) || moving; });
+    const d = Math.min(1, Math.max(0, dusk.x)), dk = d.toFixed(3);
+    if (dk !== shownD) {
+      shownD = dk;
+      if (mat) mat.setAttribute("values", matrix(d));
+      if (matF) matF.setAttribute("values", matrix(d * 0.3));
+      svg.style.filter = d > 0.002 ? "url(#fa-night)" : "";
+      if (fsvg) fsvg.style.filter = d > 0.002 ? "url(#fa-night-front)" : "";
+    }
+    // the eye adapts: a lamp only counts as the ambient falls, so a lit wall never goes paler than day
+    const expo = d * d * (3 - 2 * d), u = lamps.map((l) => Math.min(1, Math.max(0, l.x)) * expo), lk = u.map((x) => x.toFixed(3)).join();
+    if (lk !== shownL) { shownL = lk; root.style.setProperty("--fa-lit", layer ? "0" : u[1].toFixed(3)); root.style.setProperty("--fa-lcd", u[3].toFixed(3)); glDirty = true; }
+    if (layer && glDirty) { glDirty = false; if (Math.max(...u) > 1e-3) layer.draw({ uLamp: u }, 0); else layer.clear(); }
+    return moving;
+  }
+  addEventListener("resize", () => { glDirty = true; if (still.matches) nightStep(1, true); });
   /* the one timeline: what the student does, in order */
   const DAY = 16, NIGHT_IN = 5.2, NIGHT_ADD = 5.6; let night = false, LOOP = DAY;
   const ease = (x) => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2, clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -438,12 +616,13 @@ function mountHowFigure(root, say) {
     if (s.step !== lastSide) { lastSide = s.step; say && say(s.step, s); }
   }
   /* idle tour; Dentro / Fora run forward to their moment and hold there for a while */
-  const HOLD = { in: 3.6, out: 12 }, HOLD_N = { in: 3.6, shade: 8.2, out: 12 + NIGHT_ADD }, still = matchMedia("(prefers-reduced-motion: reduce)");
+  const HOLD = { in: 3.6, out: 12 }, HOLD_N = { in: 3.6, shade: 8.2, out: 12 + NIGHT_ADD };
   let clock = 0, target = null, frame = 0, last = 0, visible = false, resume = 0, ringT = 0;
   const atHold = () => target !== null && Math.abs(((clock - target) % LOOP + LOOP) % LOOP) < 0.04;
   function tick(now) {
     const dt = last ? Math.min((now - last) / 1000, 1 / 20) : 1 / 60; last = now;
     ringT += dt;
+    nightStep(dt, false);
     if (target === null) clock += dt;
     else if (!atHold()) { const gap = ((target - clock) % LOOP + LOOP) % LOOP; clock += Math.min(gap, dt * (gap > 6 ? 3.2 : 1.8)); }
     drawAt(dt);
@@ -462,8 +641,10 @@ function mountHowFigure(root, say) {
       if (hold) resume = setTimeout(() => { target = null; run(); }, hold);
       run();
     },
-    night(on) {
-      on = !!on; if (on === night) return;
+    night(on, deep = 1) {
+      on = !!on; depth = on ? Math.min(1, Math.max(0.3, deep)) : 0;
+      if (still.matches) nightStep(1, true); else run();
+      if (on === night) return;
       night = on; LOOP = on ? DAY + NIGHT_ADD : DAY;
       if (on && clock >= NIGHT_IN) clock += NIGHT_ADD; else if (!on && clock >= NIGHT_IN + NIGHT_ADD) clock -= NIGHT_ADD; else if (!on && clock >= NIGHT_IN) clock = NIGHT_IN;
       clock = ((clock % LOOP) + LOOP) % LOOP; target = null; lastSide = ""; drawAt(0.016); run();
@@ -474,17 +655,18 @@ function mountHowFigure(root, say) {
   };
   new IntersectionObserver((es) => { visible = es[es.length - 1].isIntersecting; if (visible) run(); else { cancelAnimationFrame(frame); frame = 0; } }, { rootMargin: "80px 0px" }).observe(svg);
   if (still.matches) { clock = HOLD.in; ringT = 1.2; }
+  nightStep(0.016, still.matches);
   drawAt(0.5);
   return api;
 }
 `;
-writeFileSync(join(OUT, "figure.svg"), svg);
+writeFileSync(join(OUT, "figure.html"), svg);
 writeFileSync(join(OUT, "live.js"), live);
 writeFileSync(join(OUT, "how.css"), FA_CSS);
 const page = k.pageHtml({
   title: "How to place the phone", theme: "light", width: 820,
   body: k.plateHtml({ fig: "Fig 1", title: "Dentro e fora", hint: "", readout: "", caption: "Maquete sem escala", body: `<div class="iso-stage">${svg.replace("__LABEL__", "Maquete")}</div>` }) + `<style>${FA_CSS}</style>`,
-  script: `${live};window.API=mountHowFigure(document.querySelector(".iso-stage"),(s)=>{const r=document.querySelector("[data-readout]");if(r)r.textContent=s;});`,
+  script: `${live};window.API=mountHowFigure(document.querySelector(".iso-stage"),(s)=>{const r=document.querySelector("[data-readout]");if(r)r.textContent=s;});if(location.hash==="#night")API.night(true);`,
 });
 writeFileSync(join(OUT, "test.html"), page);
 console.log("svg", (svg.length / 1024).toFixed(0) + "KB", "live", (live.length / 1024).toFixed(0) + "KB");
